@@ -1,0 +1,268 @@
+{
+  "tempo": 20.0,
+  "comment": "Wagner's Oneiric Warning (Brangäne's Watch) - 29 harmonic states. 2 bars (24s) each at 20 BPM. Total: 696 seconds (11.6 minutes).",
+  "youtube_id": null,
+  "events": [
+    {
+      "time": 0,
+      "state": "Db7",
+      "direction": {
+        "lyric": "Ein-",
+        "marking": "p, Str.",
+        "note": "Opening, strings enter"
+      }
+    },
+    {
+      "time": 8,
+      "state": "Gdim7",
+      "direction": {
+        "lyric": "-sam",
+        "marking": "",
+        "note": "Einsam = Lonely"
+      }
+    },
+    {
+      "time": 16,
+      "state": "Ab7",
+      "direction": {
+        "lyric": "wa- chend",
+        "marking": "",
+        "note": "wachend = watching"
+      }
+    },
+    {
+      "time": 24,
+      "state": "Eb7",
+      "direction": {
+        "lyric": "in der",
+        "marking": "poco cresc.",
+        "note": ""
+      }
+    },
+    {
+      "time": 32,
+      "state": "Db7",
+      "direction": {
+        "lyric": "Nacht,",
+        "marking": "Hob.",
+        "note": "Nacht = Night; Oboe enters"
+      }
+    },
+    {
+      "time": 40,
+      "state": "D",
+      "direction": {
+        "lyric": "wem",
+        "marking": "Harfe, Holzbl., Hörn. dim.",
+        "note": "wem = to whom; Harp, woodwinds, horns diminuendo"
+      }
+    },
+    {
+      "time": 48,
+      "state": "A7",
+      "direction": {
+        "lyric": "Traum der",
+        "marking": "pp, Harfe",
+        "note": "Traum = Dream; very soft, harp"
+      }
+    },
+    {
+      "time": 56,
+      "state": "G",
+      "direction": {
+        "lyric": "Lie- -be",
+        "marking": "più p",
+        "note": "Liebe = Love; even softer"
+      }
+    },
+    {
+      "time": 64,
+      "state": "C#",
+      "direction": {
+        "lyric": "lacht,",
+        "marking": "ppp, II. Viol. ausdrucksvoll",
+        "note": "lacht = laughs; 2nd violin expressive"
+      }
+    },
+    {
+      "time": 72,
+      "state": "Am",
+      "direction": {
+        "lyric": "hab' der",
+        "marking": "gesteigert, Viol.I ausdrucksvoll",
+        "note": "gesteigert = intensified; 1st violin expressive"
+      }
+    },
+    {
+      "time": 80,
+      "state": "Em",
+      "direction": {
+        "lyric": "Ei- -nen",
+        "marking": "espress., ppp",
+        "note": "Einen = the one"
+      }
+    },
+    {
+      "time": 88,
+      "state": "C#m",
+      "direction": {
+        "lyric": "Ruf in",
+        "marking": "poco cresc., ausdrucksvoll",
+        "note": "Ruf = call"
+      }
+    },
+    {
+      "time": 96,
+      "state": "D#",
+      "direction": {
+        "lyric": "acht, die den",
+        "marking": "sehr zart u. ausdrucksvoll, ppp",
+        "note": "acht = heed; sehr zart = very tender"
+      }
+    },
+    {
+      "time": 104,
+      "state": "G#m_1",
+      "direction": {
+        "lyric": "Schlä- -fern",
+        "marking": "Viol.II, Br. u. Vcll. Solo",
+        "note": "Schläfern = sleepers (E natural here)"
+      }
+    },
+    {
+      "time": 112,
+      "state": "G#m_2",
+      "direction": {
+        "lyric": "Schlim- -mes",
+        "marking": "",
+        "note": "Schlimmes = something bad (E# here)"
+      }
+    },
+    {
+      "time": 120,
+      "state": "D",
+      "direction": {
+        "lyric": "ahnt, ban-",
+        "marking": "ppp, ausdrucksvoll",
+        "note": "ahnt = senses; bange = anxious"
+      }
+    },
+    {
+      "time": 128,
+      "state": "Gm",
+      "direction": {
+        "lyric": "-ge zum Er-",
+        "marking": "morendo, poco cresc.",
+        "note": "morendo = dying away"
+      }
+    },
+    {
+      "time": 136,
+      "state": "G#ø7",
+      "direction": {
+        "lyric": "wa-",
+        "marking": "Fl. u. Hob., dim.",
+        "note": "Flute and oboe"
+      }
+    },
+    {
+      "time": 144,
+      "state": "F#m",
+      "direction": {
+        "lyric": "",
+        "marking": "Engl.H., Br. u. Vcll.",
+        "note": "English horn, viola and cello"
+      }
+    },
+    {
+      "time": 152,
+      "state": "C#",
+      "direction": {
+        "lyric": "-chen",
+        "marking": "Sehr ruhig",
+        "note": "Erwachen = awakening; Sehr ruhig = Very calm"
+      }
+    },
+    {
+      "time": 160,
+      "state": "C#7",
+      "direction": {
+        "lyric": "",
+        "marking": "più p",
+        "note": ""
+      }
+    },
+    {
+      "time": 168,
+      "state": "F#",
+      "direction": {
+        "lyric": "mahnt!",
+        "marking": "pp, Harfe",
+        "note": "mahnt = warns"
+      }
+    },
+    {
+      "time": 176,
+      "state": "D_22",
+      "direction": {
+        "lyric": "Ha- -bet",
+        "marking": "f, immer gleichmäßig",
+        "note": "Habet = Have/Take; forte, always evenly"
+      }
+    },
+    {
+      "time": 184,
+      "state": "F#",
+      "direction": {
+        "lyric": "acht!",
+        "marking": "sfz p, pp",
+        "note": "acht = heed; sforzando then soft"
+      }
+    },
+    {
+      "time": 192,
+      "state": "D#m",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 200,
+      "state": "B",
+      "direction": {
+        "lyric": "Ha- -bet",
+        "marking": "mf",
+        "note": "Second 'Habet acht'"
+      }
+    },
+    {
+      "time": 208,
+      "state": "G#ø7",
+      "direction": {
+        "lyric": "acht!",
+        "marking": "pp, più p",
+        "note": ""
+      }
+    },
+    {
+      "time": 216,
+      "state": "Bø7",
+      "direction": {
+        "lyric": "Bald ent- -weicht",
+        "marking": "morendo",
+        "note": "Bald entweicht = Soon fades"
+      }
+    },
+    {
+      "time": 224,
+      "state": "C#7",
+      "direction": {
+        "lyric": "die Nacht!",
+        "marking": "pp dolce, morendo",
+        "note": "die Nacht = the night; ending"
+      }
+    }
+  ]
+}
