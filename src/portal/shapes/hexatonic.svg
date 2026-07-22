@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Equilateral triangle (side = 120, height = 120*sqrt(3)/2 ≈ 103.923) -->
+  <polygon
+    fill="#FFFFFF"
+    points="0,120 120,120 60,16.077"
+    transform="rotate(-90 60 60)"
+  />
+</svg>

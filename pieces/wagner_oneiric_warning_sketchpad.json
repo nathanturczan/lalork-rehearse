@@ -1,0 +1,350 @@
+{
+  "name": "Wagner's Oneiric Warning",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "Db7",
+      "label": "Db7",
+      "scale": "fs_diatonic",
+      "chord": "cs_7-17",
+      "position": {
+        "x": 100,
+        "y": 50
+      }
+    },
+    {
+      "id": "Gdim7",
+      "label": "Gdim7",
+      "scale": "gs_harmonic_minor",
+      "chord": "g_dim-102",
+      "position": {
+        "x": 250,
+        "y": 50
+      }
+    },
+    {
+      "id": "Ab7",
+      "label": "Ab7",
+      "scale": "cs_diatonic",
+      "chord": "gs_7-17",
+      "position": {
+        "x": 400,
+        "y": 50
+      }
+    },
+    {
+      "id": "Eb7",
+      "label": "Eb7",
+      "scale": "gs_diatonic",
+      "chord": "ds_7-17",
+      "position": {
+        "x": 550,
+        "y": 50
+      }
+    },
+    {
+      "id": "D",
+      "label": "D",
+      "scale": "a_diatonic",
+      "chord": "d_M7-0",
+      "position": {
+        "x": 100,
+        "y": 150
+      }
+    },
+    {
+      "id": "D_22",
+      "label": "D (22)",
+      "scale": "d_diatonic",
+      "chord": "d_M7-0",
+      "position": {
+        "x": 175,
+        "y": 150
+      }
+    },
+    {
+      "id": "A7",
+      "label": "A7",
+      "scale": "d_diatonic",
+      "chord": "a_7-17",
+      "position": {
+        "x": 250,
+        "y": 150
+      }
+    },
+    {
+      "id": "G",
+      "label": "G",
+      "scale": "d_diatonic",
+      "chord": "g_M7-0",
+      "position": {
+        "x": 400,
+        "y": 150
+      }
+    },
+    {
+      "id": "C#",
+      "label": "C#",
+      "scale": "cs_diatonic",
+      "chord": "cs_M7-0",
+      "position": {
+        "x": 550,
+        "y": 150
+      }
+    },
+    {
+      "id": "Am",
+      "label": "Am",
+      "scale": "d_acoustic",
+      "chord": "a_m(Maj7)-10",
+      "position": {
+        "x": 100,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em",
+      "label": "Em",
+      "scale": "a_acoustic",
+      "chord": "e_m(Maj7)-10",
+      "position": {
+        "x": 250,
+        "y": 250
+      }
+    },
+    {
+      "id": "C#m",
+      "label": "C#m",
+      "scale": "e_diatonic",
+      "chord": "cs_m7-13",
+      "position": {
+        "x": 400,
+        "y": 250
+      }
+    },
+    {
+      "id": "D#",
+      "label": "D#",
+      "scale": "ds_acoustic",
+      "chord": "ds_7-17",
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    },
+    {
+      "id": "G#m_1",
+      "label": "G#m (1)",
+      "scale": "b_diatonic",
+      "chord": "e_M7-0",
+      "position": {
+        "x": 100,
+        "y": 350
+      }
+    },
+    {
+      "id": "G#m_2",
+      "label": "G#m (2)",
+      "scale": "fs_diatonic",
+      "chord": "gs_m6-6",
+      "position": {
+        "x": 175,
+        "y": 350
+      }
+    },
+    {
+      "id": "Gm",
+      "label": "Gm",
+      "scale": "d_harmonic_major",
+      "chord": "g_m(Maj7)-10",
+      "position": {
+        "x": 250,
+        "y": 350
+      }
+    },
+    {
+      "id": "G#\u00f87",
+      "label": "G#\u00f87",
+      "scale": "a_diatonic",
+      "chord": "gs_m7\u266d5-103",
+      "position": {
+        "x": 400,
+        "y": 350
+      }
+    },
+    {
+      "id": "F#m",
+      "label": "F#m",
+      "scale": "e_diatonic",
+      "chord": "fs_m7-13",
+      "position": {
+        "x": 550,
+        "y": 350
+      }
+    },
+    {
+      "id": "C#7",
+      "label": "C#7",
+      "scale": "fs_diatonic",
+      "chord": "cs_7-17",
+      "position": {
+        "x": 100,
+        "y": 450
+      }
+    },
+    {
+      "id": "F#",
+      "label": "F#",
+      "scale": "fs_diatonic",
+      "chord": "fs_M7-0",
+      "position": {
+        "x": 250,
+        "y": 450
+      }
+    },
+    {
+      "id": "D#m",
+      "label": "D#m",
+      "scale": "fs_diatonic",
+      "chord": "ds_m7-13",
+      "position": {
+        "x": 400,
+        "y": 450
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "scale": "fs_diatonic",
+      "chord": "b_M7-0",
+      "position": {
+        "x": 550,
+        "y": 450
+      }
+    },
+    {
+      "id": "B\u00f87",
+      "label": "B\u00f87",
+      "scale": "a_harmonic_major",
+      "chord": "b_dim-102",
+      "position": {
+        "x": 100,
+        "y": 550
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "Db7",
+      "target": "Gdim7"
+    },
+    {
+      "source": "Gdim7",
+      "target": "Ab7"
+    },
+    {
+      "source": "Ab7",
+      "target": "Eb7"
+    },
+    {
+      "source": "Eb7",
+      "target": "Db7"
+    },
+    {
+      "source": "Db7",
+      "target": "D"
+    },
+    {
+      "source": "D",
+      "target": "A7"
+    },
+    {
+      "source": "A7",
+      "target": "G"
+    },
+    {
+      "source": "G",
+      "target": "C#"
+    },
+    {
+      "source": "C#",
+      "target": "Am"
+    },
+    {
+      "source": "Am",
+      "target": "Em"
+    },
+    {
+      "source": "Em",
+      "target": "C#m"
+    },
+    {
+      "source": "C#m",
+      "target": "D#"
+    },
+    {
+      "source": "D#",
+      "target": "G#m_1"
+    },
+    {
+      "source": "G#m_1",
+      "target": "G#m_2"
+    },
+    {
+      "source": "G#m_2",
+      "target": "D"
+    },
+    {
+      "source": "D",
+      "target": "Gm"
+    },
+    {
+      "source": "Gm",
+      "target": "G#\u00f87"
+    },
+    {
+      "source": "G#\u00f87",
+      "target": "F#m"
+    },
+    {
+      "source": "F#m",
+      "target": "C#"
+    },
+    {
+      "source": "C#",
+      "target": "C#7"
+    },
+    {
+      "source": "C#7",
+      "target": "F#"
+    },
+    {
+      "source": "F#",
+      "target": "D_22"
+    },
+    {
+      "source": "D_22",
+      "target": "F#"
+    },
+    {
+      "source": "F#",
+      "target": "D#m"
+    },
+    {
+      "source": "D#m",
+      "target": "B"
+    },
+    {
+      "source": "B",
+      "target": "G#\u00f87"
+    },
+    {
+      "source": "G#\u00f87",
+      "target": "B\u00f87"
+    },
+    {
+      "source": "B\u00f87",
+      "target": "C#7"
+    }
+  ]
+}

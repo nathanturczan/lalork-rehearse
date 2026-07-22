@@ -1,0 +1,196 @@
+/* Enter Portal — LALORK Enter's compact NowPanel, ported from
+   scale-navigator-dashboard's EnterPortal.scss (flattened to plain CSS).
+   All portal__* rules are namespaced under .enter-portal. The black
+   background is the panel's signature: it renders exactly as it does on
+   join.lalaptoporchestra.com, dark card in a light page. */
+
+.enter-portal {
+  --fg: #ffffff;
+  --fg-dim: #666666;
+  --note-incoming-color: #6ab8ff;
+
+  width: 100%;
+  box-sizing: border-box;
+  background: #0a0a0a;
+  color: var(--fg);
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+  text-align: left;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.enter-portal .portal__now {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  padding: 4px 10px;
+  border: 1px dashed var(--fg);
+}
+
+.enter-portal .portal__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.enter-portal .portal__now-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.enter-portal .portal__bay {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.enter-portal .portal__bay--next {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.enter-portal .portal__group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Group word (SCALE / CHORD): bright and semibold so it reads as the
+   heading; the bay word (NOW / NEXT) stays small dim gray beside it */
+.enter-portal .portal__group-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #e6e6e6;
+  margin-bottom: 0;
+  margin-right: 4px;
+}
+
+.enter-portal .portal__bay-label {
+  font-size: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+  margin-bottom: 0;
+}
+
+/* NEXT label tinted like the incoming value it announces */
+.enter-portal .portal__bay--next .portal__bay-label,
+.enter-portal .portal__chord-row .portal__bay:not(.portal__bay--now) .portal__bay-label {
+  color: var(--note-incoming-color);
+  opacity: 0.75;
+}
+
+.enter-portal .portal__scale {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform-origin: left center;
+}
+
+.enter-portal .portal__scale-name {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.enter-portal .portal__scale-next {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  color: var(--note-incoming-color);
+}
+
+.enter-portal .portal__scale-next > div {
+  flex: none;
+}
+
+.enter-portal .portal__scale-next-name {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.enter-portal .portal__meta-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.enter-portal .portal__chord-row {
+  display: flex;
+  gap: 24px;
+}
+
+.enter-portal .portal__tempo {
+  font-size: 24px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.enter-portal .portal__chord-current {
+  display: inline-block;
+  width: 200px;
+  font-size: 26px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left center;
+}
+
+.enter-portal .portal__chord-next {
+  display: inline-block;
+  width: 200px;
+  font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--note-incoming-color);
+}
+
+/* Narrow screens: let the meta row wrap and shrink the chord slots so the
+   tempo never clips off the panel edge */
+@media (max-width: 700px) {
+  .enter-portal .portal__meta-row {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  .enter-portal .portal__chord-row {
+    gap: 12px;
+  }
+
+  .enter-portal .portal__scale-name {
+    font-size: 24px;
+  }
+
+  .enter-portal .portal__scale-next-name {
+    font-size: 20px;
+  }
+
+  .enter-portal .portal__chord-current,
+  .enter-portal .portal__chord-next {
+    width: 130px;
+    font-size: 20px;
+  }
+
+  .enter-portal .portal__tempo {
+    font-size: 20px;
+  }
+}
