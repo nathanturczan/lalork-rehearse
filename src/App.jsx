@@ -328,39 +328,89 @@ const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scal
 const ens = await joinEnsemble('${ensembleRoomId}')
 ens.showBadge() // room + current scale/chord, top of the screen
 
-// BASS — the current chord's root (or its fifth), hopping octaves.
-// chooseCycles picks one line per cycle, at random.
+// Each arpeggio below contains 16 steps per cycle.
+// The numbers select notes; their positions determine when they play.
+
+// SCALE DEGREES
+// 1  2  3  4   5  6  7  8   9  10 11 12  13 14 15 16
+const scaleLine =
+  '0  2  4  6   8 10 12 14  12  10  8  6   4  2  7 11'
+
+// NOTES FROM THE CONDUCTOR’S ORIGINAL CHORD VOICING
+// 1  2  3  4   5  6  7  8   9  10 11 12  13 14 15 16
+const chordLine =
+  '0  2  3  4   3  1  0  2   4   1  3  4   2  1  0  3'
+
+// NOTES FROM THE CURRENT CHORD IN CLOSE POSITION
+// 1  2  3  4   5  6  7  8   9  10 11 12  13 14 15 16
+const interlockingLine =
+  '0  2  1  3   2  0  4  2   1   3  4  0   2  4  1  3'
+
+// Every four scale notes move through these octaves.
+const scaleOctaves = '<0 12 24 12>'
+
+// Every eight chord notes move through this octave shape.
+const chordOctaves = '<12 24 12 36 24 12 36 24>'
+
+// The second chord arpeggio uses a contrasting octave shape.
+const interlockingOctaves = '<0 12 24 12 0 24 12 36>'
+
+// Pick a new bass position each cycle:
+// low root, root up an octave, or a low chord fifth.
 const bass = chooseCycles(
   note(ens.chord.closed.pitch(0)).add(-24),
   note(ens.chord.closed.pitch(0)).add(-12),
   note(ens.chord.closed.pitch(2)).add(-24),
+  note(ens.chord.closed.pitch(0)).add(-24)
 )
 
 stack(
-  // MELODY — notes of the current scale, by degree (0 = scale root).
-  // Change the numbers to write your own line.
-  note(ens.scale.arp('0 2 4 6 8 10 12 14 12 10 8 6 4 2 7 11'))
-    .add('<0 12 24 12>') // climb an octave, then two, each cycle
-    .sound('triangle').lpf(6000)
-    .attack(0.001).decay(0.03).sustain(0.1).release(0.3)
+  // 16 evenly spaced scale notes per cycle
+  note(ens.scale.arp(scaleLine))
+    .add(scaleOctaves)
+    .sound('square')
+    .attack(0.001)
+    .decay(0.25)
+    .sustain(0.1)
+    .release(0.35)
+    .lpf(6000)
     .gain(0.28),
 
-  // ARPEGGIO — notes of the current chord, one at a time
-  note(ens.chord.voicing.arp('0 1 2 3 4 3 2 1 0 2 4 1 3 4 2 1'))
-    .add('<12 24 12 24>')
-    .sound('square').lpf(4800)
-    .attack(0.001).decay(0.02).sustain(0.2).release(0.3)
+  // 16 evenly spaced notes from the original chord voicing
+  note(ens.chord.voicing.arp(chordLine))
+    .add(chordOctaves)
+    .sound('square')
+    .attack(0.001)
+    .decay(0.2)
+    .sustain(0.8)
+    .release(0.3)
+    .lpf(4800)
     .gain(0.18),
 
-  bass
-    .struct('x ~ x x ~ x [x x] ~') // the bass rhythm
-    .sound('square').lpf(1000)
-    .attack(0.001).decay(0.05).sustain(0.5).release(0.5)
-    .gain(0.34),
+  // 16 evenly spaced close-position chord notes
+  note(ens.chord.closed.arp(interlockingLine))
+    .add(interlockingOctaves)
+    .sound('pulse')
+    .attack(0.001)
+    .decay(0.18)
+    .sustain(0.5)
+    .release(0.25)
+    .lpf(7000)
+    .gain(0.2),
 
-  // PAD — the whole chord at once (uncomment to add it)
-  // note(ens.chord.voicing.block()).sound('sine').slow(2).lpf(800).gain(0.12),
-).cpm(ens.bpm) // follow the room's tempo`
+  // Eight-step bass rhythm:
+  // x = play, ~ = rest, [x x] = two quick notes inside one step
+  bass
+    .struct('x ~ x x  ~ x [x x] ~')
+    .sound('square')
+    .attack(0.001)
+    .decay(0.045)
+    .sustain(0.5)
+    .release(0.5)
+    .lpf(1000)
+    .gain(0.34)
+)
+.cpm(ens.bpm) // follow the room's tempo`
     : '// Setting up your private rehearsal room…'
 
   // Strudel encodes the editor contents in the URL hash, so this link opens
