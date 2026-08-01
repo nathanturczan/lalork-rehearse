@@ -89,9 +89,9 @@ export default function App() {
   // to absorb Firestore fan-out + client latency. Adjustable, persisted.
   const [leadMs, setLeadMs] = useState(() => {
     const saved = localStorage.getItem('rehearse_lead_ms')
-    if (saved === null) return 300
+    if (saved === null) return 400
     const parsed = Number(saved)
-    return Number.isFinite(parsed) ? parsed : 300
+    return Number.isFinite(parsed) ? parsed : 400
   })
   useEffect(() => {
     localStorage.setItem('rehearse_lead_ms', String(leadMs))
@@ -328,26 +328,39 @@ const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scal
 const ens = await joinEnsemble('${ensembleRoomId}')
 ens.showBadge() // room + current scale/chord, top of the screen
 
-// Follow the room's tempo
-setcpm(ens.bpm.div(4))
+// BASS — the current chord's root (or its fifth), hopping octaves.
+// chooseCycles picks one line per cycle, at random.
+const bass = chooseCycles(
+  note(ens.chord.closed.pitch(0)).add(-24),
+  note(ens.chord.closed.pitch(0)).add(-12),
+  note(ens.chord.closed.pitch(2)).add(-24),
+)
 
 stack(
   // MELODY — notes of the current scale, by degree (0 = scale root).
   // Change the numbers to write your own line.
-  note(ens.scale.arp("0 2 4 2"))
-    .sound("sine").slow(2).gain(0.4),
+  note(ens.scale.arp('0 2 4 6 8 10 12 14 12 10 8 6 4 2 7 11'))
+    .add('<0 12 24 12>') // climb an octave, then two, each cycle
+    .sound('triangle').lpf(6000)
+    .attack(0.001).decay(0.03).sustain(0.1).release(0.3)
+    .gain(0.28),
 
   // ARPEGGIO — notes of the current chord, one at a time
-  note(ens.chord.voicing.arp(4))
-    .sound("triangle").gain(0.25),
+  note(ens.chord.voicing.arp('0 1 2 3 4 3 2 1 0 2 4 1 3 4 2 1'))
+    .add('<12 24 12 24>')
+    .sound('square').lpf(4800)
+    .attack(0.001).decay(0.02).sustain(0.2).release(0.3)
+    .gain(0.18),
 
-  // BASS — the root of the current chord, down low
-  note(ens.chordRootNote)
-    .sound("sawtooth").lpf(300).gain(0.5),
+  bass
+    .struct('x ~ x x ~ x [x x] ~') // the bass rhythm
+    .sound('square').lpf(1000)
+    .attack(0.001).decay(0.05).sustain(0.5).release(0.5)
+    .gain(0.34),
 
   // PAD — the whole chord at once (uncomment to add it)
-  // note(ens.chord.voicing.block()).sound("square").lpf(800).gain(0.15),
-)`
+  // note(ens.chord.voicing.block()).sound('sine').slow(2).lpf(800).gain(0.12),
+).cpm(ens.bpm) // follow the room's tempo`
     : '// Setting up your private rehearsal room…'
 
   // Strudel encodes the editor contents in the URL hash, so this link opens
@@ -468,22 +481,19 @@ stack(
             </div>
           )}
 
-          <div className="ensemble-label">
+          <div className="ensemble-label strudel-row">
             Strudel —{' '}
             <a href={strudelUrl} target="_blank" rel="noopener noreferrer">open strudel.cc with this jam loaded</a>
-            {' '}(your room ID is already filled in), then press play:
-          </div>
-          <div className="strudel-snippet">
-            <pre>{strudelSnippet}</pre>
+            {' '}(your room ID is already filled in), then press play.
             <button
-              className="ensemble-button snippet-copy"
+              className="ensemble-button snippet-copy-inline"
               onClick={() => {
                 navigator.clipboard.writeText(strudelSnippet)
                 setSnippetCopied(true)
                 setTimeout(() => setSnippetCopied(false), 2000)
               }}
             >
-              {snippetCopied ? 'Copied!' : 'Copy'}
+              {snippetCopied ? 'Copied!' : 'Copy jam code'}
             </button>
           </div>
 

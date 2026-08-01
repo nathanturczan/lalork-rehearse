@@ -34,10 +34,11 @@ h1 {
   flex-shrink: 0;
 }
 
-/* Video is the most important thing on the page: takes all remaining height */
+/* Video is the most important thing on the page: takes all remaining height,
+   but can never be squeezed away by the cards below */
 .video-container {
   flex: 1;
-  min-height: 0;
+  min-height: max(260px, 38dvh);
   background: #000;
   border-radius: 6px;
   overflow: hidden;
@@ -198,7 +199,8 @@ h1 {
   border-radius: 6px;
   font-size: 10.5px;
   line-height: 1.45;
-  overflow-x: auto;
+  max-height: 200px;
+  overflow: auto;
   white-space: pre;
 }
 
