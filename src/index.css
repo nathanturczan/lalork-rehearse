@@ -38,7 +38,7 @@ h1 {
    but can never be squeezed away by the cards below */
 .video-container {
   flex: 1;
-  min-height: max(260px, 38dvh);
+  min-height: max(320px, 50dvh);
   background: #000;
   border-radius: 6px;
   overflow: hidden;
