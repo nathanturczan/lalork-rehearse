@@ -1,11 +1,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import {
-  useAuth,
-  signInWithGoogle,
-  signOut,
-  createEnsembleRoom,
+  ensureGuestAuth,
+  ensureRehearsalRoom,
   updateEnsembleState,
-  getUserHostedRooms,
 } from './firebase'
 import EnterPortal from './portal/EnterPortal'
 
@@ -78,18 +75,13 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(-1)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  // Ensemble state (mirrors noteschordsscales MidiChordScalePage)
-  const { user, initializing } = useAuth()
+  // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
-  const [ensembleRoomName, setEnsembleRoomName] = useState('')
   const [ensembleBpm, setEnsembleBpm] = useState(60)
   const [selectedChordKey, setSelectedChordKey] = useState(null)
   const [selectedScaleKey, setSelectedScaleKey] = useState(null)
   const [currentDirection, setCurrentDirection] = useState(null)
-  const [isCreatingEnsemble, setIsCreatingEnsemble] = useState(false)
   const [ensembleError, setEnsembleError] = useState('')
-  const [existingRooms, setExistingRooms] = useState([])
-  const [loadingRooms, setLoadingRooms] = useState(false)
   const [snippetCopied, setSnippetCopied] = useState(false)
   const [roomIdCopied, setRoomIdCopied] = useState(false)
 
@@ -217,16 +209,26 @@ export default function App() {
     console.log('Event:', event.state, node?.chord, node?.scale, event.direction)
   }
 
-  // Fetch existing rooms when user is available
+  // Silent setup: guest identity + private rehearsal room. No buttons, no popups.
   useEffect(() => {
-    if (!user?.uid) return
-
-    setLoadingRooms(true)
-    getUserHostedRooms(user.uid)
-      .then((rooms) => setExistingRooms(rooms))
-      .catch((err) => console.error('[ensemble] failed to fetch existing rooms', err))
-      .finally(() => setLoadingRooms(false))
-  }, [user])
+    let cancelled = false
+    ensureGuestAuth()
+      .then((guest) => ensureRehearsalRoom(guest))
+      .then(({ roomId }) => {
+        if (!cancelled) setEnsembleRoomId(roomId)
+      })
+      .catch((err) => {
+        console.error('[ensemble] room setup failed', err)
+        if (!cancelled) {
+          setEnsembleError(
+            'Could not set up your rehearsal room. Check your internet connection and reload the page.'
+          )
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   useEffect(() => {
@@ -266,55 +268,6 @@ export default function App() {
       }
     }
   }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection])
-
-  const handleCreateEnsemble = useCallback(async () => {
-    if (!user) return
-    const trimmed = ensembleRoomName.trim()
-    if (!trimmed) return
-
-    setIsCreatingEnsemble(true)
-    setEnsembleError('')
-
-    try {
-      const { roomId } = await createEnsembleRoom({
-        roomName: trimmed,
-        hostUser: user,
-      })
-      setEnsembleRoomId(roomId)
-
-      const rooms = await getUserHostedRooms(user.uid)
-      setExistingRooms(rooms)
-
-      await updateEnsembleState({
-        roomId,
-        bpm: ensembleBpm,
-        chordKey: selectedChordKey || null,
-        scaleKey: selectedScaleKey || null,
-      })
-    } catch (err) {
-      console.error('[ensemble] failed to create room', err)
-      setEnsembleError('Could not create ensemble.')
-    } finally {
-      setIsCreatingEnsemble(false)
-    }
-  }, [user, ensembleRoomName, ensembleBpm, selectedChordKey, selectedScaleKey])
-
-  const handleSelectExistingRoom = useCallback((roomId) => {
-    const room = existingRooms.find((r) => r.id === roomId)
-    if (!room) return
-
-    setEnsembleRoomId(roomId)
-    setEnsembleRoomName(room.roomName)
-
-    updateEnsembleState({
-      roomId,
-      bpm: ensembleBpm,
-      chordKey: selectedChordKey || null,
-      scaleKey: selectedScaleKey || null,
-    }).catch((err) => {
-      console.error('[ensemble] failed to update existing room', err)
-    })
-  }, [existingRooms, ensembleBpm, selectedChordKey, selectedScaleKey])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
@@ -365,13 +318,43 @@ export default function App() {
     onEventChange(event)
   }, [skeleton, nodeMap])
 
-  const strudelSnippet = `const { signInWithGoogle, joinEnsemble, getCurrentUser } =
-  await import('https://cdn.jsdelivr.net/npm/strudel-scalenav/dist/strudel-scalenav.js')
+  const strudelSnippet = ensembleRoomId
+    ? `// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com
+// Every line below follows this app's harmony: when the scale or
+// chord changes here, the patterns update by themselves.
 
-if (!getCurrentUser()) await signInWithGoogle()
+const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scalenav@0.7.0/dist/strudel-scalenav.js')
 
-const ens = await joinEnsemble('${ensembleRoomId || 'la-laptop-orchestra'}')
-ens.showBadge()`
+const ens = await joinEnsemble('${ensembleRoomId}')
+ens.showBadge() // room + current scale/chord, top of the screen
+
+// Follow the room's tempo
+setcpm(ens.bpm.div(4))
+
+stack(
+  // MELODY — notes of the current scale, by degree (0 = scale root).
+  // Change the numbers to write your own line.
+  note(ens.scale.arp("0 2 4 2"))
+    .sound("sine").slow(2).gain(0.4),
+
+  // ARPEGGIO — notes of the current chord, one at a time
+  note(ens.chord.voicing.arp(4))
+    .sound("triangle").gain(0.25),
+
+  // BASS — the root of the current chord, down low
+  note(ens.chordRootNote)
+    .sound("sawtooth").lpf(300).gain(0.5),
+
+  // PAD — the whole chord at once (uncomment to add it)
+  // note(ens.chord.voicing.block()).sound("square").lpf(800).gain(0.15),
+)`
+    : '// Setting up your private rehearsal room…'
+
+  // Strudel encodes the editor contents in the URL hash, so this link opens
+  // strudel.cc with the whole jam already loaded — no pasting needed.
+  const strudelUrl = ensembleRoomId
+    ? 'https://strudel.cc/#' + encodeURIComponent(btoa(unescape(encodeURIComponent(strudelSnippet))))
+    : 'https://strudel.cc'
 
   if (!skeleton) return <div>Loading...</div>
 
@@ -410,35 +393,14 @@ ens.showBadge()`
 
       {isNarrow && (
         <div className="ensemble-strip">
-          {initializing ? (
-            <span className="ensemble-status">Checking sign-in…</span>
-          ) : !user ? (
-            <button className="ensemble-button" onClick={() => signInWithGoogle().catch(() => {})}>
-              Continue with Google
-            </button>
-          ) : ensembleRoomId ? (
-            <span className="ensemble-status">
-              <span className="live-dot" /> <strong>{ensembleRoomName}</strong>
-              {' · '}
-              <a href="#" onClick={(e) => { e.preventDefault(); setEnsembleRoomId(null) }}>stop</a>
-            </span>
+          {ensembleError ? (
+            <span className="ensemble-status ensemble-error">{ensembleError}</span>
+          ) : !ensembleRoomId ? (
+            <span className="ensemble-status">Setting up your private room…</span>
           ) : (
-            <select
-              defaultValue=""
-              onChange={(e) => {
-                if (e.target.value) handleSelectExistingRoom(e.target.value)
-              }}
-              disabled={loadingRooms}
-            >
-              <option value="">
-                {loadingRooms ? 'Loading…' : 'Broadcast to ensemble…'}
-              </option>
-              {existingRooms.map((room) => (
-                <option key={room.id} value={room.id}>
-                  {room.roomName}
-                </option>
-              ))}
-            </select>
+            <span className="ensemble-status">
+              <span className="live-dot" /> Private room <strong>{ensembleRoomId}</strong>
+            </span>
           )}
           <label className="lead-inline">
             lead
@@ -460,74 +422,15 @@ ens.showBadge()`
       <div className="card">
         <div className="card-title">Ensemble Broadcast:</div>
 
-        {initializing ? (
-          <div className="ensemble-status">Checking sign-in…</div>
-        ) : !user ? (
-          <button className="ensemble-button" onClick={() => signInWithGoogle().catch(() => {})}>
-            Continue with Google
-          </button>
+        {ensembleError ? (
+          <div className="ensemble-error">{ensembleError}</div>
         ) : !ensembleRoomId ? (
-          <>
-            <div className="ensemble-status">
-              Signed in as {user.displayName || user.email}
-              {' · '}
-              <a href="#" onClick={(e) => { e.preventDefault(); signOut() }}>sign out</a>
-            </div>
-
-            {existingRooms.length > 0 && (
-              <div style={{ marginTop: '12px' }}>
-                <label className="ensemble-label">Control existing ensemble:</label>
-                <div className="ensemble-row">
-                  <select
-                  defaultValue=""
-                  onChange={(e) => {
-                    if (e.target.value) handleSelectExistingRoom(e.target.value)
-                  }}
-                  disabled={loadingRooms}
-                >
-                  <option value="">
-                    {loadingRooms ? 'Loading…' : 'Broadcast to existing ensemble…'}
-                  </option>
-                    {existingRooms.map((room) => (
-                      <option key={room.id} value={room.id}>
-                        {room.roomName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            )}
-
-            <label className="ensemble-label" style={{ marginTop: '12px' }}>Create new ensemble:</label>
-            <div className="ensemble-row">
-              <input
-                type="text"
-                placeholder="Name your ensemble"
-                value={ensembleRoomName}
-                onChange={(e) => setEnsembleRoomName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    handleCreateEnsemble()
-                  }
-                }}
-              />
-              <button
-                className="ensemble-button"
-                onClick={handleCreateEnsemble}
-                disabled={isCreatingEnsemble || !ensembleRoomName.trim()}
-              >
-                {isCreatingEnsemble ? 'Creating…' : 'Create'}
-              </button>
-            </div>
-            {ensembleError && <div className="ensemble-error">{ensembleError}</div>}
-          </>
+          <div className="ensemble-status">Setting up your private rehearsal room…</div>
         ) : (
           <div className="ensemble-status">
-            <span className="live-dot" /> Broadcasting to <strong>{ensembleRoomName}</strong>
+            <span className="live-dot" /> Broadcasting to your private room{' '}
+            <strong><code>{ensembleRoomId}</code></strong>
             {' at '}{ensembleBpm} BPM
-            {' · '}
-            <a href="#" onClick={(e) => { e.preventDefault(); setEnsembleRoomId(null) }}>stop</a>
           </div>
         )}
 
@@ -549,9 +452,9 @@ ens.showBadge()`
         <div className="resources">
           <div className="card-title">Rehearsal resources:</div>
 
-          {ensembleRoomId ? (
+          {ensembleRoomId && (
             <div className="ensemble-label room-id-row">
-              Ensemble room ID: <code>{ensembleRoomId}</code>
+              Your private room ID: <code>{ensembleRoomId}</code>
               <button
                 className="ensemble-button room-id-copy"
                 onClick={() => {
@@ -563,17 +466,12 @@ ens.showBadge()`
                 {roomIdCopied ? 'Copied!' : 'Copy ID'}
               </button>
             </div>
-          ) : (
-            <div className="ensemble-label room-id-row">
-              Start broadcasting above to bake your ensemble&apos;s exact room ID
-              into the Strudel code below.
-            </div>
           )}
 
           <div className="ensemble-label">
-            Strudel — paste into{' '}
-            <a href="https://strudel.cc" target="_blank" rel="noopener noreferrer">strudel.cc</a>
-            {ensembleRoomId ? ' (your room ID is already filled in)' : ''}:
+            Strudel —{' '}
+            <a href={strudelUrl} target="_blank" rel="noopener noreferrer">open strudel.cc with this jam loaded</a>
+            {' '}(your room ID is already filled in), then press play:
           </div>
           <div className="strudel-snippet">
             <pre>{strudelSnippet}</pre>

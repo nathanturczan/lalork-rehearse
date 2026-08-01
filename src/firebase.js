@@ -6,14 +6,16 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-// Keep these env var names in sync with your Vercel / .env.local setup
+// Hardcoded like the Enter app and strudel-scalenav: this config is public
+// by design (security lives in Firestore rules), and env-var indirection
+// only adds a way for deploys to silently break.
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyBiTTX24mBjypGdel2ARBx0UUvFQEaRDf4",
+  authDomain: "scale-navigator-ensemble.firebaseapp.com",
+  projectId: "scale-navigator-ensemble",
+  storageBucket: "scale-navigator-ensemble.appspot.com",
+  messagingSenderId: "156837833740",
+  appId: "1:156837833740:web:ce00fcf2297f899f8b9229",
 };
 
 // Only initialize once
@@ -24,69 +26,71 @@ if (!firebase.apps.length) {
 export const auth = firebase.auth();
 export const db = firebase.firestore();
 
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+// --- Invisible guest identity ---
+// No popup, no account: works in incognito, Brave, everywhere. The Firestore
+// rules only let this identity write rooms it created itself, so it can
+// never touch the live la-laptop-orchestra room.
 
-// --- Auth hook ---
-
-import { useEffect, useState } from "react";
-
-export function useAuth() {
-  const [user, setUser] = useState(null);
-  const [initializing, setInitializing] = useState(true);
-
-  useEffect(() => {
-    const unsub = auth.onAuthStateChanged((u) => {
-      setUser(u);
-      setInitializing(false);
+export function ensureGuestAuth() {
+  return new Promise((resolve, reject) => {
+    const unsub = auth.onAuthStateChanged((user) => {
+      unsub();
+      if (user) {
+        resolve(user);
+      } else {
+        auth
+          .signInAnonymously()
+          .then((cred) => resolve(cred.user))
+          .catch(reject);
+      }
     });
-    return () => unsub();
-  }, []);
-
-  return { user, initializing };
+  });
 }
 
-// --- One-shot Google sign-in (uses popup - works with WKWebView on Firebase v8) ---
+// --- Private rehearsal room ---
+// Each browser gets its own auto-created room (rehearse-xxxxxx), remembered
+// in localStorage. The "rehearse-" prefix is what makes the Strudel badge
+// show REHEARSAL instead of LIVE.
 
-export async function signInWithGoogle() {
-  try {
-    const result = await auth.signInWithPopup(googleProvider);
-    return result.user;
-  } catch (err) {
-    console.error("Google sign-in error:", err);
-    throw err;
-  }
+const ROOM_STORAGE_KEY = "rehearse_room_id";
+
+function newRoomId() {
+  return "rehearse-" + Math.random().toString(36).slice(2, 8);
 }
 
-export async function signOut() {
-  await auth.signOut();
-}
-
-// --- Ensemble helpers (Firestore) ---
-
-/**
- * Create a new ensemble "room" document in the shared `rooms` collection.
- */
-export async function createEnsembleRoom({ roomName, hostUser }) {
-  const trimmed = (roomName || "").trim();
-
-  if (!trimmed) {
-    throw new Error("Room name is required");
-  }
-  if (!hostUser || !hostUser.uid) {
-    throw new Error("Host user is required");
-  }
-
-  const docRef = await db.collection("rooms").add({
-    roomName: trimmed,
-    hostId: hostUser.uid,
-    hostName: hostUser.displayName || hostUser.email || "Unknown host",
+function roomDoc(user) {
+  return {
+    roomName: "Private Rehearsal",
+    hostId: user.uid,
+    hostName: "Rehearse app",
     bpm: 60,
     chordData: null,
     scaleData: null,
     createdAt: Date.now(),
-  });
+  };
+}
 
-  return { roomId: docRef.id };
+export async function ensureRehearsalRoom(user) {
+  const saved = localStorage.getItem(ROOM_STORAGE_KEY);
+  if (saved) {
+    const ref = db.collection("rooms").doc(saved);
+    const snap = await ref.get();
+    if (snap.exists && snap.data().hostId === user.uid) {
+      return { roomId: saved };
+    }
+    if (!snap.exists) {
+      // Room was cleaned up: recreate it under the same id so any snippet
+      // the user already saved keeps working.
+      await ref.set(roomDoc(user));
+      return { roomId: saved };
+    }
+    // Room exists but belongs to a different (old) identity: start fresh.
+  }
+
+  const roomId = newRoomId();
+  await db.collection("rooms").doc(roomId).set(roomDoc(user));
+  localStorage.setItem(ROOM_STORAGE_KEY, roomId);
+  return { roomId };
 }
 
 /**
@@ -126,21 +130,4 @@ export async function updateEnsembleState({
   patch.updatedAt = Date.now();
 
   await db.collection("rooms").doc(roomId).update(patch);
-}
-
-/**
- * Fetch all ensemble rooms where the given user is the host.
- */
-export async function getUserHostedRooms(userId) {
-  if (!userId) return [];
-
-  const snapshot = await db
-    .collection("rooms")
-    .where("hostId", "==", userId)
-    .get();
-
-  return snapshot.docs.map((docSnap) => ({
-    id: docSnap.id,
-    ...docSnap.data(),
-  }));
 }
