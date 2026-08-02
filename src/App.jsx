@@ -73,7 +73,6 @@ export default function App() {
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(-1)
-  const [isPlaying, setIsPlaying] = useState(false)
 
   // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
@@ -137,12 +136,7 @@ export default function App() {
 
     loadYouTubeAPI().then((YT) => {
       playerRef.current = new YT.Player('youtube-player', {
-        videoId: skeleton.youtube_id,
-        events: {
-          onStateChange: (event) => {
-            setIsPlaying(event.data === YT.PlayerState.PLAYING)
-          }
-        }
+        videoId: skeleton.youtube_id
       })
     })
   }, [skeleton?.youtube_id])
@@ -171,17 +165,13 @@ export default function App() {
     }
   }, [skeleton, currentIndex, nodeMap, leadMs])
 
-  // Poll current time while playing
+  // Poll the video clock constantly — playing OR paused — so scrubbing the
+  // YouTube bar always re-derives and rebroadcasts the harmonic state
   useEffect(() => {
-    if (!isPlaying || !skeleton) return
+    if (!skeleton) return
     intervalRef.current = setInterval(syncToVideo, 100)
     return () => clearInterval(intervalRef.current)
-  }, [isPlaying, skeleton, syncToVideo])
-
-  // Also re-sync immediately when lead (or anything else) changes while paused
-  useEffect(() => {
-    syncToVideo()
-  }, [syncToVideo])
+  }, [skeleton, syncToVideo])
 
   // Handle event change: derive chord/scale/direction for broadcast
   function onEventChange(event) {
