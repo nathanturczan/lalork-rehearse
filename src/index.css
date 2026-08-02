@@ -38,6 +38,7 @@ h1 {
 /* Video is the most important thing on the page: takes all remaining height,
    but can never be squeezed away by the cards below */
 .video-container {
+  position: relative;
   flex: 1;
   min-height: 320px;
   /* Never taller than the 16:9 video itself, or YouTube letterboxes
@@ -49,7 +50,11 @@ h1 {
   margin-bottom: 12px;
 }
 
+/* Absolutely positioned so it always fills the container — height: 100%
+   can't resolve against a flex-sized parent and collapses to 150px */
 #youtube-player {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
