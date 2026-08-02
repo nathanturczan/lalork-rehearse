@@ -400,7 +400,7 @@ stack(
     .lpf(1000)
     .gain(0.34)
 )
-.cpm(ens.bpm) // follow the room's tempo`
+.cpm(ens.bpm.div(4)) // 16th notes at the room's tempo`
     : '// Setting up your private rehearsal room…'
 
   // Strudel encodes the editor contents in the URL hash, so this link opens

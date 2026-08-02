@@ -1,6 +1,6 @@
 {
-  "tempo": 20.0,
-  "comment": "Wagner's Oneiric Warning (Brangäne's Watch) - 29 harmonic states. 2 bars (24s) each at 20 BPM. Total: 696 seconds (11.6 minutes).",
+  "tempo": 120.0,
+  "comment": "Wagner's Oneiric Warning (Brang\u00e4ne's Watch) - 29 harmonic states. 2 bars (24s) each at 20 BPM. Total: 696 seconds (11.6 minutes).",
   "youtube_id": "FW3dtzHdftI",
   "events": [
     {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "time": 8,
+      "time": 48,
       "state": "Gdim7",
       "direction": {
         "lyric": "-sam",
@@ -22,7 +22,7 @@
       }
     },
     {
-      "time": 16,
+      "time": 96,
       "state": "Ab7",
       "direction": {
         "lyric": "wa- chend",
@@ -31,7 +31,7 @@
       }
     },
     {
-      "time": 24,
+      "time": 144,
       "state": "Eb7",
       "direction": {
         "lyric": "in der",
@@ -40,7 +40,7 @@
       }
     },
     {
-      "time": 32,
+      "time": 192,
       "state": "Db7",
       "direction": {
         "lyric": "Nacht,",
@@ -49,16 +49,16 @@
       }
     },
     {
-      "time": 40,
+      "time": 240,
       "state": "D",
       "direction": {
         "lyric": "wem",
-        "marking": "Harfe, Holzbl., Hörn. dim.",
+        "marking": "Harfe, Holzbl., H\u00f6rn. dim.",
         "note": "wem = to whom; Harp, woodwinds, horns diminuendo"
       }
     },
     {
-      "time": 48,
+      "time": 288,
       "state": "A7",
       "direction": {
         "lyric": "Traum der",
@@ -67,16 +67,16 @@
       }
     },
     {
-      "time": 56,
+      "time": 336,
       "state": "G",
       "direction": {
         "lyric": "Lie- -be",
-        "marking": "più p",
+        "marking": "pi\u00f9 p",
         "note": "Liebe = Love; even softer"
       }
     },
     {
-      "time": 64,
+      "time": 384,
       "state": "C#",
       "direction": {
         "lyric": "lacht,",
@@ -85,7 +85,7 @@
       }
     },
     {
-      "time": 72,
+      "time": 432,
       "state": "Am",
       "direction": {
         "lyric": "hab' der",
@@ -94,7 +94,7 @@
       }
     },
     {
-      "time": 80,
+      "time": 480,
       "state": "Em",
       "direction": {
         "lyric": "Ei- -nen",
@@ -103,7 +103,7 @@
       }
     },
     {
-      "time": 88,
+      "time": 528,
       "state": "C#m",
       "direction": {
         "lyric": "Ruf in",
@@ -112,7 +112,7 @@
       }
     },
     {
-      "time": 96,
+      "time": 576,
       "state": "D#",
       "direction": {
         "lyric": "acht, die den",
@@ -121,16 +121,16 @@
       }
     },
     {
-      "time": 104,
+      "time": 624,
       "state": "G#m_1",
       "direction": {
-        "lyric": "Schlä- -fern",
+        "lyric": "Schl\u00e4- -fern",
         "marking": "Viol.II, Br. u. Vcll. Solo",
-        "note": "Schläfern = sleepers (E natural here)"
+        "note": "Schl\u00e4fern = sleepers (E natural here)"
       }
     },
     {
-      "time": 112,
+      "time": 672,
       "state": "G#m_2",
       "direction": {
         "lyric": "Schlim- -mes",
@@ -139,7 +139,7 @@
       }
     },
     {
-      "time": 120,
+      "time": 720,
       "state": "D",
       "direction": {
         "lyric": "ahnt, ban-",
@@ -148,7 +148,7 @@
       }
     },
     {
-      "time": 128,
+      "time": 768,
       "state": "Gm",
       "direction": {
         "lyric": "-ge zum Er-",
@@ -157,8 +157,8 @@
       }
     },
     {
-      "time": 136,
-      "state": "G#ø7",
+      "time": 816,
+      "state": "G#\u00f87",
       "direction": {
         "lyric": "wa-",
         "marking": "Fl. u. Hob., dim.",
@@ -166,7 +166,7 @@
       }
     },
     {
-      "time": 144,
+      "time": 864,
       "state": "F#m",
       "direction": {
         "lyric": "",
@@ -175,7 +175,7 @@
       }
     },
     {
-      "time": 152,
+      "time": 912,
       "state": "C#",
       "direction": {
         "lyric": "-chen",
@@ -184,16 +184,16 @@
       }
     },
     {
-      "time": 160,
+      "time": 960,
       "state": "C#7",
       "direction": {
         "lyric": "",
-        "marking": "più p",
+        "marking": "pi\u00f9 p",
         "note": ""
       }
     },
     {
-      "time": 168,
+      "time": 1008,
       "state": "F#",
       "direction": {
         "lyric": "mahnt!",
@@ -202,16 +202,16 @@
       }
     },
     {
-      "time": 176,
+      "time": 1056,
       "state": "D_22",
       "direction": {
         "lyric": "Ha- -bet",
-        "marking": "f, immer gleichmäßig",
+        "marking": "f, immer gleichm\u00e4\u00dfig",
         "note": "Habet = Have/Take; forte, always evenly"
       }
     },
     {
-      "time": 184,
+      "time": 1104,
       "state": "F#",
       "direction": {
         "lyric": "acht!",
@@ -220,7 +220,7 @@
       }
     },
     {
-      "time": 192,
+      "time": 1152,
       "state": "D#m",
       "direction": {
         "lyric": "",
@@ -229,7 +229,7 @@
       }
     },
     {
-      "time": 200,
+      "time": 1200,
       "state": "B",
       "direction": {
         "lyric": "Ha- -bet",
@@ -238,17 +238,17 @@
       }
     },
     {
-      "time": 208,
-      "state": "G#ø7",
+      "time": 1248,
+      "state": "G#\u00f87",
       "direction": {
         "lyric": "acht!",
-        "marking": "pp, più p",
+        "marking": "pp, pi\u00f9 p",
         "note": ""
       }
     },
     {
-      "time": 216,
-      "state": "Bø7",
+      "time": 1296,
+      "state": "B\u00f87",
       "direction": {
         "lyric": "Bald ent- -weicht",
         "marking": "morendo",
@@ -256,7 +256,7 @@
       }
     },
     {
-      "time": 224,
+      "time": 1344,
       "state": "C#7",
       "direction": {
         "lyric": "die Nacht!",
