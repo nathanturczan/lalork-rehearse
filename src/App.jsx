@@ -485,31 +485,34 @@ stack(
       <div className="card">
         <div className="card-title">Ensemble Broadcast:</div>
 
-        {ensembleError ? (
-          <div className="ensemble-error">{ensembleError}</div>
-        ) : !ensembleRoomId ? (
-          <div className="ensemble-status">Setting up your private rehearsal room…</div>
-        ) : (
-          <div className="ensemble-status">
-            <span className="live-dot" /> Broadcasting to your private room{' '}
-            <strong><code>{ensembleRoomId}</code></strong>
-            {' at '}{ensembleBpm} BPM
-          </div>
-        )}
-
-        <div className="lead-row">
-          <label className="ensemble-label" htmlFor="lead-ms">
-            Broadcast lead (ms) — changes fire this much early to absorb latency
+        <div className="ensemble-status-row">
+          {ensembleError ? (
+            <div className="ensemble-error">{ensembleError}</div>
+          ) : !ensembleRoomId ? (
+            <div className="ensemble-status">Setting up your private rehearsal room…</div>
+          ) : (
+            <div className="ensemble-status">
+              <span className="live-dot" /> Broadcasting to your private room{' '}
+              <strong><code>{ensembleRoomId}</code></strong>
+              {' at '}{ensembleBpm} BPM
+            </div>
+          )}
+          <label
+            className="lead-inline"
+            htmlFor="lead-ms"
+            title="Broadcast lead — changes fire this many ms early to absorb latency"
+          >
+            lead (ms)
+            <input
+              id="lead-ms"
+              type="number"
+              step={50}
+              min={0}
+              max={5000}
+              value={leadMs}
+              onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+            />
           </label>
-          <input
-            id="lead-ms"
-            type="number"
-            step={50}
-            min={0}
-            max={5000}
-            value={leadMs}
-            onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
-          />
         </div>
 
         <div className="resources">
