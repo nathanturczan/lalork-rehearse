@@ -234,6 +234,146 @@ h1 {
   margin-bottom: 0;
 }
 
+.resource-section {
+  margin-bottom: 16px;
+}
+
+.resource-section:last-child {
+  margin-bottom: 0;
+}
+
+.resource-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.resource-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.resource-download {
+  display: inline-block;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #222;
+  color: #fff;
+  text-decoration: none;
+}
+
+.resource-download:hover {
+  background: #333;
+}
+
+.resource-download-secondary {
+  display: inline-block;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #222;
+  background: #fff;
+  color: #222;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.resource-download-secondary:hover {
+  background: #f5f5f5;
+}
+
+.resource-hint {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.advanced-toggle {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #888;
+  background: none;
+  border: none;
+  border-top: 1px solid #eee;
+  cursor: pointer;
+  text-align: left;
+}
+
+.advanced-toggle:hover {
+  color: #333;
+}
+
+.advanced-settings {
+  padding: 12px 0 0;
+}
+
+.lead-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #333;
+}
+
+.lead-control input {
+  width: 70px;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  text-align: right;
+}
+
+.advanced-hint {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.rehearsal-code-box {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.rehearsal-code-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.rehearsal-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rehearsal-code-row code {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 4px 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.rehearsal-code-hint {
+  font-size: 11px;
+  color: #888;
+  margin-top: 8px;
+}
+
 .room-id-row {
   display: flex;
   align-items: center;
@@ -298,7 +438,7 @@ h1 {
 .timeline {
   font-family: monospace;
   font-size: 12px;
-  max-height: 150px;
+  max-height: 220px;
   overflow-y: auto;
 }
 
@@ -390,9 +530,6 @@ h1 {
   }
 
   /* Ensemble collapses to a strip on mobile, so the timeline gets the space */
-  .timeline {
-    max-height: 200px;
-  }
 
   .status-chip {
     padding: 6px 8px;

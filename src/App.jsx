@@ -53,6 +53,15 @@ const prettyScaleLabelFromKey = (key) => {
   return `${rootPretty} ${rest.join(' ')}`
 }
 
+// Convert beat number to mm:ss given tempo
+const beatsToTime = (beats, tempo) => {
+  if (!tempo || beats == null) return '--:--'
+  const seconds = (beats / tempo) * 60
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
 // Narrow-screen detection (phone / small tablet)
 function useIsNarrow() {
   const [narrow, setNarrow] = useState(
@@ -83,6 +92,7 @@ export default function App() {
   const [ensembleError, setEnsembleError] = useState('')
   const [snippetCopied, setSnippetCopied] = useState(false)
   const [roomIdCopied, setRoomIdCopied] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
 
   // Broadcast lead: fire state changes this many ms EARLY relative to the video,
   // to absorb Firestore fan-out + client latency. Adjustable, persisted.
@@ -473,8 +483,6 @@ stack(
       <div className="card-row">
       {!isNarrow && (
       <div className="card">
-        <div className="card-title">Ensemble Broadcast:</div>
-
         <div className="ensemble-status-row">
           {ensembleError ? (
             <div className="ensemble-error">{ensembleError}</div>
@@ -482,72 +490,91 @@ stack(
             <div className="ensemble-status">Setting up your private rehearsal room…</div>
           ) : (
             <div className="ensemble-status">
-              <span className="live-dot" /> Broadcasting to your private room{' '}
-              <strong><code>{ensembleRoomId}</code></strong>
-              {' at '}{ensembleBpm} BPM
+              <span className="live-dot" /> Private rehearsal active
             </div>
           )}
-          <label
-            className="lead-inline"
-            htmlFor="lead-ms"
-            title="Broadcast lead — changes fire this many ms early to absorb latency"
-          >
-            lead (ms)
-            <input
-              id="lead-ms"
-              type="number"
-              step={50}
-              min={0}
-              max={5000}
-              value={leadMs}
-              onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
-            />
-          </label>
         </div>
 
         <div className="resources">
-          <div className="card-title">Rehearsal resources:</div>
-
           {ensembleRoomId && (
-            <div className="ensemble-label room-id-row">
-              Your private room ID: <code>{ensembleRoomId}</code>
-              <button
-                className="ensemble-button room-id-copy"
-                onClick={() => {
-                  navigator.clipboard.writeText(ensembleRoomId)
-                  setRoomIdCopied(true)
-                  setTimeout(() => setRoomIdCopied(false), 2000)
-                }}
-              >
-                {roomIdCopied ? 'Copied!' : 'Copy ID'}
-              </button>
+            <div className="rehearsal-code-box">
+              <div className="rehearsal-code-label">Your rehearsal code</div>
+              <div className="rehearsal-code-row">
+                <code>{ensembleRoomId}</code>
+                <button
+                  className="ensemble-button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(ensembleRoomId)
+                    setRoomIdCopied(true)
+                    setTimeout(() => setRoomIdCopied(false), 2000)
+                  }}
+                >
+                  {roomIdCopied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+              <div className="rehearsal-code-hint">Paste into Ableton or Strudel to connect.</div>
             </div>
           )}
 
-          <div className="ensemble-label strudel-row">
-            Strudel —{' '}
-            <a href={strudelUrl} target="_blank" rel="noopener noreferrer">open strudel.cc with this jam loaded</a>
-            {' '}(your room ID is already filled in), then press play.
-            <button
-              className="ensemble-button snippet-copy-inline"
-              onClick={() => {
-                navigator.clipboard.writeText(strudelSnippet)
-                setSnippetCopied(true)
-                setTimeout(() => setSnippetCopied(false), 2000)
-              }}
-            >
-              {snippetCopied ? 'Copied!' : 'Copy jam code'}
-            </button>
+          <div className="resource-section">
+            <div className="resource-title">Strudel</div>
+            <div className="resource-buttons">
+              <a href={strudelUrl} target="_blank" rel="noopener noreferrer" className="resource-download">
+                Open in Strudel
+              </a>
+              <button
+                className="resource-download-secondary"
+                onClick={() => {
+                  navigator.clipboard.writeText(strudelSnippet)
+                  setSnippetCopied(true)
+                  setTimeout(() => setSnippetCopied(false), 2000)
+                }}
+              >
+                {snippetCopied ? 'Copied!' : 'Copy Code'}
+              </button>
+            </div>
           </div>
 
-          <div className="ensemble-label resources-m4l">
-            Ableton —{' '}
-            <a href="/Ensemble%20Bridge.amxd" download>
-              download Ensemble Bridge (Max for Live)
-            </a>
-            {' '}and drop it on a MIDI track, then pick your ensemble from
-            the device&apos;s lobby menu (or type its name)
+          <div className="resource-section">
+            <div className="resource-title">Ableton</div>
+            <div className="resource-buttons">
+              <a href="/LA%20Laptop%20Orchestra.zip" download className="resource-download">
+                Download Template
+              </a>
+              <a href="/LA%20Laptop%20Orchestra%20Bridge.amxd" download className="resource-download-secondary">
+                Download M4L Bridge
+              </a>
+            </div>
+            <div className="resource-hint">
+              Template: 3 tracks ready to play. Device only: drop on any MIDI track.
+            </div>
           </div>
+
+          <button
+            className="advanced-toggle"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+          >
+            {showAdvanced ? '▾ Advanced settings' : '▸ Advanced settings'}
+          </button>
+          {showAdvanced && (
+            <div className="advanced-settings">
+              <label className="lead-control">
+                <span>Broadcast lead</span>
+                <input
+                  type="number"
+                  step={50}
+                  min={0}
+                  max={5000}
+                  value={leadMs}
+                  onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+                />
+                <span>ms</span>
+              </label>
+              <div className="advanced-hint">
+                Fire changes early to compensate for network latency.
+              </div>
+            </div>
+          )}
         </div>
       </div>
       )}
@@ -572,7 +599,7 @@ stack(
                 className={`timeline-row${isCurrent ? ' current' : ''}`}
               >
                 <span className="timeline-num">{event.index + 1}.</span>
-                <span className="timeline-beat">{event.time?.toFixed(1) || '?'}</span>
+                <span className="timeline-beat">{beatsToTime(event.time, skeleton?.tempo)}</span>
                 <span className="timeline-chord" style={{ fontWeight: isCurrent ? 600 : 400 }}>
                   {chordLabel}
                 </span>
