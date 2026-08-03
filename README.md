@@ -47,7 +47,7 @@ Video-synced practice tool for LA Laptop Orchestra. Built on NotesChordScales.
 
 ```json
 {
-  "tempo": 20.0,
+  "tempo": 120.0,
   "youtube_id": "xxxxx",
   "events": [
     {
