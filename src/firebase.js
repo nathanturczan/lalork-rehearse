@@ -5,6 +5,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { rehearsalLifecycleFields } from "./roomLifecycle.js";
 
 // Hardcoded like the Enter app and strudel-scalenav: this config is public
 // by design (security lives in Firestore rules), and env-var indirection
@@ -67,6 +68,9 @@ function roomDoc(user) {
     chordData: null,
     scaleData: null,
     createdAt: Date.now(),
+    // roomType/lastActiveAt/expiresAt: marks the room unlisted and eligible
+    // for Firestore TTL deletion once it goes inactive (#17).
+    ...rehearsalLifecycleFields(firebase.firestore.Timestamp),
   };
 }
 
@@ -128,6 +132,13 @@ export async function updateEnsembleState({
   if (!Object.keys(patch).length) return;
 
   patch.updatedAt = Date.now();
+
+  // Broadcaster keep-alive: every harmony write from this app refreshes the
+  // TTL window. Deliberately NOT done when a listener joins by code — a
+  // stranger opening an old rehearsal code must not keep a dead room alive
+  // (and Firestore rules only allow the host to write here anyway).
+  // Also backfills roomType/expiresAt onto rooms created before #17.
+  Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
 
   await db.collection("rooms").doc(roomId).update(patch);
 }
