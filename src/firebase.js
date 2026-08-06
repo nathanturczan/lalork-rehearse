@@ -147,6 +147,8 @@ export async function updateEnsembleState({
   chordKey,
   scaleKey,
   direction,
+  nextChordKey,
+  nextScaleKey,
   live = false,
 }) {
   if (!roomId) return;
@@ -169,6 +171,15 @@ export async function updateEnsembleState({
   }
   if (typeof direction === "string" || direction === null) {
     patch.direction = direction || null;
+  }
+  // Planned next harmony (lalork-website#112): receivers show these in their
+  // Next slots between transitions. ALWAYS written when passed — explicit
+  // null (no next event) must overwrite a stale value, never linger.
+  if (typeof nextChordKey === "string" || nextChordKey === null) {
+    patch.nextChordData = nextChordKey || null;
+  }
+  if (typeof nextScaleKey === "string" || nextScaleKey === null) {
+    patch.nextScaleData = nextScaleKey || null;
   }
 
   if (!Object.keys(patch).length) return;

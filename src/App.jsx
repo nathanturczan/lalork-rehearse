@@ -320,6 +320,17 @@ export default function App() {
     }
   }, [liveRoomId, connectLiveRoom])
 
+  // Next event's node: shown in this portal's Next slots AND broadcast to
+  // the room (nextScaleData/nextChordData, lalork-website#112) so every
+  // subscriber (enter portal, room tabs, TV) can show what's coming. Null
+  // when there is no next event (last event / no skeleton), so receivers
+  // show a blank Next slot instead of stale junk.
+  const nextEvent =
+    skeleton && currentIndex >= 0 && currentIndex + 1 < skeleton.events.length
+      ? skeleton.events[currentIndex + 1]
+      : null
+  const nextNode = nextEvent ? nodeMap[nextEvent.state] : null
+
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   useEffect(() => {
     if (!ensembleRoomId) return
@@ -331,12 +342,16 @@ export default function App() {
     const chordToSend = selectedChordKey || null
     const scaleToSend = selectedScaleKey || null
     const directionToSend = currentDirection || null
+    const nextChordToSend = nextNode?.chord || null
+    const nextScaleToSend = nextNode?.scale || null
 
     broadcastTimeoutRef.current = setTimeout(() => {
       console.log('[ensemble broadcast] sending:', {
         roomId: ensembleRoomId,
         chordKey: chordToSend,
         scaleKey: scaleToSend,
+        nextChordKey: nextChordToSend,
+        nextScaleKey: nextScaleToSend,
         bpm: ensembleBpm,
         direction: directionToSend,
       })
@@ -346,6 +361,8 @@ export default function App() {
         bpm: ensembleBpm,
         chordKey: chordToSend,
         scaleKey: scaleToSend,
+        nextChordKey: nextChordToSend,
+        nextScaleKey: nextScaleToSend,
         direction: directionToSend,
         // Live rooms must never get rehearsal TTL fields (auto-deletion)
         live: Boolean(liveRoomId),
@@ -359,16 +376,9 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection, liveRoomId])
+  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection, liveRoomId, nextNode])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
-
-  // Next event's node, for the portal's Next slots
-  const nextEvent =
-    skeleton && currentIndex >= 0 && currentIndex + 1 < skeleton.events.length
-      ? skeleton.events[currentIndex + 1]
-      : null
-  const nextNode = nextEvent ? nodeMap[nextEvent.state] : null
 
   // Timeline: all events, scrollable, auto-follows the current one
   const visibleEvents = useMemo(() => {
