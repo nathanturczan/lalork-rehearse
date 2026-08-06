@@ -3,10 +3,19 @@ import {
   ensureGuestAuth,
   ensureRehearsalRoom,
   updateEnsembleState,
+  getCurrentUser,
+  signInWithGoogle,
+  verifyRoomHost,
 } from './firebase'
 import EnterPortal from './portal/EnterPortal'
 
 const BROADCAST_DEBOUNCE_MS = 100
+
+// Pieces: /<id>.json (skeleton) + /<id>_sketchpad.json must exist in pieces/
+const PIECES = [
+  { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
+  { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
+]
 
 // YouTube iframe API loader
 function loadYouTubeAPI() {
@@ -78,10 +87,22 @@ function useIsNarrow() {
 
 export default function App() {
   const isNarrow = useIsNarrow()
+  const [pieceId, setPieceId] = useState(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('piece')
+    return PIECES.some((p) => p.id === fromUrl) ? fromUrl : PIECES[0].id
+  })
   const [skeleton, setSkeleton] = useState(null)
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(-1)
+
+  // Live conductor mode: ?room=<roomId> targets that room directly (Google
+  // sign-in required; Firestore rules only let the room's host broadcast).
+  // Without the param, normal flow: guest identity + private rehearsal room.
+  const [liveRoomId] = useState(
+    () => new URLSearchParams(window.location.search).get('room') || null
+  )
+  const [needsLiveSignIn, setNeedsLiveSignIn] = useState(false)
 
   // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
@@ -121,18 +142,34 @@ export default function App() {
     }
   }
 
-  // Load skeleton + sketchpad
+  // Load skeleton + sketchpad for the selected piece
   useEffect(() => {
-    fetch('/wagner_oneiric_warning.json')
+    let cancelled = false
+    setSkeleton(null)
+    setSketchpad(null)
+    setCurrentEvent(null)
+    setCurrentIndex(-1)
+    fetch(`/${pieceId}.json`)
       .then(res => res.json())
       .then(data => {
+        if (cancelled) return
         setSkeleton(data)
         if (typeof data.tempo === 'number') setEnsembleBpm(data.tempo)
       })
-    fetch('/wagner_oneiric_warning_sketchpad.json')
+    fetch(`/${pieceId}_sketchpad.json`)
       .then(res => res.json())
-      .then(data => setSketchpad(data))
-  }, [])
+      .then(data => {
+        if (!cancelled) setSketchpad(data)
+      })
+    return () => { cancelled = true }
+  }, [pieceId])
+
+  const handlePieceChange = (id) => {
+    setPieceId(id)
+    const url = new URL(window.location)
+    url.searchParams.set('piece', id)
+    window.history.replaceState({}, '', url)
+  }
 
   // Lookup: event.state -> sketchpad node (chord/scale keys)
   const nodeMap = useMemo(() => {
@@ -140,15 +177,26 @@ export default function App() {
     return Object.fromEntries(sketchpad.nodes.map((n) => [n.id, n]))
   }, [sketchpad])
 
-  // Initialize YouTube player
+  // Initialize YouTube player; tear down when the piece (or its video) changes
   useEffect(() => {
     if (!skeleton?.youtube_id) return
 
+    let cancelled = false
     loadYouTubeAPI().then((YT) => {
+      if (cancelled) return
       playerRef.current = new YT.Player('youtube-player', {
         videoId: skeleton.youtube_id
       })
     })
+    return () => {
+      cancelled = true
+      try {
+        playerRef.current?.destroy?.()
+      } catch {
+        // player element may already be unmounted
+      }
+      playerRef.current = null
+    }
   }, [skeleton?.youtube_id])
 
   // Re-derive the current event from the video clock (idempotent)
@@ -176,9 +224,10 @@ export default function App() {
   }, [skeleton, currentIndex, nodeMap, leadMs])
 
   // Poll the video clock constantly — playing OR paused — so scrubbing the
-  // YouTube bar always re-derives and rebroadcasts the harmonic state
+  // YouTube bar always re-derives and rebroadcasts the harmonic state.
+  // No video = no clock: the piece is driven by clicking timeline events.
   useEffect(() => {
-    if (!skeleton) return
+    if (!skeleton?.youtube_id) return
     intervalRef.current = setInterval(syncToVideo, 100)
     return () => clearInterval(intervalRef.current)
   }, [skeleton, syncToVideo])
@@ -209,9 +258,50 @@ export default function App() {
     console.log('Event:', event.state, node?.chord, node?.scale, event.direction)
   }
 
-  // Silent setup: guest identity + private rehearsal room. No buttons, no popups.
+  // Verify hostship, then start broadcasting to the live room
+  const connectLiveRoom = useCallback(async (user) => {
+    const check = await verifyRoomHost(liveRoomId, user)
+    if (!check.ok) {
+      setEnsembleError(check.reason)
+      return
+    }
+    setEnsembleError('')
+    setEnsembleRoomId(liveRoomId)
+  }, [liveRoomId])
+
+  // Google popups must come from a click, so live mode shows a button when
+  // there's no signed-in (non-anonymous) session yet.
+  const handleLiveSignIn = async () => {
+    try {
+      const user = await signInWithGoogle()
+      setNeedsLiveSignIn(false)
+      await connectLiveRoom(user)
+    } catch (err) {
+      console.error('[ensemble] live sign-in failed', err)
+      setEnsembleError('Google sign-in failed. Reload and try again.')
+    }
+  }
+
+  // Setup on mount.
+  // Normal: silent guest identity + private rehearsal room. No buttons.
+  // Live (?room=): reuse a persisted Google session, or ask for one click.
   useEffect(() => {
     let cancelled = false
+
+    if (liveRoomId) {
+      getCurrentUser()
+        .then((user) => {
+          if (cancelled) return
+          if (user && !user.isAnonymous) return connectLiveRoom(user)
+          setNeedsLiveSignIn(true)
+        })
+        .catch((err) => {
+          console.error('[ensemble] live room setup failed', err)
+          if (!cancelled) setEnsembleError('Could not connect to the live room.')
+        })
+      return () => { cancelled = true }
+    }
+
     ensureGuestAuth()
       .then((guest) => ensureRehearsalRoom(guest))
       .then(({ roomId }) => {
@@ -228,7 +318,7 @@ export default function App() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [liveRoomId, connectLiveRoom])
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   useEffect(() => {
@@ -257,6 +347,8 @@ export default function App() {
         chordKey: chordToSend,
         scaleKey: scaleToSend,
         direction: directionToSend,
+        // Live rooms must never get rehearsal TTL fields (auto-deletion)
+        live: Boolean(liveRoomId),
       }).catch((err) => {
         console.error('[ensemble] failed to update state', err)
       })
@@ -267,7 +359,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection])
+  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection, liveRoomId])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
@@ -319,7 +411,9 @@ export default function App() {
   }, [skeleton, nodeMap])
 
   const strudelSnippet = ensembleRoomId
-    ? `// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com
+    ? `${liveRoomId
+        ? `// LIVE ROOM (${liveRoomId}) — this follows the conductor's broadcast`
+        : '// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com'}
 // Every line below follows this app's harmony: when the scale or
 // chord changes here, the patterns update by themselves.
 
@@ -423,13 +517,32 @@ stack(
 
   return (
     <div className="app">
-      <h1>Rehearse LA Laptop Orchestra</h1>
-
-      <div className="video-container">
-        <div id="youtube-player"></div>
+      <div className="app-header">
+        <h1>Rehearse LA Laptop Orchestra</h1>
+        <select
+          className="piece-select"
+          value={pieceId}
+          onChange={(e) => handlePieceChange(e.target.value)}
+          aria-label="Select piece"
+        >
+          {PIECES.map((p) => (
+            <option key={p.id} value={p.id}>{p.label}</option>
+          ))}
+        </select>
       </div>
 
+      {skeleton.youtube_id ? (
+        <div className="video-container">
+          <div id="youtube-player"></div>
+        </div>
+      ) : (
+        <div className="no-video-note">
+          No video for this piece yet — click timeline events to advance the harmony by hand.
+        </div>
+      )}
+
       <div className="status-row">
+        {skeleton.youtube_id && (
         <div className="status-chip volume-chip">
           <strong>Vol</strong>
           <input
@@ -441,6 +554,7 @@ stack(
             aria-label="Volume"
           />
         </div>
+        )}
         <div className="status-chip">
           <strong>Position:</strong> {currentIndex + 1} / {skeleton.events.length}
         </div>
@@ -458,8 +572,18 @@ stack(
         <div className="ensemble-strip">
           {ensembleError ? (
             <span className="ensemble-status ensemble-error">{ensembleError}</span>
+          ) : needsLiveSignIn ? (
+            <button className="ensemble-button" onClick={handleLiveSignIn}>
+              Continue with Google to conduct {liveRoomId}
+            </button>
           ) : !ensembleRoomId ? (
-            <span className="ensemble-status">Setting up your private room…</span>
+            <span className="ensemble-status">
+              {liveRoomId ? 'Connecting to live room…' : 'Setting up your private room…'}
+            </span>
+          ) : liveRoomId ? (
+            <span className="ensemble-status live-status">
+              <span className="live-dot live-dot-red" /> LIVE <strong>{ensembleRoomId}</strong>
+            </span>
           ) : (
             <span className="ensemble-status">
               <span className="live-dot" /> Private room <strong>{ensembleRoomId}</strong>
@@ -470,10 +594,10 @@ stack(
             <input
               type="number"
               step={50}
-              min={0}
+              min={-5000}
               max={5000}
               value={leadMs}
-              onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+              onChange={(e) => setLeadMs(Math.max(-5000, Math.min(5000, Number(e.target.value) || 0)))}
             />
             ms
           </label>
@@ -486,8 +610,21 @@ stack(
         <div className="ensemble-status-row">
           {ensembleError ? (
             <div className="ensemble-error">{ensembleError}</div>
+          ) : needsLiveSignIn ? (
+            <button className="ensemble-button" onClick={handleLiveSignIn}>
+              Continue with Google to conduct {liveRoomId}
+            </button>
           ) : !ensembleRoomId ? (
-            <div className="ensemble-status">Setting up your private rehearsal room…</div>
+            <div className="ensemble-status">
+              {liveRoomId
+                ? 'Connecting to live room…'
+                : 'Setting up your private rehearsal room…'}
+            </div>
+          ) : liveRoomId ? (
+            <div className="ensemble-status live-status">
+              <span className="live-dot live-dot-red" /> LIVE — conducting{' '}
+              <strong>{ensembleRoomId}</strong>
+            </div>
           ) : (
             <div className="ensemble-status">
               <span className="live-dot" /> Private rehearsal active
@@ -498,7 +635,9 @@ stack(
         <div className="resources">
           {ensembleRoomId && (
             <div className="rehearsal-code-box">
-              <div className="rehearsal-code-label">Your rehearsal code</div>
+              <div className="rehearsal-code-label">
+                {liveRoomId ? 'Live room code' : 'Your rehearsal code'}
+              </div>
               <div className="rehearsal-code-row">
                 <code>{ensembleRoomId}</code>
                 <button
@@ -563,15 +702,16 @@ stack(
                 <input
                   type="number"
                   step={50}
-                  min={0}
+                  min={-5000}
                   max={5000}
                   value={leadMs}
-                  onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+                  onChange={(e) => setLeadMs(Math.max(-5000, Math.min(5000, Number(e.target.value) || 0)))}
                 />
                 <span>ms</span>
               </label>
               <div className="advanced-hint">
-                Fire changes early to compensate for network latency.
+                Positive = fire changes early (beat network latency).
+                Negative = delay changes (when the video reaches players late).
               </div>
             </div>
           )}

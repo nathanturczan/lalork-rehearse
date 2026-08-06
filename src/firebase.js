@@ -30,7 +30,8 @@ export const db = firebase.firestore();
 // --- Invisible guest identity ---
 // No popup, no account: works in incognito, Brave, everywhere. The Firestore
 // rules only let this identity write rooms it created itself, so it can
-// never touch the live la-laptop-orchestra room.
+// never touch the live la-laptop-orchestra room. (Conducting the live room
+// requires the room host's Google identity — see the live conductor section.)
 
 export function ensureGuestAuth() {
   return new Promise((resolve, reject) => {
@@ -46,6 +47,46 @@ export function ensureGuestAuth() {
       }
     });
   });
+}
+
+// --- Live conductor mode (host backdoor) ---
+// Opening the app with ?room=<roomId> (e.g. ?room=la-laptop-orchestra) puts
+// it in live conductor mode: instead of the anonymous guest + private
+// rehearsal room, the broadcaster signs in with Google and targets that room
+// directly. Firestore rules still enforce hostId == auth.uid, so this only
+// works for the account that owns the room — for everyone else the app just
+// shows "not the host" and broadcasts nothing.
+
+export function getCurrentUser() {
+  return new Promise((resolve) => {
+    const unsub = auth.onAuthStateChanged((user) => {
+      unsub();
+      resolve(user);
+    });
+  });
+}
+
+export function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  // If a guest session exists, signInWithPopup simply replaces it.
+  return auth.signInWithPopup(provider).then((cred) => cred.user);
+}
+
+// Check up front that this identity can actually conduct the room, so a
+// wrong account fails with one clear message instead of a rejected write
+// on every broadcast.
+export async function verifyRoomHost(roomId, user) {
+  const snap = await db.collection("rooms").doc(roomId).get();
+  if (!snap.exists) {
+    return { ok: false, reason: `Room "${roomId}" does not exist.` };
+  }
+  if (snap.data().hostId !== user.uid) {
+    return {
+      ok: false,
+      reason: `This account (${user.email || "guest"}) is not the host of "${roomId}".`,
+    };
+  }
+  return { ok: true };
 }
 
 // --- Private rehearsal room ---
@@ -106,6 +147,7 @@ export async function updateEnsembleState({
   chordKey,
   scaleKey,
   direction,
+  live = false,
 }) {
   if (!roomId) return;
 
@@ -138,7 +180,13 @@ export async function updateEnsembleState({
   // stranger opening an old rehearsal code must not keep a dead room alive
   // (and Firestore rules only allow the host to write here anyway).
   // Also backfills roomType/expiresAt onto rooms created before #17.
-  Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  //
+  // NEVER stamped in live conductor mode: tagging la-laptop-orchestra with
+  // roomType "rehearsal" + expiresAt would put the live room on the
+  // Firestore TTL chopping block.
+  if (!live) {
+    Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  }
 
   await db.collection("rooms").doc(roomId).update(patch);
 }
