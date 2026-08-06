@@ -506,6 +506,17 @@ h1 {
   margin-right: 6px;
 }
 
+/* Live conductor mode (?room=): unmistakably red so a private rehearsal
+   is never confused with broadcasting to the whole orchestra */
+.live-dot-red {
+  background: #d32f2f;
+}
+
+.live-status {
+  color: #b00020;
+  font-weight: 600;
+}
+
 /* Narrow screens (phone / small tablet): stack cards, tighten everything */
 @media (max-width: 700px) {
   .app {

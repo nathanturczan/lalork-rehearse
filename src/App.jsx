@@ -3,6 +3,9 @@ import {
   ensureGuestAuth,
   ensureRehearsalRoom,
   updateEnsembleState,
+  getCurrentUser,
+  signInWithGoogle,
+  verifyRoomHost,
 } from './firebase'
 import EnterPortal from './portal/EnterPortal'
 
@@ -82,6 +85,14 @@ export default function App() {
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(-1)
+
+  // Live conductor mode: ?room=<roomId> targets that room directly (Google
+  // sign-in required; Firestore rules only let the room's host broadcast).
+  // Without the param, normal flow: guest identity + private rehearsal room.
+  const [liveRoomId] = useState(
+    () => new URLSearchParams(window.location.search).get('room') || null
+  )
+  const [needsLiveSignIn, setNeedsLiveSignIn] = useState(false)
 
   // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
@@ -209,9 +220,50 @@ export default function App() {
     console.log('Event:', event.state, node?.chord, node?.scale, event.direction)
   }
 
-  // Silent setup: guest identity + private rehearsal room. No buttons, no popups.
+  // Verify hostship, then start broadcasting to the live room
+  const connectLiveRoom = useCallback(async (user) => {
+    const check = await verifyRoomHost(liveRoomId, user)
+    if (!check.ok) {
+      setEnsembleError(check.reason)
+      return
+    }
+    setEnsembleError('')
+    setEnsembleRoomId(liveRoomId)
+  }, [liveRoomId])
+
+  // Google popups must come from a click, so live mode shows a button when
+  // there's no signed-in (non-anonymous) session yet.
+  const handleLiveSignIn = async () => {
+    try {
+      const user = await signInWithGoogle()
+      setNeedsLiveSignIn(false)
+      await connectLiveRoom(user)
+    } catch (err) {
+      console.error('[ensemble] live sign-in failed', err)
+      setEnsembleError('Google sign-in failed. Reload and try again.')
+    }
+  }
+
+  // Setup on mount.
+  // Normal: silent guest identity + private rehearsal room. No buttons.
+  // Live (?room=): reuse a persisted Google session, or ask for one click.
   useEffect(() => {
     let cancelled = false
+
+    if (liveRoomId) {
+      getCurrentUser()
+        .then((user) => {
+          if (cancelled) return
+          if (user && !user.isAnonymous) return connectLiveRoom(user)
+          setNeedsLiveSignIn(true)
+        })
+        .catch((err) => {
+          console.error('[ensemble] live room setup failed', err)
+          if (!cancelled) setEnsembleError('Could not connect to the live room.')
+        })
+      return () => { cancelled = true }
+    }
+
     ensureGuestAuth()
       .then((guest) => ensureRehearsalRoom(guest))
       .then(({ roomId }) => {
@@ -228,7 +280,7 @@ export default function App() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [liveRoomId, connectLiveRoom])
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   useEffect(() => {
@@ -257,6 +309,8 @@ export default function App() {
         chordKey: chordToSend,
         scaleKey: scaleToSend,
         direction: directionToSend,
+        // Live rooms must never get rehearsal TTL fields (auto-deletion)
+        live: Boolean(liveRoomId),
       }).catch((err) => {
         console.error('[ensemble] failed to update state', err)
       })
@@ -267,7 +321,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection])
+  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection, liveRoomId])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
@@ -319,7 +373,9 @@ export default function App() {
   }, [skeleton, nodeMap])
 
   const strudelSnippet = ensembleRoomId
-    ? `// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com
+    ? `${liveRoomId
+        ? `// LIVE ROOM (${liveRoomId}) — this follows the conductor's broadcast`
+        : '// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com'}
 // Every line below follows this app's harmony: when the scale or
 // chord changes here, the patterns update by themselves.
 
@@ -458,8 +514,18 @@ stack(
         <div className="ensemble-strip">
           {ensembleError ? (
             <span className="ensemble-status ensemble-error">{ensembleError}</span>
+          ) : needsLiveSignIn ? (
+            <button className="ensemble-button" onClick={handleLiveSignIn}>
+              Continue with Google to conduct {liveRoomId}
+            </button>
           ) : !ensembleRoomId ? (
-            <span className="ensemble-status">Setting up your private room…</span>
+            <span className="ensemble-status">
+              {liveRoomId ? 'Connecting to live room…' : 'Setting up your private room…'}
+            </span>
+          ) : liveRoomId ? (
+            <span className="ensemble-status live-status">
+              <span className="live-dot live-dot-red" /> LIVE <strong>{ensembleRoomId}</strong>
+            </span>
           ) : (
             <span className="ensemble-status">
               <span className="live-dot" /> Private room <strong>{ensembleRoomId}</strong>
@@ -486,8 +552,21 @@ stack(
         <div className="ensemble-status-row">
           {ensembleError ? (
             <div className="ensemble-error">{ensembleError}</div>
+          ) : needsLiveSignIn ? (
+            <button className="ensemble-button" onClick={handleLiveSignIn}>
+              Continue with Google to conduct {liveRoomId}
+            </button>
           ) : !ensembleRoomId ? (
-            <div className="ensemble-status">Setting up your private rehearsal room…</div>
+            <div className="ensemble-status">
+              {liveRoomId
+                ? 'Connecting to live room…'
+                : 'Setting up your private rehearsal room…'}
+            </div>
+          ) : liveRoomId ? (
+            <div className="ensemble-status live-status">
+              <span className="live-dot live-dot-red" /> LIVE — conducting{' '}
+              <strong>{ensembleRoomId}</strong>
+            </div>
           ) : (
             <div className="ensemble-status">
               <span className="live-dot" /> Private rehearsal active
@@ -498,7 +577,9 @@ stack(
         <div className="resources">
           {ensembleRoomId && (
             <div className="rehearsal-code-box">
-              <div className="rehearsal-code-label">Your rehearsal code</div>
+              <div className="rehearsal-code-label">
+                {liveRoomId ? 'Live room code' : 'Your rehearsal code'}
+              </div>
               <div className="rehearsal-code-row">
                 <code>{ensembleRoomId}</code>
                 <button
