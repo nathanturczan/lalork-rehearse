@@ -11,6 +11,12 @@ import EnterPortal from './portal/EnterPortal'
 
 const BROADCAST_DEBOUNCE_MS = 100
 
+// Pieces: /<id>.json (skeleton) + /<id>_sketchpad.json must exist in pieces/
+const PIECES = [
+  { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
+  { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
+]
+
 // YouTube iframe API loader
 function loadYouTubeAPI() {
   return new Promise((resolve) => {
@@ -81,6 +87,10 @@ function useIsNarrow() {
 
 export default function App() {
   const isNarrow = useIsNarrow()
+  const [pieceId, setPieceId] = useState(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('piece')
+    return PIECES.some((p) => p.id === fromUrl) ? fromUrl : PIECES[0].id
+  })
   const [skeleton, setSkeleton] = useState(null)
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
@@ -132,18 +142,34 @@ export default function App() {
     }
   }
 
-  // Load skeleton + sketchpad
+  // Load skeleton + sketchpad for the selected piece
   useEffect(() => {
-    fetch('/wagner_oneiric_warning.json')
+    let cancelled = false
+    setSkeleton(null)
+    setSketchpad(null)
+    setCurrentEvent(null)
+    setCurrentIndex(-1)
+    fetch(`/${pieceId}.json`)
       .then(res => res.json())
       .then(data => {
+        if (cancelled) return
         setSkeleton(data)
         if (typeof data.tempo === 'number') setEnsembleBpm(data.tempo)
       })
-    fetch('/wagner_oneiric_warning_sketchpad.json')
+    fetch(`/${pieceId}_sketchpad.json`)
       .then(res => res.json())
-      .then(data => setSketchpad(data))
-  }, [])
+      .then(data => {
+        if (!cancelled) setSketchpad(data)
+      })
+    return () => { cancelled = true }
+  }, [pieceId])
+
+  const handlePieceChange = (id) => {
+    setPieceId(id)
+    const url = new URL(window.location)
+    url.searchParams.set('piece', id)
+    window.history.replaceState({}, '', url)
+  }
 
   // Lookup: event.state -> sketchpad node (chord/scale keys)
   const nodeMap = useMemo(() => {
@@ -151,15 +177,26 @@ export default function App() {
     return Object.fromEntries(sketchpad.nodes.map((n) => [n.id, n]))
   }, [sketchpad])
 
-  // Initialize YouTube player
+  // Initialize YouTube player; tear down when the piece (or its video) changes
   useEffect(() => {
     if (!skeleton?.youtube_id) return
 
+    let cancelled = false
     loadYouTubeAPI().then((YT) => {
+      if (cancelled) return
       playerRef.current = new YT.Player('youtube-player', {
         videoId: skeleton.youtube_id
       })
     })
+    return () => {
+      cancelled = true
+      try {
+        playerRef.current?.destroy?.()
+      } catch {
+        // player element may already be unmounted
+      }
+      playerRef.current = null
+    }
   }, [skeleton?.youtube_id])
 
   // Re-derive the current event from the video clock (idempotent)
@@ -187,9 +224,10 @@ export default function App() {
   }, [skeleton, currentIndex, nodeMap, leadMs])
 
   // Poll the video clock constantly — playing OR paused — so scrubbing the
-  // YouTube bar always re-derives and rebroadcasts the harmonic state
+  // YouTube bar always re-derives and rebroadcasts the harmonic state.
+  // No video = no clock: the piece is driven by clicking timeline events.
   useEffect(() => {
-    if (!skeleton) return
+    if (!skeleton?.youtube_id) return
     intervalRef.current = setInterval(syncToVideo, 100)
     return () => clearInterval(intervalRef.current)
   }, [skeleton, syncToVideo])
@@ -479,13 +517,32 @@ stack(
 
   return (
     <div className="app">
-      <h1>Rehearse LA Laptop Orchestra</h1>
-
-      <div className="video-container">
-        <div id="youtube-player"></div>
+      <div className="app-header">
+        <h1>Rehearse LA Laptop Orchestra</h1>
+        <select
+          className="piece-select"
+          value={pieceId}
+          onChange={(e) => handlePieceChange(e.target.value)}
+          aria-label="Select piece"
+        >
+          {PIECES.map((p) => (
+            <option key={p.id} value={p.id}>{p.label}</option>
+          ))}
+        </select>
       </div>
 
+      {skeleton.youtube_id ? (
+        <div className="video-container">
+          <div id="youtube-player"></div>
+        </div>
+      ) : (
+        <div className="no-video-note">
+          No video for this piece yet — click timeline events to advance the harmony by hand.
+        </div>
+      )}
+
       <div className="status-row">
+        {skeleton.youtube_id && (
         <div className="status-chip volume-chip">
           <strong>Vol</strong>
           <input
@@ -497,6 +554,7 @@ stack(
             aria-label="Volume"
           />
         </div>
+        )}
         <div className="status-chip">
           <strong>Position:</strong> {currentIndex + 1} / {skeleton.events.length}
         </div>

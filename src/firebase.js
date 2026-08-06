@@ -5,6 +5,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { rehearsalLifecycleFields } from "./roomLifecycle.js";
 
 // Hardcoded like the Enter app and strudel-scalenav: this config is public
 // by design (security lives in Firestore rules), and env-var indirection
@@ -108,6 +109,9 @@ function roomDoc(user) {
     chordData: null,
     scaleData: null,
     createdAt: Date.now(),
+    // roomType/lastActiveAt/expiresAt: marks the room unlisted and eligible
+    // for Firestore TTL deletion once it goes inactive (#17).
+    ...rehearsalLifecycleFields(firebase.firestore.Timestamp),
   };
 }
 
@@ -143,12 +147,7 @@ export async function updateEnsembleState({
   chordKey,
   scaleKey,
   direction,
-  // MERGE GUARD: `live` is true when broadcasting to a real ensemble room
-  // via ?room= (live conductor mode). If room-lifecycle TTL stamping
-  // (roomType: "rehearsal" + expiresAt, branch room-lifecycle-fields) ever
-  // lands here, it MUST be wrapped in `if (!live)` — otherwise conducting
-  // would tag la-laptop-orchestra for Firestore auto-deletion.
-  live = false, // eslint-disable-line no-unused-vars
+  live = false,
 }) {
   if (!roomId) return;
 
@@ -175,6 +174,19 @@ export async function updateEnsembleState({
   if (!Object.keys(patch).length) return;
 
   patch.updatedAt = Date.now();
+
+  // Broadcaster keep-alive: every harmony write from this app refreshes the
+  // TTL window. Deliberately NOT done when a listener joins by code — a
+  // stranger opening an old rehearsal code must not keep a dead room alive
+  // (and Firestore rules only allow the host to write here anyway).
+  // Also backfills roomType/expiresAt onto rooms created before #17.
+  //
+  // NEVER stamped in live conductor mode: tagging la-laptop-orchestra with
+  // roomType "rehearsal" + expiresAt would put the live room on the
+  // Firestore TTL chopping block.
+  if (!live) {
+    Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  }
 
   await db.collection("rooms").doc(roomId).update(patch);
 }

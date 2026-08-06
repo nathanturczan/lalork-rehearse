@@ -1,0 +1,132 @@
+{
+  "name": "CFGC Ostinato",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "Bbmaj7",
+      "label": "Bbmaj7",
+      "scale": "f_diatonic",
+      "chord": "as_M7-0",
+      "position": { "x": 100, "y": 50 }
+    },
+    {
+      "id": "Bb7",
+      "label": "Bb7",
+      "scale": "as_acoustic",
+      "chord": "as_7-17",
+      "position": { "x": 250, "y": 50 }
+    },
+    {
+      "id": "Bb6",
+      "label": "Bb6",
+      "scale": "ds_diatonic",
+      "chord": "as_6-4",
+      "position": { "x": 400, "y": 50 }
+    },
+    {
+      "id": "Bbm6",
+      "label": "Bbm6",
+      "scale": "gs_diatonic",
+      "chord": "as_m6-6",
+      "position": { "x": 550, "y": 50 }
+    },
+    {
+      "id": "Am7",
+      "label": "Am7",
+      "scale": "c_diatonic",
+      "chord": "a_m7-13",
+      "position": { "x": 100, "y": 150 }
+    },
+    {
+      "id": "Abmaj7",
+      "label": "Abmaj7",
+      "scale": "ds_diatonic",
+      "chord": "gs_M7-0",
+      "position": { "x": 250, "y": 150 }
+    },
+    {
+      "id": "G7",
+      "label": "G7",
+      "scale": "f_acoustic",
+      "chord": "g_7-17",
+      "position": { "x": 400, "y": 150 }
+    },
+    {
+      "id": "Gm7",
+      "label": "Gm7",
+      "scale": "as_diatonic",
+      "chord": "g_m7-13",
+      "position": { "x": 550, "y": 150 }
+    },
+    {
+      "id": "Fm7",
+      "label": "Fm7",
+      "scale": "ds_diatonic",
+      "chord": "f_m7-13",
+      "position": { "x": 100, "y": 250 }
+    },
+    {
+      "id": "F7",
+      "label": "F7",
+      "scale": "as_diatonic",
+      "chord": "f_7-17",
+      "position": { "x": 250, "y": 250 }
+    },
+    {
+      "id": "Ebmaj7",
+      "label": "Ebmaj7",
+      "scale": "as_diatonic",
+      "chord": "ds_M7-0",
+      "position": { "x": 400, "y": 250 }
+    },
+    {
+      "id": "Eb7",
+      "label": "Eb7",
+      "scale": "ds_acoustic",
+      "chord": "ds_7-17",
+      "position": { "x": 550, "y": 250 }
+    },
+    {
+      "id": "Dm7",
+      "label": "Dm7",
+      "scale": "f_diatonic",
+      "chord": "d_m7-13",
+      "position": { "x": 100, "y": 350 }
+    },
+    {
+      "id": "Dbmaj7",
+      "label": "Dbmaj7",
+      "scale": "gs_diatonic",
+      "chord": "cs_M7-0",
+      "position": { "x": 250, "y": 350 }
+    },
+    {
+      "id": "Cm7",
+      "label": "Cm7",
+      "scale": "ds_diatonic",
+      "chord": "c_m7-13",
+      "position": { "x": 400, "y": 350 }
+    },
+    {
+      "id": "C7",
+      "label": "C7",
+      "scale": "as_acoustic",
+      "chord": "c_7-17",
+      "position": { "x": 550, "y": 350 }
+    },
+    {
+      "id": "G7_hm",
+      "label": "G7 (b9)",
+      "scale": "c_harmonic_minor",
+      "chord": "g_7-17",
+      "position": { "x": 400, "y": 450 }
+    },
+    {
+      "id": "C7_hm",
+      "label": "C7 (b9)",
+      "scale": "f_harmonic_minor",
+      "chord": "c_7-17",
+      "position": { "x": 550, "y": 450 }
+    }
+  ]
+}
