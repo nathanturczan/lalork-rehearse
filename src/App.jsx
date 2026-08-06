@@ -536,10 +536,10 @@ stack(
             <input
               type="number"
               step={50}
-              min={0}
+              min={-5000}
               max={5000}
               value={leadMs}
-              onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+              onChange={(e) => setLeadMs(Math.max(-5000, Math.min(5000, Number(e.target.value) || 0)))}
             />
             ms
           </label>
@@ -644,15 +644,16 @@ stack(
                 <input
                   type="number"
                   step={50}
-                  min={0}
+                  min={-5000}
                   max={5000}
                   value={leadMs}
-                  onChange={(e) => setLeadMs(Math.max(0, Number(e.target.value) || 0))}
+                  onChange={(e) => setLeadMs(Math.max(-5000, Math.min(5000, Number(e.target.value) || 0)))}
                 />
                 <span>ms</span>
               </label>
               <div className="advanced-hint">
-                Fire changes early to compensate for network latency.
+                Positive = fire changes early (beat network latency).
+                Negative = delay changes (when the video reaches players late).
               </div>
             </div>
           )}
