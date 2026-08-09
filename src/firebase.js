@@ -108,6 +108,10 @@ function roomDoc(user) {
     bpm: 60,
     chordData: null,
     scaleData: null,
+    // Anticipation contract (lalork-website#117): next-harmony is broadcast
+    // exactly this many ms before it commits. Receivers time animations and
+    // scheduling off this promise. Runtime-tunable per room.
+    anticipationMs: 2000,
     createdAt: Date.now(),
     // roomType/lastActiveAt/expiresAt: marks the room unlisted and eligible
     // for Firestore TTL deletion once it goes inactive (#17).
@@ -140,13 +144,20 @@ export async function ensureRehearsalRoom(user) {
 
 /**
  * Best-effort update of the ensemble room's shared state.
+ *
+ * Channel independence (lalork-website#114): Harmony | Direction | Form are
+ * separate channels — a write to one never mutates another. This function is
+ * the HARMONY + SCORE-DIRECTION writer (piece playback). It NEVER touches
+ * `direction`, which belongs exclusively to the live conductor
+ * (setLiveDirection below). This split is the fix for the "blue flash, gone"
+ * bug where playback rebroadcasts wiped typed cues.
  */
 export async function updateEnsembleState({
   roomId,
   bpm,
   chordKey,
   scaleKey,
-  direction,
+  scoreDirection,
   nextChordKey,
   nextScaleKey,
   live = false,
@@ -169,8 +180,10 @@ export async function updateEnsembleState({
     patch.scaleData = scaleKey || null;
     patch.scaleInfo = firebase.firestore.FieldValue.delete();
   }
-  if (typeof direction === "string" || direction === null) {
-    patch.direction = direction || null;
+  // Baked directions from the score (skeleton events). Written every event
+  // change; the live `direction` channel is deliberately left alone.
+  if (typeof scoreDirection === "string" || scoreDirection === null) {
+    patch.scoreDirection = scoreDirection || null;
   }
   // Planned next harmony (lalork-website#112): receivers show these in their
   // Next slots between transitions. ALWAYS written when passed — explicit
@@ -200,4 +213,66 @@ export async function updateEnsembleState({
   }
 
   await db.collection("rooms").doc(roomId).update(patch);
+}
+
+// --- Live direction channel (lalork-website#114, rehearse#11) ---
+// `direction` = LIVE conductor cues only, typed by a human mid-piece.
+// Protocol: Set replaces the entire live set, Clear writes null. Playback
+// never touches this field, so typed cues survive every harmony rebroadcast.
+// Receivers display the union of `direction` + `scoreDirection`.
+export async function setLiveDirection(roomId, direction, live = false) {
+  if (!roomId) return;
+  const patch = {
+    direction: (typeof direction === "string" && direction.trim()) || null,
+    updatedAt: Date.now(),
+  };
+  if (!live) {
+    Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  }
+  await db.collection("rooms").doc(roomId).update(patch);
+}
+
+// --- Form channel (lalork-website#116, rehearse#12) ---
+// formContour: normalized [x, y] breakpoints (0–1) describing the piece's
+// energy arc, written once on piece load. Resets formPosition to 0 — still
+// a form-channel-only write.
+export async function setFormContour(roomId, contour, live = false) {
+  if (!roomId) return;
+  const patch = {
+    formContour: Array.isArray(contour) && contour.length ? contour : null,
+    formPosition: 0,
+    updatedAt: Date.now(),
+  };
+  if (!live) {
+    Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  }
+  await db.collection("rooms").doc(roomId).update(patch);
+}
+
+// formPosition: 0–1 playhead along the contour. Caller throttles; this just
+// clamps and writes.
+export async function setFormPosition(roomId, position, live = false) {
+  if (!roomId) return;
+  if (typeof position !== "number" || !Number.isFinite(position)) return;
+  const patch = {
+    formPosition: Math.min(1, Math.max(0, position)),
+    updatedAt: Date.now(),
+  };
+  if (!live) {
+    Object.assign(patch, rehearsalLifecycleFields(firebase.firestore.Timestamp));
+  }
+  await db.collection("rooms").doc(roomId).update(patch);
+}
+
+// --- Anticipation contract backfill (lalork-website#117) ---
+// Rooms created before the contract (including la-laptop-orchestra) get
+// anticipationMs stamped once. Never overwrites an existing value — the
+// field is runtime-tunable (edit in the Firestore console to retune).
+export async function ensureAnticipationMs(roomId) {
+  if (!roomId) return;
+  const ref = db.collection("rooms").doc(roomId);
+  const snap = await ref.get();
+  if (!snap.exists) return;
+  if (typeof snap.data().anticipationMs === "number") return;
+  await ref.update({ anticipationMs: 2000 });
 }

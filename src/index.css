@@ -211,6 +211,37 @@ h1 {
   font-size: 12px;
 }
 
+/* Live conductor direction bar (rehearse#11): typing IS conducting, so this
+   sits in prime real estate right under the status row */
+.conductor-direction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.conductor-direction-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
+}
+
+.conductor-direction-live {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1976d2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 30%;
+}
+
 /* Status text + inline lead control on one line */
 .ensemble-status-row {
   display: flex;

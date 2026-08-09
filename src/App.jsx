@@ -3,6 +3,10 @@ import {
   ensureGuestAuth,
   ensureRehearsalRoom,
   updateEnsembleState,
+  setLiveDirection,
+  setFormContour,
+  setFormPosition,
+  ensureAnticipationMs,
   getCurrentUser,
   signInWithGoogle,
   verifyRoomHost,
@@ -111,6 +115,10 @@ export default function App() {
   const [selectedScaleKey, setSelectedScaleKey] = useState(null)
   const [currentDirection, setCurrentDirection] = useState(null)
   const [ensembleError, setEnsembleError] = useState('')
+  // Live conductor direction (lalork-website#114, rehearse#11): typed cues on
+  // their own channel. Set replaces the whole live set; Clear empties it.
+  const [liveDirectionDraft, setLiveDirectionDraft] = useState('')
+  const [liveDirectionSent, setLiveDirectionSent] = useState(null)
   const [snippetCopied, setSnippetCopied] = useState(false)
   const [roomIdCopied, setRoomIdCopied] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
@@ -320,6 +328,76 @@ export default function App() {
     }
   }, [liveRoomId, connectLiveRoom])
 
+  // Anticipation contract (lalork-website#117): backfill anticipationMs onto
+  // rooms created before the contract (incl. la-laptop-orchestra). One-time,
+  // never overwrites an existing value.
+  useEffect(() => {
+    if (!ensembleRoomId) return
+    ensureAnticipationMs(ensembleRoomId).catch((err) =>
+      console.error('[ensemble] anticipationMs backfill failed', err)
+    )
+  }, [ensembleRoomId])
+
+  // Form channel (rehearse#12): contour written once per piece load; playhead
+  // written on a throttle below. Pieces without contour data write null so
+  // receivers hide the strip (real data lands in the lalork#1 pass).
+  const lastFormPositionRef = useRef(-1)
+  useEffect(() => {
+    if (!ensembleRoomId || !skeleton) return
+    lastFormPositionRef.current = -1
+    setFormContour(ensembleRoomId, skeleton.formContour || null, Boolean(liveRoomId))
+      .catch((err) => console.error('[ensemble] formContour write failed', err))
+  }, [ensembleRoomId, skeleton, liveRoomId])
+
+  // Throttled formPosition broadcast: one small write every 2s while the
+  // position actually moves. Video clock when there is one; otherwise the
+  // current event's beat position over the piece's total beats.
+  const currentEventRef = useRef(null)
+  useEffect(() => {
+    currentEventRef.current = currentEvent
+  }, [currentEvent])
+  useEffect(() => {
+    if (!ensembleRoomId || !skeleton) return
+    const totalBeats = skeleton.events?.length
+      ? skeleton.events[skeleton.events.length - 1].time
+      : 0
+    const id = setInterval(() => {
+      let position = null
+      const duration = playerRef.current?.getDuration?.() || 0
+      if (duration > 0) {
+        position = (playerRef.current?.getCurrentTime?.() || 0) / duration
+      } else if (totalBeats > 0 && currentEventRef.current) {
+        position = currentEventRef.current.time / totalBeats
+      }
+      if (position == null || !Number.isFinite(position)) return
+      position = Math.min(1, Math.max(0, position))
+      if (Math.abs(position - lastFormPositionRef.current) < 0.005) return
+      lastFormPositionRef.current = position
+      setFormPosition(ensembleRoomId, position, Boolean(liveRoomId)).catch(
+        (err) => console.error('[ensemble] formPosition write failed', err)
+      )
+    }, 2000)
+    return () => clearInterval(id)
+  }, [ensembleRoomId, skeleton, liveRoomId])
+
+  // Live conductor direction handlers (Set replaces / Clear empties)
+  const sendLiveDirection = () => {
+    const text = liveDirectionDraft.trim()
+    if (!ensembleRoomId || !text) return
+    setLiveDirection(ensembleRoomId, text, Boolean(liveRoomId))
+      .then(() => setLiveDirectionSent(text))
+      .catch((err) => console.error('[ensemble] live direction failed', err))
+  }
+  const clearLiveDirection = () => {
+    if (!ensembleRoomId) return
+    setLiveDirection(ensembleRoomId, null, Boolean(liveRoomId))
+      .then(() => {
+        setLiveDirectionSent(null)
+        setLiveDirectionDraft('')
+      })
+      .catch((err) => console.error('[ensemble] live direction clear failed', err))
+  }
+
   // Next event's node: shown in this portal's Next slots AND broadcast to
   // the room (nextScaleData/nextChordData, lalork-website#112) so every
   // subscriber (enter portal, room tabs, TV) can show what's coming. Null
@@ -353,7 +431,7 @@ export default function App() {
         nextChordKey: nextChordToSend,
         nextScaleKey: nextScaleToSend,
         bpm: ensembleBpm,
-        direction: directionToSend,
+        scoreDirection: directionToSend,
       })
 
       updateEnsembleState({
@@ -363,7 +441,9 @@ export default function App() {
         scaleKey: scaleToSend,
         nextChordKey: nextChordToSend,
         nextScaleKey: nextScaleToSend,
-        direction: directionToSend,
+        // Score channel only — live `direction` belongs to the conductor
+        // input (setLiveDirection) and is never written by playback (#114)
+        scoreDirection: directionToSend,
         // Live rooms must never get rehearsal TTL fields (auto-deletion)
         live: Boolean(liveRoomId),
       }).catch((err) => {
@@ -569,6 +649,41 @@ stack(
           <strong>Position:</strong> {currentIndex + 1} / {skeleton.events.length}
         </div>
       </div>
+
+      {ensembleRoomId && (
+        <div className="conductor-direction">
+          <input
+            type="text"
+            className="conductor-direction-input"
+            placeholder="Type a live direction… (Enter sends)"
+            value={liveDirectionDraft}
+            onChange={(e) => setLiveDirectionDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') sendLiveDirection()
+            }}
+            aria-label="Live conductor direction"
+          />
+          <button
+            className="ensemble-button"
+            onClick={sendLiveDirection}
+            disabled={!liveDirectionDraft.trim()}
+          >
+            Set
+          </button>
+          <button
+            className="ensemble-button"
+            onClick={clearLiveDirection}
+            disabled={!liveDirectionSent}
+          >
+            Clear
+          </button>
+          {liveDirectionSent && (
+            <span className="conductor-direction-live">
+              LIVE: {liveDirectionSent}
+            </span>
+          )}
+        </div>
+      )}
 
       <EnterPortal
         scaleKey={currentNode?.scale || null}
