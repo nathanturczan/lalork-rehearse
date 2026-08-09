@@ -2,6 +2,11 @@
   "tempo": 120.0,
   "comment": "CFGC Ostinato - riff C-F-G-C (octave up) constant throughout; 16 harmonic states reinterpret it. 120 BPM 4/4, variable state lengths, 136 bars (544 beats) per cycle = 4:32. Two cycles = 9:04. Cycle 2 substitutes harmonic-minor scales under G7 and C7 (b9 color). Composed Aug 5, 2026.",
   "youtube_id": "63pQvpPhz1s",
+  "formContour": [
+    [0.0, 0.3], [0.05, 0.45], [0.09, 0.35], [0.15, 0.15], [0.28, 0.55],
+    [0.39, 0.2], [0.47, 0.6], [0.5, 0.7], [0.55, 0.5], [0.64, 0.25],
+    [0.7, 0.55], [0.78, 0.65], [0.88, 0.3], [0.96, 0.85], [1.0, 0.45]
+  ],
   "events": [
     { "time": 0, "state": "Bbmaj7", "direction": { "lyric": "", "marking": "", "note": "Cycle 1. The riff plain: C-F-G-C, always." } },
     { "time": 32, "state": "Bb7", "direction": { "lyric": "", "marking": "", "note": "Bb chain accelerates (8-4-4 bars)" } },

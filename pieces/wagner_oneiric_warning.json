@@ -2,6 +2,11 @@
   "tempo": 120.0,
   "comment": "Wagner's Oneiric Warning (Brang\u00e4ne's Watch) - 29 harmonic states. 48 beats (24s) each at 120 BPM. Total: 696 seconds (11.6 minutes).",
   "youtube_id": "FW3dtzHdftI",
+  "formContour": [
+    [0.0, 0.35], [0.14, 0.5], [0.17, 0.35], [0.28, 0.15], [0.31, 0.3],
+    [0.41, 0.15], [0.55, 0.25], [0.66, 0.15], [0.72, 0.2], [0.76, 0.95],
+    [0.79, 0.3], [0.86, 0.6], [0.9, 0.25], [1.0, 0.05]
+  ],
   "events": [
     {
       "time": 0,
