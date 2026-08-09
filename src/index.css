@@ -213,14 +213,18 @@ h1 {
 
 /* Conductor Direction panel (rehearse#11) — ported from the Scale Navigator
    Dashboard's ensemble workspace DirectionPanel, adapted to this app's light
-   card style. Typing IS conducting, so it sits right under the status row. */
+   card style. Third column of the card row, right of the timeline. */
 .direction-panel {
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 12px;
-  margin-bottom: 12px;
   flex-shrink: 0;
+}
+
+.card-row .direction-panel {
+  flex: 1;
+  min-width: 0;
 }
 
 .direction-panel-label {

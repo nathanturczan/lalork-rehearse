@@ -646,14 +646,6 @@ stack(
         </div>
       </div>
 
-      {ensembleRoomId && (
-        <DirectionPanel
-          direction={liveDirectionSent}
-          onSet={handleSetDirection}
-          onClear={handleClearDirection}
-        />
-      )}
-
       <EnterPortal
         scaleKey={currentNode?.scale || null}
         chordKey={currentNode?.chord || null}
@@ -849,6 +841,14 @@ stack(
           Click any event to jump to it.
         </div>
       </div>
+
+      {ensembleRoomId && (
+        <DirectionPanel
+          direction={liveDirectionSent}
+          onSet={handleSetDirection}
+          onClear={handleClearDirection}
+        />
+      )}
       </div>
     </div>
   )
