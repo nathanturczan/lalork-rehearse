@@ -842,7 +842,9 @@ stack(
         </div>
       </div>
 
-      {ensembleRoomId && (
+      {/* Conductor-only (?room= live mode, signed in as host): private
+          rehearsal users have no audience for live cues, so no panel. */}
+      {liveRoomId && ensembleRoomId && (
         <DirectionPanel
           direction={liveDirectionSent}
           onSet={handleSetDirection}
