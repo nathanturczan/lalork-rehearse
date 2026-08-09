@@ -503,10 +503,11 @@ export default function App() {
 // Every line below follows this app's harmony: when the scale or
 // chord changes here, the patterns update by themselves.
 
-const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scalenav@0.7.0/dist/strudel-scalenav.js')
+const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scalenav@0.8.0/dist/strudel-scalenav.js')
 
 const ens = await joinEnsemble('${ensembleRoomId}')
 ens.showBadge() // room + current scale/chord, top of the screen
+// ens.showPortal() // full LALORK portal docked at the bottom (direction cues + form strip)
 
 // Each arpeggio below contains 16 steps per cycle.
 // The numbers select notes; their positions determine when they play.
