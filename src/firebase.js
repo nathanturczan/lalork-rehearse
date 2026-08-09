@@ -238,8 +238,15 @@ export async function setLiveDirection(roomId, direction, live = false) {
 // a form-channel-only write.
 export async function setFormContour(roomId, contour, live = false) {
   if (!roomId) return;
+  // Firestore rejects nested arrays, so the [x, y] tuples cross the wire as
+  // {x, y} maps; receivers (enter useRoomHarmony) convert back to tuples.
+  const points = Array.isArray(contour)
+    ? contour
+        .filter((p) => Array.isArray(p) && p.length === 2)
+        .map(([x, y]) => ({ x, y }))
+    : [];
   const patch = {
-    formContour: Array.isArray(contour) && contour.length ? contour : null,
+    formContour: points.length ? points : null,
     formPosition: 0,
     updatedAt: Date.now(),
   };
