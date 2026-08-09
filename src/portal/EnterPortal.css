@@ -164,9 +164,124 @@
   color: var(--note-incoming-color);
 }
 
+/* Direction box (website#63/#114) — ported from Enter's compact portal.
+   Reserved full-height column on the panel's right; the field scatters the
+   union of live conductor cues (bold) and baked score markings (dim). */
+.enter-portal .portal__main {
+  flex: none;
+  width: 400px;
+}
+
+.enter-portal .portal__direction-box {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  border: 1px solid #3a3a3a;
+}
+
+.enter-portal .portal__direction-field {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 48px;
+  overflow: hidden;
+}
+
+/* Position wrapper: owns left/top + centering translate. The state
+   animation lives on the inner chip so note--outgoing's scale() can't
+   clobber the translate. */
+.enter-portal .portal__direction-pos {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.enter-portal .portal__direction-chip {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.enter-portal .portal__direction-chip--incoming {
+  color: var(--note-incoming-color, #6ab8ff);
+}
+
+/* Baked score markings: dimmer and lighter than live cues, same upright
+   chip language (weight + opacity carry it, hue never the only channel). */
+.enter-portal .portal__direction-chip--score {
+  color: var(--fg-dim);
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Shared transition animations (subset of Enter's anticipation.scss:
+   arriving chips pulse, departing chips fade to a desaturated ghost). */
+@keyframes portal-note-incoming-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes portal-note-outgoing-fade {
+  from {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.25;
+    filter: grayscale(1);
+    transform: scale(0.88);
+  }
+}
+
+.enter-portal .note--incoming {
+  animation: portal-note-incoming-pulse 700ms cubic-bezier(0, 0, 0.2, 1)
+    infinite;
+}
+
+.enter-portal .note--outgoing {
+  animation: portal-note-outgoing-fade 300ms cubic-bezier(0, 0, 0.2, 1)
+    forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-portal .note--incoming,
+  .enter-portal .note--outgoing {
+    animation: none !important;
+  }
+  .enter-portal .note--incoming {
+    opacity: 0.95;
+  }
+  .enter-portal .note--outgoing {
+    opacity: 0.25;
+    filter: grayscale(1);
+  }
+}
+
 /* Narrow screens: let the meta row wrap and shrink the chord slots so the
    tempo never clips off the panel edge */
 @media (max-width: 700px) {
+  .enter-portal .portal__now {
+    flex-wrap: wrap;
+  }
+
+  .enter-portal .portal__main {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .enter-portal .portal__direction-box {
+    flex: 1 1 100%;
+    min-height: 60px;
+  }
+
   .enter-portal .portal__meta-row {
     flex-wrap: wrap;
     gap: 8px 16px;

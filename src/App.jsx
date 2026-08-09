@@ -660,6 +660,8 @@ stack(
         nextScaleKey={nextNode?.scale || null}
         nextChordKey={nextNode?.chord || null}
         bpm={skeleton.tempo}
+        direction={liveDirectionSent}
+        scoreDirection={currentDirection}
       />
 
       {isNarrow && (

@@ -14,10 +14,13 @@
 //   sliding in from the Next slot's last geometry.
 // - BPM comes in as a plain prop (the rehearse app is the host that
 //   generates it — no room subscription, no redux, no window.__bpm).
-// - No direction box: the conductor's direction is broadcast but not shown.
+// - Direction box shows the union of the LIVE conductor channel and the
+//   piece's baked scoreDirection (website#114) — the same union the ensemble
+//   sees on Enter, so the conductor previews their own broadcast.
 
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import { getNodeColor } from './colors'
+import DirectionField from './DirectionField'
 
 import diatonicSvg from './shapes/diatonic.svg'
 import harmonicMajorSvg from './shapes/harmonic_major.svg'
@@ -277,6 +280,8 @@ export default function EnterPortal({
   nextScaleKey,
   nextChordKey,
   bpm,
+  direction = null,
+  scoreDirection = null,
 }) {
   const keyData = scaleEntryFromKey(scaleKey)
   const chord = chordFromKey(chordKey)
@@ -366,6 +371,12 @@ export default function EnterPortal({
             </div>
           </div>
         </div>
+        {/* Conductor's direction — reserved full-height column on the right,
+            same fixture as Enter's portal (website#63/#114). */}
+        <aside className="portal__direction-box">
+          <span className="portal__bay-label">Direction</span>
+          <DirectionField direction={direction} scoreDirection={scoreDirection} />
+        </aside>
       </div>
     </div>
   )
