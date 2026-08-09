@@ -12,6 +12,7 @@ import {
   verifyRoomHost,
 } from './firebase'
 import EnterPortal from './portal/EnterPortal'
+import DirectionPanel from './DirectionPanel'
 
 const BROADCAST_DEBOUNCE_MS = 100
 
@@ -117,7 +118,6 @@ export default function App() {
   const [ensembleError, setEnsembleError] = useState('')
   // Live conductor direction (lalork-website#114, rehearse#11): typed cues on
   // their own channel. Set replaces the whole live set; Clear empties it.
-  const [liveDirectionDraft, setLiveDirectionDraft] = useState('')
   const [liveDirectionSent, setLiveDirectionSent] = useState(null)
   const [snippetCopied, setSnippetCopied] = useState(false)
   const [roomIdCopied, setRoomIdCopied] = useState(false)
@@ -381,20 +381,16 @@ export default function App() {
   }, [ensembleRoomId, skeleton, liveRoomId])
 
   // Live conductor direction handlers (Set replaces / Clear empties)
-  const sendLiveDirection = () => {
-    const text = liveDirectionDraft.trim()
-    if (!ensembleRoomId || !text) return
-    setLiveDirection(ensembleRoomId, text, Boolean(liveRoomId))
-      .then(() => setLiveDirectionSent(text))
+  const handleSetDirection = (value) => {
+    if (!ensembleRoomId || !value) return
+    setLiveDirection(ensembleRoomId, value, Boolean(liveRoomId))
+      .then(() => setLiveDirectionSent(value))
       .catch((err) => console.error('[ensemble] live direction failed', err))
   }
-  const clearLiveDirection = () => {
+  const handleClearDirection = () => {
     if (!ensembleRoomId) return
     setLiveDirection(ensembleRoomId, null, Boolean(liveRoomId))
-      .then(() => {
-        setLiveDirectionSent(null)
-        setLiveDirectionDraft('')
-      })
+      .then(() => setLiveDirectionSent(null))
       .catch((err) => console.error('[ensemble] live direction clear failed', err))
   }
 
@@ -651,38 +647,11 @@ stack(
       </div>
 
       {ensembleRoomId && (
-        <div className="conductor-direction">
-          <input
-            type="text"
-            className="conductor-direction-input"
-            placeholder="Type a live direction… (Enter sends)"
-            value={liveDirectionDraft}
-            onChange={(e) => setLiveDirectionDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') sendLiveDirection()
-            }}
-            aria-label="Live conductor direction"
-          />
-          <button
-            className="ensemble-button"
-            onClick={sendLiveDirection}
-            disabled={!liveDirectionDraft.trim()}
-          >
-            Set
-          </button>
-          <button
-            className="ensemble-button"
-            onClick={clearLiveDirection}
-            disabled={!liveDirectionSent}
-          >
-            Clear
-          </button>
-          {liveDirectionSent && (
-            <span className="conductor-direction-live">
-              LIVE: {liveDirectionSent}
-            </span>
-          )}
-        </div>
+        <DirectionPanel
+          direction={liveDirectionSent}
+          onSet={handleSetDirection}
+          onClear={handleClearDirection}
+        />
       )}
 
       <EnterPortal

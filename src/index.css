@@ -211,35 +211,142 @@ h1 {
   font-size: 12px;
 }
 
-/* Live conductor direction bar (rehearse#11): typing IS conducting, so this
-   sits in prime real estate right under the status row */
-.conductor-direction {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Conductor Direction panel (rehearse#11) — ported from the Scale Navigator
+   Dashboard's ensemble workspace DirectionPanel, adapted to this app's light
+   card style. Typing IS conducting, so it sits right under the status row. */
+.direction-panel {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px;
   margin-bottom: 12px;
   flex-shrink: 0;
 }
 
-.conductor-direction-input {
-  flex: 1;
-  min-width: 0;
-  font-size: 15px;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #fff;
+.direction-panel-label {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.direction-panel-sublabel {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.direction-current-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.direction-current {
+  font-size: 17px;
+  font-style: italic;
   color: #222;
 }
 
-.conductor-direction-live {
+.direction-clear {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #666;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.direction-clear:hover {
+  background: #eee;
+  color: #222;
+}
+
+.direction-none {
   font-size: 13px;
-  font-weight: 600;
-  color: #1976d2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 30%;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+
+.direction-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.direction-group-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 90px;
+  flex: none;
+}
+
+.direction-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.direction-chip {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #222;
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.direction-chip:hover {
+  background: #e0e0e0;
+}
+
+.direction-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.direction-input {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #222;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.direction-input:focus {
+  outline: none;
+  border-color: #222;
+}
+
+.direction-set {
+  background: #222;
+  border: 1px solid #222;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.direction-set:hover {
+  opacity: 0.9;
+}
+
+.direction-set:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 /* Status text + inline lead control on one line */
