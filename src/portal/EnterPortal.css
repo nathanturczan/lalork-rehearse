@@ -129,12 +129,12 @@
 .enter-portal .portal__meta-row {
   display: flex;
   align-items: flex-end;
-  gap: 30px;
+  gap: 20px;
 }
 
 .enter-portal .portal__chord-row {
   display: flex;
-  gap: 24px;
+  gap: 16px;
 }
 
 .enter-portal .portal__tempo {
@@ -145,7 +145,7 @@
 
 .enter-portal .portal__chord-current {
   display: inline-block;
-  width: 200px;
+  width: 110px;
   font-size: 26px;
   font-weight: 600;
   white-space: nowrap;
@@ -156,7 +156,7 @@
 
 .enter-portal .portal__chord-next {
   display: inline-block;
-  width: 200px;
+  width: 110px;
   font-size: 24px;
   white-space: nowrap;
   overflow: hidden;
