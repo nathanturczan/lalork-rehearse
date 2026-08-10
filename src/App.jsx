@@ -790,6 +790,7 @@ stack(
         formContour={skeleton.formContour || null}
         formPosition={formStripPosition}
         formSections={formSections}
+        formGlyphs={formGlyphs}
       />
 
       {isNarrow && (

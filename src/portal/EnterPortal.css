@@ -251,6 +251,111 @@
   display: block;
 }
 
+/* Positioning context so the glyph overlay tracks the SVG box exactly
+   (the outer strip has padding + label). */
+.enter-portal .portal__form-canvas {
+  position: relative;
+}
+
+/* Graphic-score glyph layer (lalork#7): texture patches over the strip.
+   All marks are WHITE — color belongs to harmony. */
+.enter-portal .portal__form-glyphs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Texture patches: Kahn-style baseline-seated blocks. Each patch is its own
+   SVG; the component sets left/width/height, the baseline is always the
+   strip's bottom edge. */
+.enter-portal .portal__patch {
+  position: absolute;
+  bottom: 0;
+  display: block;
+}
+
+/* Patch animations — all deliberately subtle: the strip is ambient context,
+   not a fireworks show. Phases are staggered per patch via animationDelay. */
+.enter-portal .portal__patch--pulse {
+  animation: patch-pulse 4.2s ease-in-out infinite;
+}
+
+.enter-portal .portal__patch--breathe {
+  transform-origin: 50% 100%;
+  animation: patch-breathe 5.6s ease-in-out infinite;
+}
+
+.enter-portal .portal__patch--wriggle {
+  transform-origin: 50% 100%;
+  animation: patch-wriggle 3.4s ease-in-out infinite;
+}
+
+.enter-portal .portal__patch--shimmer {
+  animation: patch-shimmer 6.1s linear infinite;
+}
+
+@keyframes patch-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes patch-breathe {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.07);
+  }
+}
+
+@keyframes patch-wriggle {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  30% {
+    transform: skewX(1.4deg);
+  }
+  70% {
+    transform: skewX(-1.4deg);
+  }
+}
+
+@keyframes patch-shimmer {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  17% {
+    opacity: 0.65;
+  }
+  38% {
+    opacity: 0.95;
+  }
+  54% {
+    opacity: 0.7;
+  }
+  79% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-portal .portal__patch--pulse,
+  .enter-portal .portal__patch--breathe,
+  .enter-portal .portal__patch--wriggle,
+  .enter-portal .portal__patch--shimmer {
+    animation: none;
+  }
+}
+
 .enter-portal .portal__form-contour {
   stroke: var(--fg-dim);
   stroke-width: 1.5;

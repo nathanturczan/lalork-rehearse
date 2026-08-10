@@ -262,6 +262,7 @@ export default function EnterPortal({
   formContour = null,
   formPosition = null,
   formSections = null,
+  formGlyphs = null,
 }) {
   const keyData = scaleEntryFromKey(scaleKey)
   const chord = chordFromKey(chordKey)
@@ -393,7 +394,12 @@ export default function EnterPortal({
       </div>
       {/* Piece energy arc + playhead (#116): only when the piece carries a
           contour — same fixture the ensemble sees on Enter. */}
-      <FormStrip contour={formContour} position={formPosition} sections={formSections} />
+      <FormStrip
+        contour={formContour}
+        position={formPosition}
+        sections={formSections}
+        glyphs={formGlyphs}
+      />
     </div>
   )
 }
