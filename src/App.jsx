@@ -394,6 +394,12 @@ export default function App() {
   // Throttled formPosition broadcast: one small write every 2s while the
   // position actually moves. Video clock when there is one; otherwise the
   // current event's beat position over the piece's total beats.
+  //
+  // The min-move check below only exists to suppress writes while paused.
+  // It must stay well under 2s of any real piece: at the original 0.005 a
+  // 9-minute piece moves ~0.0037 per tick, so every other broadcast was
+  // silently skipped — an erratic ~4s cadence that stalled receiver
+  // playheads (and broke their rate estimation, see enter FormStrip).
   const currentEventRef = useRef(null)
   useEffect(() => {
     currentEventRef.current = currentEvent
@@ -413,7 +419,7 @@ export default function App() {
       }
       if (position == null || !Number.isFinite(position)) return
       position = Math.min(1, Math.max(0, position))
-      if (Math.abs(position - lastFormPositionRef.current) < 0.005) return
+      if (Math.abs(position - lastFormPositionRef.current) < 0.0005) return
       lastFormPositionRef.current = position
       setFormPosition(ensembleRoomId, position, Boolean(liveRoomId)).catch(
         (err) => console.error('[ensemble] formPosition write failed', err)
