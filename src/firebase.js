@@ -232,6 +232,26 @@ export async function setLiveDirection(roomId, direction, live = false) {
   await db.collection("rooms").doc(roomId).update(patch);
 }
 
+/**
+ * Subscribe to the room's live `direction` field so the conductor's panel
+ * always mirrors what players actually see — including directions set from
+ * the dashboard or left over from before a page reload (otherwise Clear
+ * never renders for them). Returns the unsubscribe function.
+ */
+export function subscribeLiveDirection(roomId, cb) {
+  if (!roomId) return () => {};
+  return db
+    .collection("rooms")
+    .doc(roomId)
+    .onSnapshot(
+      (snap) => {
+        const value = snap.data()?.direction;
+        cb(typeof value === "string" && value.trim() ? value : null);
+      },
+      (err) => console.error("[ensemble] direction subscribe failed", err)
+    );
+}
+
 // --- Form channel (lalork-website#116, rehearse#12) ---
 // formContour: normalized [x, y] breakpoints (0–1) describing the piece's
 // energy arc; formSections: normalized x positions (0–1, exclusive) of the

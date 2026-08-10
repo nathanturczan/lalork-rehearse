@@ -4,6 +4,7 @@ import {
   ensureRehearsalRoom,
   updateEnsembleState,
   setLiveDirection,
+  subscribeLiveDirection,
   setFormContour,
   setFormPosition,
   ensureAnticipationMs,
@@ -427,6 +428,16 @@ export default function App() {
     }, 2000)
     return () => clearInterval(id)
   }, [ensembleRoomId, skeleton, liveRoomId])
+
+  // Keep the panel in sync with the room doc's actual `direction` (parity
+  // with the dashboard's snapshot-synced panel): directions set from the
+  // dashboard, or surviving a page reload, still show here — and Clear works
+  // on them. Latency compensation echoes our own writes back instantly, so
+  // this and the .then() sets in the handlers below never fight.
+  useEffect(() => {
+    if (!liveRoomId || !ensembleRoomId) return
+    return subscribeLiveDirection(ensembleRoomId, setLiveDirectionSent)
+  }, [liveRoomId, ensembleRoomId])
 
   // Live conductor direction handlers (Set replaces / Clear empties)
   const handleSetDirection = (value) => {
