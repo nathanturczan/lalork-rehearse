@@ -338,16 +338,34 @@ export default function App() {
     )
   }, [ensembleRoomId])
 
-  // Form channel (rehearse#12): contour written once per piece load; playhead
-  // written on a throttle below. Pieces without contour data write null so
-  // receivers hide the strip (real data lands in the lalork#1 pass).
+  // Harmonic-state boundaries for the form strip's dashed section lines:
+  // each event's beat position over total beats, endpoints dropped. Broadcast
+  // with the contour so every receiver draws the same sections.
+  const formSections = useMemo(() => {
+    const events = skeleton?.events || []
+    const total = events.length ? events[events.length - 1].time : 0
+    if (!(total > 0)) return null
+    const xs = [
+      ...new Set(events.map((e) => e.time / total).filter((x) => x > 0 && x < 1)),
+    ]
+    return xs.length ? xs : null
+  }, [skeleton])
+
+  // Form channel (rehearse#12): contour + sections written once per piece
+  // load; playhead written on a throttle below. Pieces without contour data
+  // write null so receivers hide the strip (real data lands in the lalork#1
+  // pass).
   const lastFormPositionRef = useRef(-1)
   useEffect(() => {
     if (!ensembleRoomId || !skeleton) return
     lastFormPositionRef.current = -1
-    setFormContour(ensembleRoomId, skeleton.formContour || null, Boolean(liveRoomId))
-      .catch((err) => console.error('[ensemble] formContour write failed', err))
-  }, [ensembleRoomId, skeleton, liveRoomId])
+    setFormContour(
+      ensembleRoomId,
+      skeleton.formContour || null,
+      formSections,
+      Boolean(liveRoomId)
+    ).catch((err) => console.error('[ensemble] formContour write failed', err))
+  }, [ensembleRoomId, skeleton, formSections, liveRoomId])
 
   // Throttled formPosition broadcast: one small write every 2s while the
   // position actually moves. Video clock when there is one; otherwise the
@@ -456,16 +474,32 @@ export default function App() {
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
-  // Local form-strip playhead (#116): the current event's beat over the
-  // piece's total beats — the same fallback the 2s broadcast uses. Event
-  // resolution is enough for the conductor's own strip.
+  // Local form-strip playhead (#116): the video clock sampled at 4 Hz so the
+  // conductor's playhead glides instead of jumping event-to-event. Falls back
+  // to event resolution (current event's beat over total beats — the same
+  // fallback the 2s broadcast uses) when there's no video clock.
+  const [videoFormPosition, setVideoFormPosition] = useState(null)
+  useEffect(() => {
+    setVideoFormPosition(null)
+    if (!skeleton) return
+    const id = setInterval(() => {
+      const duration = playerRef.current?.getDuration?.() || 0
+      if (!(duration > 0)) return
+      const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
+      if (!Number.isFinite(pos)) return
+      setVideoFormPosition(Math.min(1, Math.max(0, pos)))
+    }, 250)
+    return () => clearInterval(id)
+  }, [skeleton])
   const formTotalBeats = skeleton?.events?.length
     ? skeleton.events[skeleton.events.length - 1].time
     : 0
   const formStripPosition =
-    formTotalBeats > 0 && currentEvent
-      ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
-      : null
+    videoFormPosition != null
+      ? videoFormPosition
+      : formTotalBeats > 0 && currentEvent
+        ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
+        : null
 
   // Timeline: all events, scrollable, auto-follows the current one
   const visibleEvents = useMemo(() => {
@@ -668,6 +702,7 @@ stack(
         scoreDirection={currentDirection}
         formContour={skeleton.formContour || null}
         formPosition={formStripPosition}
+        formSections={formSections}
       />
 
       {isNarrow && (

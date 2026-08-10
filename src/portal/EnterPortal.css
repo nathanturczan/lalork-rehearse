@@ -256,11 +256,23 @@
   stroke-width: 1.5;
 }
 
-/* The playhead is the signal: full-height, bright, unmistakable. */
+/* Harmonic-state boundaries: dashed verticals in the same style as the
+   panel's dashed border, sitting behind the contour. */
+.enter-portal .portal__form-section {
+  stroke: var(--fg);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.45;
+}
+
+/* The playhead is the signal: full-height, bright, unmistakable.
+   Animated via transform (translateX in user units) — SVG line geometry
+   attributes (x1/x2) are not CSS-animatable, so transitions on them are
+   silent no-ops. 0.25s matches the 4 Hz video-clock sampling. */
 .enter-portal .portal__form-playhead {
   stroke: var(--note-incoming-color, #6ab8ff);
   stroke-width: 2;
-  transition: x1 2s linear, x2 2s linear;
+  transition: transform 0.25s linear;
 }
 
 /* Shared transition animations (subset of Enter's anticipation.scss:

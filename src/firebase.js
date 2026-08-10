@@ -234,19 +234,25 @@ export async function setLiveDirection(roomId, direction, live = false) {
 
 // --- Form channel (lalork-website#116, rehearse#12) ---
 // formContour: normalized [x, y] breakpoints (0–1) describing the piece's
-// energy arc, written once on piece load. Resets formPosition to 0 — still
-// a form-channel-only write.
-export async function setFormContour(roomId, contour, live = false) {
+// energy arc; formSections: normalized x positions (0–1, exclusive) of the
+// harmonic-state boundaries, drawn as dashed verticals. Both written once on
+// piece load. Resets formPosition to 0 — still a form-channel-only write.
+export async function setFormContour(roomId, contour, sections, live = false) {
   if (!roomId) return;
   // Firestore rejects nested arrays, so the [x, y] tuples cross the wire as
   // {x, y} maps; receivers (enter useRoomHarmony) convert back to tuples.
+  // formSections is a flat number array, which Firestore accepts as-is.
   const points = Array.isArray(contour)
     ? contour
         .filter((p) => Array.isArray(p) && p.length === 2)
         .map(([x, y]) => ({ x, y }))
     : [];
+  const xs = Array.isArray(sections)
+    ? sections.filter((x) => typeof x === "number" && x > 0 && x < 1)
+    : [];
   const patch = {
     formContour: points.length ? points : null,
+    formSections: xs.length ? xs : null,
     formPosition: 0,
     updatedAt: Date.now(),
   };
