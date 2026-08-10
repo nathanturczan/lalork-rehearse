@@ -21,6 +21,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import { getNodeColor } from './colors'
 import DirectionField from './DirectionField'
+import FormStrip from './FormStrip'
 
 import diatonicSvg from './shapes/diatonic.svg'
 import harmonicMajorSvg from './shapes/harmonic_major.svg'
@@ -246,30 +247,6 @@ function animateSwapIn(el, from) {
   )
 }
 
-// NEXT-slot scale label: renders the full scale name and falls back to the
-// abbreviation only when the slot can't fit it.
-function NextScaleName({ scaleKey, entry }) {
-  const ref = useRef(null)
-  const [abbreviate, setAbbreviate] = useState(false)
-  useLayoutEffect(() => {
-    setAbbreviate(false)
-  }, [scaleKey])
-  useLayoutEffect(() => {
-    const el = ref.current
-    if (!abbreviate && el && el.scrollWidth > el.clientWidth) {
-      setAbbreviate(true)
-    }
-  })
-  const label = abbreviate
-    ? formatScaleNameShort(scaleKey, entry)
-    : formatScaleName(scaleKey, entry)
-  return (
-    <span className="portal__scale-next-name" ref={ref}>
-      {label}
-    </span>
-  )
-}
-
 // ---------------------------------------------------------------------------
 // The portal
 // ---------------------------------------------------------------------------
@@ -282,6 +259,8 @@ export default function EnterPortal({
   bpm,
   direction = null,
   scoreDirection = null,
+  formContour = null,
+  formPosition = null,
 }) {
   const keyData = scaleEntryFromKey(scaleKey)
   const chord = chordFromKey(chordKey)
@@ -294,6 +273,30 @@ export default function EnterPortal({
   const chordNextRef = useRef(null)
   const fromRects = useRef({ scale: null, chord: null })
   const lastCommitted = useRef({ scale: scaleKey, chord: chordKey })
+
+  // Scale-name abbreviation cascade: prefer full names for both slots; if
+  // the NEXT name can't fit, abbreviate it ("Ab Harm Min" — an unambiguous
+  // short form, never a "Harm…" that hides major vs minor); if it STILL
+  // can't fit, abbreviate the NOW name too ("F# Dia") to free row space.
+  // Levels: 0 = both full, 1 = next short, 2 = both short.
+  // The reset happens during render (not in an effect): resetting and
+  // re-measuring in the same effect flush can net out to the previous level,
+  // which makes React skip the re-render and strands the cascade mid-way
+  // (the position-17/28 "A." bug). A render-phase reset guarantees the
+  // cascade restarts at 0 in its own commit, then steps 1, 2 as needed.
+  const nextNameRef = useRef(null)
+  const [abbrevLevel, setAbbrevLevel] = useState(0)
+  const [prevAbbrevKeys, setPrevAbbrevKeys] = useState([scaleKey, nextScaleKey])
+  if (prevAbbrevKeys[0] !== scaleKey || prevAbbrevKeys[1] !== nextScaleKey) {
+    setPrevAbbrevKeys([scaleKey, nextScaleKey])
+    setAbbrevLevel(0)
+  }
+  useLayoutEffect(() => {
+    const el = nextNameRef.current
+    if (el && abbrevLevel < 2 && el.scrollWidth > el.clientWidth) {
+      setAbbrevLevel((l) => l + 1)
+    }
+  })
 
   // When the committed keys change, slide/grow the promoted values in from
   // the Next slot's geometry as of the PREVIOUS render (where they were
@@ -326,7 +329,11 @@ export default function EnterPortal({
                 <div className="portal__scale" ref={scaleRef}>
                   <ScaleSymbol entry={keyData} size={36} />
                   <span className="portal__scale-name">
-                    {keyData ? formatScaleName(scaleKey, keyData) : '\u2014'}
+                    {keyData
+                      ? abbrevLevel >= 2
+                        ? formatScaleNameShort(scaleKey, keyData)
+                        : formatScaleName(scaleKey, keyData)
+                      : '\u2014'}
                   </span>
                 </div>
               </div>
@@ -336,7 +343,11 @@ export default function EnterPortal({
                   {nextScaleKey && (
                     <>
                       <ScaleSymbol entry={nextEntry} size={28} />
-                      <NextScaleName scaleKey={nextScaleKey} entry={nextEntry} />
+                      <span className="portal__scale-next-name" ref={nextNameRef}>
+                        {abbrevLevel >= 1
+                          ? formatScaleNameShort(nextScaleKey, nextEntry)
+                          : formatScaleName(nextScaleKey, nextEntry)}
+                      </span>
                     </>
                   )}
                 </div>
@@ -344,7 +355,8 @@ export default function EnterPortal({
             </div>
           </div>
           <div className="portal__meta-row">
-            {/* CHORD group: fixed-width slots so Tempo never moves. */}
+            {/* CHORD group: slots flex between 110–144px, so a long name
+                nudges Tempo right instead of truncating immediately. */}
             <div className="portal__group">
               <div className="portal__chord-row">
                 <div className="portal__bay portal__bay--now">
@@ -378,6 +390,9 @@ export default function EnterPortal({
           <DirectionField direction={direction} scoreDirection={scoreDirection} />
         </aside>
       </div>
+      {/* Piece energy arc + playhead (#116): only when the piece carries a
+          contour — same fixture the ensemble sees on Enter. */}
+      <FormStrip contour={formContour} position={formPosition} />
     </div>
   )
 }

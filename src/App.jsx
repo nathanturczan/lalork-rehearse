@@ -456,6 +456,17 @@ export default function App() {
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
+  // Local form-strip playhead (#116): the current event's beat over the
+  // piece's total beats — the same fallback the 2s broadcast uses. Event
+  // resolution is enough for the conductor's own strip.
+  const formTotalBeats = skeleton?.events?.length
+    ? skeleton.events[skeleton.events.length - 1].time
+    : 0
+  const formStripPosition =
+    formTotalBeats > 0 && currentEvent
+      ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
+      : null
+
   // Timeline: all events, scrollable, auto-follows the current one
   const visibleEvents = useMemo(() => {
     const events = skeleton?.events || []
@@ -655,6 +666,8 @@ stack(
         bpm={skeleton.tempo}
         direction={liveDirectionSent}
         scoreDirection={currentDirection}
+        formContour={skeleton.formContour || null}
+        formPosition={formStripPosition}
       />
 
       {isNarrow && (

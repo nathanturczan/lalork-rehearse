@@ -67,16 +67,21 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #e6e6e6;
+  line-height: 14px;
   margin-bottom: 0;
   margin-right: 4px;
 }
 
+/* Fixed 14px label line so a bare "NEXT" label box matches a "CHORD NOW"
+   box (which contains the taller 11px group word) — keeps every column in
+   the meta row the same height, so values align under flex-end. */
 .enter-portal .portal__bay-label {
   font-size: 10px;
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--fg-dim);
+  line-height: 14px;
   margin-bottom: 0;
 }
 
@@ -137,17 +142,27 @@
   gap: 16px;
 }
 
+/* All three meta values share one 31px line box (chord-current's natural
+   height), so under the row's flex-end alignment the labels land on one
+   line, the values on another, and the space under "120 BPM" matches the
+   space under the chord names exactly. */
 .enter-portal .portal__tempo {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
+  line-height: 31px;
   white-space: nowrap;
 }
 
+/* Chord slots flex between 110px and 144px: a long name pushes Tempo right
+   before it truncates. 144 + 16 + 144 + 20 + "120 BPM" stays inside the
+   400px main column. */
 .enter-portal .portal__chord-current {
   display: inline-block;
-  width: 110px;
+  min-width: 110px;
+  max-width: 144px;
   font-size: 26px;
   font-weight: 600;
+  line-height: 31px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -156,8 +171,10 @@
 
 .enter-portal .portal__chord-next {
   display: inline-block;
-  width: 110px;
+  min-width: 110px;
+  max-width: 144px;
   font-size: 24px;
+  line-height: 31px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -214,6 +231,36 @@
   color: var(--fg-dim);
   font-weight: 400;
   opacity: 0.85;
+}
+
+/* Form strip (#116) — same fixture as Enter's: the piece's energy arc +
+   playhead hanging directly under the now panel, sharing its dashed border
+   so the two read as one instrument. Only rendered when the skeleton
+   carries a contour. */
+.enter-portal .portal__form-strip {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 16px 6px;
+  border: 1px dashed var(--fg);
+  border-top: none;
+}
+
+.enter-portal .portal__form-svg {
+  width: 100%;
+  height: 28px;
+  display: block;
+}
+
+.enter-portal .portal__form-contour {
+  stroke: var(--fg-dim);
+  stroke-width: 1.5;
+}
+
+/* The playhead is the signal: full-height, bright, unmistakable. */
+.enter-portal .portal__form-playhead {
+  stroke: var(--note-incoming-color, #6ab8ff);
+  stroke-width: 2;
+  transition: x1 2s linear, x2 2s linear;
 }
 
 /* Shared transition animations (subset of Enter's anticipation.scss:
@@ -301,7 +348,8 @@
 
   .enter-portal .portal__chord-current,
   .enter-portal .portal__chord-next {
-    width: 130px;
+    min-width: 90px;
+    max-width: 130px;
     font-size: 20px;
   }
 
