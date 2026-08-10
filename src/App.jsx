@@ -352,18 +352,28 @@ export default function App() {
     )
   }, [ensembleRoomId])
 
-  // Harmonic-state boundaries for the form strip's dashed section lines:
-  // each event's beat position over total beats, endpoints dropped. Broadcast
-  // with the contour so every receiver draws the same sections.
+  // Harmonic-state boundaries for the form strip's dashed section lines,
+  // broadcast with the contour so every receiver draws the same sections.
+  // The axis must match the playhead's: with a video the playhead (and the
+  // contour) run on video time, and the piece keeps sounding past the last
+  // event's START beat — so beats are normalized over the video's full
+  // length in beats, not the last event's beat (which drew every divider a
+  // few percent too far right). Videoless pieces keep the last event's beat
+  // as the axis, same as their playhead fallback.
+  const [videoDuration, setVideoDuration] = useState(0)
   const formSections = useMemo(() => {
     const events = skeleton?.events || []
-    const total = events.length ? events[events.length - 1].time : 0
+    const lastBeat = events.length ? events[events.length - 1].time : 0
+    const total =
+      skeleton?.youtube_id && videoDuration > 0 && skeleton?.tempo
+        ? (videoDuration / 60) * skeleton.tempo
+        : lastBeat
     if (!(total > 0)) return null
     const xs = [
       ...new Set(events.map((e) => e.time / total).filter((x) => x > 0 && x < 1)),
     ]
     return xs.length ? xs : null
-  }, [skeleton])
+  }, [skeleton, videoDuration])
 
   // Form channel (rehearse#12): contour + sections written once per piece
   // load; playhead written on a throttle below. Pieces without contour data
@@ -504,10 +514,12 @@ export default function App() {
   const [videoFormPosition, setVideoFormPosition] = useState(null)
   useEffect(() => {
     setVideoFormPosition(null)
+    setVideoDuration(0)
     if (!skeleton) return
     const id = setInterval(() => {
       const duration = playerRef.current?.getDuration?.() || 0
       if (!(duration > 0)) return
+      setVideoDuration(duration) // feeds the formSections axis above
       const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
       if (!Number.isFinite(pos)) return
       setVideoFormPosition(Math.min(1, Math.max(0, pos)))
