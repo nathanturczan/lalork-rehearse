@@ -517,8 +517,8 @@ export default function App() {
 const { joinEnsemble } = await import('https://cdn.jsdelivr.net/npm/strudel-scalenav@0.8.0/dist/strudel-scalenav.js')
 
 const ens = await joinEnsemble('${ensembleRoomId}')
-ens.showBadge() // room + current scale/chord, top of the screen
-// ens.showPortal() // full LALORK portal docked at the bottom (direction cues + form strip)
+ens.showPortal() // LALORK portal HUD docked at the bottom (scale/chord/tempo + direction cues + form strip)
+// ens.showBadge() // minimal alternative: room + current scale/chord, top of the screen
 
 // Each arpeggio below contains 16 steps per cycle.
 // The numbers select notes; their positions determine when they play.
