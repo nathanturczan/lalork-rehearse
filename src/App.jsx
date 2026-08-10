@@ -186,6 +186,7 @@ export default function App() {
   }, [sketchpad])
 
   // Initialize YouTube player; tear down when the piece (or its video) changes
+  const [videoPlaying, setVideoPlaying] = useState(false)
   useEffect(() => {
     if (!skeleton?.youtube_id) return
 
@@ -193,11 +194,24 @@ export default function App() {
     loadYouTubeAPI().then((YT) => {
       if (cancelled) return
       playerRef.current = new YT.Player('youtube-player', {
-        videoId: skeleton.youtube_id
+        videoId: skeleton.youtube_id,
+        events: {
+          // Track whether the piece is actually sounding, so score
+          // directions can clear when playback stops (see
+          // activeScoreDirection below). BUFFERING counts as playing:
+          // it's a momentary hiccup mid-performance, not a stop.
+          onStateChange: (e) => {
+            setVideoPlaying(
+              e.data === YT.PlayerState.PLAYING ||
+                e.data === YT.PlayerState.BUFFERING
+            )
+          }
+        }
       })
     })
     return () => {
       cancelled = true
+      setVideoPlaying(false)
       try {
         playerRef.current?.destroy?.()
       } catch {
@@ -423,6 +437,15 @@ export default function App() {
       : null
   const nextNode = nextEvent ? nodeMap[nextEvent.state] : null
 
+  // Score directions are moment-bound expressive marks ("morendo, poco
+  // cresc."): they only mean something while the piece is sounding. Gate on
+  // the video playing so pausing/ending clears the chips locally AND in the
+  // room doc — otherwise the last event's marks stick on every portal
+  // forever. Videoless pieces (timeline clicking) have no clock to gate on;
+  // their direction follows the clicked event exactly as before.
+  const activeScoreDirection =
+    !skeleton?.youtube_id || videoPlaying ? currentDirection : null
+
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   useEffect(() => {
     if (!ensembleRoomId) return
@@ -433,7 +456,7 @@ export default function App() {
 
     const chordToSend = selectedChordKey || null
     const scaleToSend = selectedScaleKey || null
-    const directionToSend = currentDirection || null
+    const directionToSend = activeScoreDirection || null
     const nextChordToSend = nextNode?.chord || null
     const nextScaleToSend = nextNode?.scale || null
 
@@ -470,7 +493,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, currentDirection, liveRoomId, nextNode])
+  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, activeScoreDirection, liveRoomId, nextNode])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
@@ -699,7 +722,7 @@ stack(
         nextChordKey={nextNode?.chord || null}
         bpm={skeleton.tempo}
         direction={liveDirectionSent}
-        scoreDirection={currentDirection}
+        scoreDirection={activeScoreDirection}
         formContour={skeleton.formContour || null}
         formPosition={formStripPosition}
         formSections={formSections}
