@@ -376,10 +376,44 @@ export default function App() {
     return xs.length ? xs : null
   }, [skeleton, videoDuration])
 
-  // Form channel (rehearse#12): contour + sections written once per piece
-  // load; playhead written on a throttle below. Pieces without contour data
-  // write null so receivers hide the strip (real data lands in the lalork#1
-  // pass).
+  // Graphic-score glyphs (lalork#7): skeleton formGlyphs live in beat space
+  // (startBeat/endBeat, like events) and get normalized here on the SAME
+  // axis as formSections above, so patches sit exactly between the dashed
+  // dividers. The small inset keeps the dividers visible between patches.
+  const formGlyphs = useMemo(() => {
+    const source = skeleton?.formGlyphs
+    if (!Array.isArray(source) || !source.length) return null
+    const events = skeleton?.events || []
+    const lastBeat = events.length ? events[events.length - 1].time : 0
+    const total =
+      skeleton?.youtube_id && videoDuration > 0 && skeleton?.tempo
+        ? (videoDuration / 60) * skeleton.tempo
+        : lastBeat
+    if (!(total > 0)) return null
+    const GAP = 0.002
+    const marks = source
+      .filter(
+        (g) =>
+          g &&
+          typeof g === 'object' &&
+          typeof g.type === 'string' &&
+          typeof g.startBeat === 'number' &&
+          typeof g.endBeat === 'number' &&
+          g.endBeat > g.startBeat
+      )
+      .map(({ startBeat, endBeat, ...rest }) => ({
+        ...rest,
+        x: startBeat / total + GAP,
+        w: (endBeat - startBeat) / total - GAP * 2,
+      }))
+      .filter((g) => g.w > 0 && g.x < 1)
+    return marks.length ? marks : null
+  }, [skeleton, videoDuration])
+
+  // Form channel (rehearse#12): contour + sections + glyphs written once per
+  // piece load; playhead written on a throttle below. Pieces without contour
+  // data write null so receivers hide the strip (real data lands in the
+  // lalork#1 pass).
   const lastFormPositionRef = useRef(-1)
   useEffect(() => {
     if (!ensembleRoomId || !skeleton) return
@@ -388,9 +422,10 @@ export default function App() {
       ensembleRoomId,
       skeleton.formContour || null,
       formSections,
-      Boolean(liveRoomId)
+      Boolean(liveRoomId),
+      formGlyphs
     ).catch((err) => console.error('[ensemble] formContour write failed', err))
-  }, [ensembleRoomId, skeleton, formSections, liveRoomId])
+  }, [ensembleRoomId, skeleton, formSections, formGlyphs, liveRoomId])
 
   // Throttled formPosition broadcast: one small write every 2s while the
   // position actually moves. Video clock when there is one; otherwise the
