@@ -2,78 +2,1018 @@
   "tempo": 120.0,
   "comment": "CFGC Ostinato - riff C-F-G-C (octave up) constant throughout; 16 harmonic states reinterpret it. 120 BPM 4/4, variable state lengths, 136 bars (544 beats) per cycle = 4:32. Two cycles = 9:04. Cycle 2 substitutes harmonic-minor scales under G7 and C7 (b9 color). Composed Aug 5, 2026.",
   "youtube_id": "rIOG7qifi9g",
+  "formContourComment": "Derived from ostinato-cfg-final.wav (Ben Tillotson mix, Aug 9): RMS envelope, 4s smoothing, sqrt scaling, histogram-equalization (EQ_BLEND=0.7) + S-curve expansion (MIDPOINT=0.6, EXPAND=0.55), full 0-1 range so highs touch top / lows touch bottom. 96 breakpoints. Generator: lalork/pieces/02-ostinato/analyze_form.py Manual local warps: 4:18 valley and 5:11 valley pulled to the floor (cos^2 falloff, +/-11-12s), rise 5:11-6:36 steepened with gamma 1.6 toward the 6:36 value.",
   "formContour": [
-    [0.0, 0.3], [0.05, 0.45], [0.09, 0.35], [0.15, 0.15], [0.28, 0.55],
-    [0.39, 0.2], [0.47, 0.6], [0.5, 0.7], [0.55, 0.5], [0.64, 0.25],
-    [0.7, 0.55], [0.78, 0.65], [0.88, 0.3], [0.96, 0.85], [1.0, 0.45]
+    [
+      0.0,
+      0.028
+    ],
+    [
+      0.0105,
+      0.066
+    ],
+    [
+      0.0211,
+      0.079
+    ],
+    [
+      0.0316,
+      0.103
+    ],
+    [
+      0.0421,
+      0.112
+    ],
+    [
+      0.0526,
+      0.135
+    ],
+    [
+      0.0632,
+      0.155
+    ],
+    [
+      0.0737,
+      0.188
+    ],
+    [
+      0.0842,
+      0.227
+    ],
+    [
+      0.0947,
+      0.322
+    ],
+    [
+      0.1053,
+      0.327
+    ],
+    [
+      0.1158,
+      0.28
+    ],
+    [
+      0.1263,
+      0.28
+    ],
+    [
+      0.1368,
+      0.32
+    ],
+    [
+      0.1474,
+      0.337
+    ],
+    [
+      0.1579,
+      0.344
+    ],
+    [
+      0.1684,
+      0.365
+    ],
+    [
+      0.1789,
+      0.41
+    ],
+    [
+      0.1895,
+      0.394
+    ],
+    [
+      0.2,
+      0.408
+    ],
+    [
+      0.2105,
+      0.472
+    ],
+    [
+      0.2211,
+      0.449
+    ],
+    [
+      0.2316,
+      0.33
+    ],
+    [
+      0.2421,
+      0.461
+    ],
+    [
+      0.2526,
+      0.616
+    ],
+    [
+      0.2632,
+      0.503
+    ],
+    [
+      0.2737,
+      0.734
+    ],
+    [
+      0.2842,
+      0.751
+    ],
+    [
+      0.2947,
+      0.771
+    ],
+    [
+      0.3053,
+      0.799
+    ],
+    [
+      0.3158,
+      0.748
+    ],
+    [
+      0.3263,
+      0.843
+    ],
+    [
+      0.3368,
+      0.86
+    ],
+    [
+      0.3474,
+      0.852
+    ],
+    [
+      0.3579,
+      0.849
+    ],
+    [
+      0.3684,
+      0.911
+    ],
+    [
+      0.3789,
+      0.937
+    ],
+    [
+      0.3895,
+      0.913
+    ],
+    [
+      0.4,
+      0.93
+    ],
+    [
+      0.4105,
+      0.928
+    ],
+    [
+      0.4211,
+      0.959
+    ],
+    [
+      0.4316,
+      0.98
+    ],
+    [
+      0.4421,
+      0.966
+    ],
+    [
+      0.4526,
+      0.883
+    ],
+    [
+      0.4632,
+      0.303
+    ],
+    [
+      0.4737,
+      0.0
+    ],
+    [
+      0.4842,
+      0.381
+    ],
+    [
+      0.4947,
+      0.929
+    ],
+    [
+      0.5053,
+      0.946
+    ],
+    [
+      0.5158,
+      0.948
+    ],
+    [
+      0.5263,
+      0.979
+    ],
+    [
+      0.5368,
+      0.999
+    ],
+    [
+      0.5474,
+      0.691
+    ],
+    [
+      0.5579,
+      0.404
+    ],
+    [
+      0.5684,
+      0.0
+    ],
+    [
+      0.5789,
+      0.148
+    ],
+    [
+      0.5895,
+      0.51
+    ],
+    [
+      0.6,
+      0.633
+    ],
+    [
+      0.6105,
+      0.631
+    ],
+    [
+      0.6211,
+      0.684
+    ],
+    [
+      0.6316,
+      0.777
+    ],
+    [
+      0.6421,
+      0.723
+    ],
+    [
+      0.6526,
+      0.762
+    ],
+    [
+      0.6632,
+      0.715
+    ],
+    [
+      0.6737,
+      0.763
+    ],
+    [
+      0.6842,
+      0.798
+    ],
+    [
+      0.6947,
+      0.852
+    ],
+    [
+      0.7053,
+      0.842
+    ],
+    [
+      0.7158,
+      0.883
+    ],
+    [
+      0.7263,
+      0.918
+    ],
+    [
+      0.7368,
+      0.455
+    ],
+    [
+      0.7474,
+      0.288
+    ],
+    [
+      0.7579,
+      0.248
+    ],
+    [
+      0.7684,
+      0.232
+    ],
+    [
+      0.7789,
+      0.262
+    ],
+    [
+      0.7895,
+      0.223
+    ],
+    [
+      0.8,
+      0.22
+    ],
+    [
+      0.8105,
+      0.186
+    ],
+    [
+      0.8211,
+      0.167
+    ],
+    [
+      0.8316,
+      0.215
+    ],
+    [
+      0.8421,
+      0.206
+    ],
+    [
+      0.8526,
+      0.213
+    ],
+    [
+      0.8632,
+      0.281
+    ],
+    [
+      0.8737,
+      0.181
+    ],
+    [
+      0.8842,
+      0.162
+    ],
+    [
+      0.8947,
+      0.148
+    ],
+    [
+      0.9053,
+      0.122
+    ],
+    [
+      0.9158,
+      0.111
+    ],
+    [
+      0.9263,
+      0.084
+    ],
+    [
+      0.9368,
+      0.095
+    ],
+    [
+      0.9474,
+      0.071
+    ],
+    [
+      0.9579,
+      0.06
+    ],
+    [
+      0.9684,
+      0.052
+    ],
+    [
+      0.9789,
+      0.055
+    ],
+    [
+      0.9895,
+      0.022
+    ],
+    [
+      1.0,
+      0.0
+    ]
   ],
-  "formGlyphsComment": "Graphic score (lalork#7): one Kahn-style texture patch per chord state, beat space (startBeat/endBeat; runtime normalizes on the same axis as formSections). Character map: maj7 plateaus = low sparse stipple/bubble domes, dominants = chevron/zigzag wedges (F7/C7 12-bar builds climb highest), m7s = mid hatch/comb/steps columns. Cycle 2 = +0.2 density, fresh seeds. fit: squash = density fields stretch with the strip; crop = discrete marks keep their cell size (combs fuse into solid bars if squashed).",
+  "formGlyphsComment": "Through-composed visual narrative (Aug 11), decoupled from harmonic states but landing on real boundaries. Cues (min:sec): 0:00 sparkle fade-in; 0:56 C-dia glitch rects; 1:12 choral-pad lines crossfade; 1:44 darkening tilt; 2:12 brighten; 2:24 TRIANGLES; 3:04 darken; 3:12 hard cut bubbles; 4:08-4:48 static to crazy density; 4:56 underwater fish; 5:28 grotto opens, coral reef by 6:16, climax 6:32; 6:40-6:56 denouement; 7:20 space starfield; 7:52 dashes; 8:24 far away; 8:40 fade out. New fields: opacity (0-1), fadeIn/fadeOut (fraction of patch width, gradient mask), tilt (lines only). Patches may overlap for crossfades.",
   "formGlyphs": [
-    { "type": "patch", "startBeat": 0, "endBeat": 32, "envelope": "dome", "texture": "stipple", "h": 0.4, "density": 0.3, "seed": 3, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 32, "endBeat": 48, "envelope": "wedge", "texture": "chevron", "h": 0.6, "density": 0.5, "seed": 10, "fit": "crop", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 48, "endBeat": 64, "envelope": "column", "texture": "stipple", "h": 0.35, "density": 0.35, "seed": 17, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 64, "endBeat": 112, "envelope": "dome", "texture": "bubbles", "h": 0.5, "density": 0.4, "seed": 24, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 112, "endBeat": 144, "envelope": "column", "texture": "hatch", "h": 0.5, "density": 0.45, "seed": 31, "fit": "squash", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 144, "endBeat": 208, "envelope": "dome", "texture": "stipple", "h": 0.3, "density": 0.2, "seed": 38, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 208, "endBeat": 240, "envelope": "wedge", "texture": "zigzag", "h": 0.7, "density": 0.55, "seed": 45, "fit": "squash", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 240, "endBeat": 256, "envelope": "column", "texture": "comb", "h": 0.5, "density": 0.5, "seed": 52, "fit": "crop", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 256, "endBeat": 288, "envelope": "column", "texture": "hatch", "h": 0.55, "density": 0.45, "seed": 59, "fit": "squash", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 288, "endBeat": 336, "envelope": "wedge", "texture": "chevron", "h": 0.9, "density": 0.75, "seed": 66, "fit": "crop", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 336, "endBeat": 368, "envelope": "dome", "texture": "stipple", "h": 0.4, "density": 0.3, "seed": 73, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 368, "endBeat": 384, "envelope": "wedge", "texture": "zigzag", "h": 0.6, "density": 0.5, "seed": 80, "fit": "squash", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 384, "endBeat": 400, "envelope": "column", "texture": "comb", "h": 0.5, "density": 0.5, "seed": 87, "fit": "crop", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 400, "endBeat": 464, "envelope": "dome", "texture": "bubbles", "h": 0.3, "density": 0.2, "seed": 94, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 464, "endBeat": 496, "envelope": "column", "texture": "steps", "h": 0.55, "density": 0.45, "seed": 101, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 496, "endBeat": 544, "envelope": "wedge", "texture": "chevron", "h": 0.95, "density": 0.8, "seed": 108, "fit": "crop", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 544, "endBeat": 576, "envelope": "dome", "texture": "stipple", "h": 0.4, "density": 0.5, "seed": 115, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 576, "endBeat": 592, "envelope": "wedge", "texture": "chevron", "h": 0.6, "density": 0.7, "seed": 122, "fit": "crop", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 592, "endBeat": 608, "envelope": "column", "texture": "stipple", "h": 0.35, "density": 0.55, "seed": 129, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 608, "endBeat": 656, "envelope": "dome", "texture": "bubbles", "h": 0.5, "density": 0.6, "seed": 136, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 656, "endBeat": 688, "envelope": "column", "texture": "hatch", "h": 0.5, "density": 0.65, "seed": 143, "fit": "squash", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 688, "endBeat": 752, "envelope": "dome", "texture": "stipple", "h": 0.3, "density": 0.4, "seed": 150, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 752, "endBeat": 784, "envelope": "wedge", "texture": "zigzag", "h": 0.7, "density": 0.75, "seed": 157, "fit": "squash", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 784, "endBeat": 800, "envelope": "column", "texture": "comb", "h": 0.5, "density": 0.7, "seed": 164, "fit": "crop", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 800, "endBeat": 832, "envelope": "column", "texture": "hatch", "h": 0.55, "density": 0.65, "seed": 171, "fit": "squash", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 832, "endBeat": 880, "envelope": "wedge", "texture": "chevron", "h": 0.9, "density": 0.95, "seed": 178, "fit": "crop", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 880, "endBeat": 912, "envelope": "dome", "texture": "stipple", "h": 0.4, "density": 0.5, "seed": 185, "fit": "squash", "anim": "pulse" },
-    { "type": "patch", "startBeat": 912, "endBeat": 928, "envelope": "wedge", "texture": "zigzag", "h": 0.6, "density": 0.7, "seed": 192, "fit": "squash", "anim": "wriggle" },
-    { "type": "patch", "startBeat": 928, "endBeat": 944, "envelope": "column", "texture": "comb", "h": 0.5, "density": 0.7, "seed": 199, "fit": "crop", "anim": "shimmer" },
-    { "type": "patch", "startBeat": 944, "endBeat": 1008, "envelope": "dome", "texture": "bubbles", "h": 0.3, "density": 0.4, "seed": 206, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 1008, "endBeat": 1040, "envelope": "column", "texture": "steps", "h": 0.55, "density": 0.65, "seed": 213, "fit": "crop", "anim": "breathe" },
-    { "type": "patch", "startBeat": 1040, "endBeat": 1088, "envelope": "wedge", "texture": "chevron", "h": 0.95, "density": 1, "seed": 220, "fit": "crop", "anim": "wriggle" }
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 112,
+      "texture": "stipple",
+      "envelope": "wedge",
+      "h": 0.6,
+      "density": 0.55,
+      "seed": 3,
+      "fit": "squash",
+      "anim": "pulse",
+      "opacity": 0.9,
+      "fadeIn": 1.0
+    },
+    {
+      "type": "patch",
+      "startBeat": 112,
+      "endBeat": 208,
+      "texture": "rects",
+      "envelope": "column",
+      "h": 0.65,
+      "density": 0.6,
+      "seed": 11,
+      "fit": "squash",
+      "anim": "flicker",
+      "opacity": 0.95,
+      "fadeOut": 0.65
+    },
+    {
+      "type": "patch",
+      "startBeat": 144,
+      "endBeat": 208,
+      "texture": "lines",
+      "envelope": "column",
+      "h": 0.7,
+      "density": 0.5,
+      "seed": 19,
+      "fit": "squash",
+      "anim": "breathe",
+      "opacity": 0.85,
+      "fadeIn": 1.0
+    },
+    {
+      "type": "patch",
+      "startBeat": 208,
+      "endBeat": 264,
+      "texture": "lines",
+      "envelope": "column",
+      "h": 0.7,
+      "density": 0.5,
+      "seed": 23,
+      "fit": "squash",
+      "anim": "sway",
+      "opacity": 0.8,
+      "tilt": 16,
+      "fadeOut": 0.9
+    },
+    {
+      "type": "patch",
+      "startBeat": 264,
+      "endBeat": 288,
+      "texture": "lines",
+      "envelope": "column",
+      "h": 0.75,
+      "density": 0.6,
+      "seed": 27,
+      "fit": "squash",
+      "anim": "shimmer",
+      "opacity": 0.95,
+      "fadeIn": 0.7
+    },
+    {
+      "type": "patch",
+      "startBeat": 288,
+      "endBeat": 384,
+      "texture": "triangles",
+      "envelope": "column",
+      "h": 0.92,
+      "density": 0.85,
+      "seed": 31,
+      "fit": "squash",
+      "anim": "pulse",
+      "opacity": 1.0,
+      "fadeOut": 0.17
+    },
+    {
+      "type": "patch",
+      "startBeat": 384,
+      "endBeat": 496,
+      "texture": "bubbles",
+      "envelope": "column",
+      "h": 0.8,
+      "density": 0.6,
+      "seed": 37,
+      "fit": "crop",
+      "anim": "rise",
+      "opacity": 0.85
+    },
+    {
+      "type": "patch",
+      "startBeat": 384,
+      "endBeat": 496,
+      "texture": "morphline",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 47,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.04,
+      "fadeOut": 0.04
+    },
+    {
+      "type": "patch",
+      "startBeat": 464,
+      "endBeat": 576,
+      "texture": "static",
+      "envelope": "wedge",
+      "h": 1.0,
+      "density": 1.0,
+      "seed": 41,
+      "fit": "squash",
+      "anim": "flicker",
+      "opacity": 1.0,
+      "fadeIn": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 576,
+      "endBeat": 592,
+      "texture": "static",
+      "envelope": "ramp",
+      "h": 0.8,
+      "density": 0.6,
+      "seed": 43,
+      "fit": "squash",
+      "anim": "flicker",
+      "opacity": 0.8,
+      "fadeOut": 0.5
+    },
+    {
+      "type": "patch",
+      "startBeat": 592,
+      "endBeat": 656,
+      "texture": "fish",
+      "envelope": "wedge",
+      "h": 0.55,
+      "density": 0.45,
+      "seed": 47,
+      "fit": "crop",
+      "anim": "wriggle",
+      "opacity": 0.85,
+      "fadeIn": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 608,
+      "endBeat": 688,
+      "texture": "fish",
+      "envelope": "column",
+      "h": 0.65,
+      "density": 0.7,
+      "seed": 101,
+      "fit": "crop",
+      "anim": "wriggle",
+      "opacity": 0.85,
+      "fadeIn": 0.2,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 592,
+      "endBeat": 656,
+      "texture": "bubbles",
+      "envelope": "column",
+      "h": 0.4,
+      "density": 0.25,
+      "seed": 53,
+      "fit": "crop",
+      "anim": "rise",
+      "opacity": 0.45
+    },
+    {
+      "type": "patch",
+      "startBeat": 656,
+      "endBeat": 800,
+      "texture": "coral",
+      "envelope": "wedge",
+      "h": 0.95,
+      "density": 0.85,
+      "seed": 59,
+      "fit": "squash",
+      "anim": "breathe",
+      "opacity": 0.95,
+      "fadeIn": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 656,
+      "endBeat": 800,
+      "texture": "bubbles",
+      "envelope": "dome",
+      "h": 0.85,
+      "density": 0.6,
+      "seed": 61,
+      "fit": "crop",
+      "anim": "rise",
+      "opacity": 0.7,
+      "fadeIn": 0.25
+    },
+    {
+      "type": "patch",
+      "startBeat": 656,
+      "endBeat": 784,
+      "texture": "fish",
+      "envelope": "column",
+      "h": 0.75,
+      "density": 0.55,
+      "seed": 67,
+      "fit": "crop",
+      "anim": "wriggle",
+      "opacity": 0.8,
+      "fadeIn": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 656,
+      "endBeat": 752,
+      "texture": "fish",
+      "envelope": "column",
+      "h": 0.9,
+      "density": 1.0,
+      "seed": 113,
+      "fit": "crop",
+      "anim": "wriggle",
+      "opacity": 0.85,
+      "fadeIn": 0.15,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 672,
+      "endBeat": 752,
+      "texture": "fish",
+      "envelope": "column",
+      "h": 0.5,
+      "density": 0.8,
+      "seed": 127,
+      "fit": "crop",
+      "anim": "wriggle",
+      "opacity": 0.75,
+      "fadeIn": 0.2,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 800,
+      "endBeat": 832,
+      "texture": "coral",
+      "envelope": "ramp",
+      "h": 0.8,
+      "density": 0.5,
+      "seed": 71,
+      "fit": "squash",
+      "anim": "sway",
+      "opacity": 0.6,
+      "fadeOut": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 832,
+      "endBeat": 912,
+      "texture": "fallingStars",
+      "envelope": "column",
+      "h": 0.98,
+      "density": 0.5,
+      "seed": 73,
+      "fit": "squash",
+      "opacity": 0.85
+    },
+    {
+      "type": "patch",
+      "startBeat": 912,
+      "endBeat": 1088,
+      "texture": "stipple",
+      "envelope": "column",
+      "h": 0.95,
+      "density": 0.15,
+      "seed": 79,
+      "fit": "squash",
+      "anim": "shimmer",
+      "opacity": 0.6,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 944,
+      "endBeat": 1008,
+      "texture": "dashes",
+      "envelope": "column",
+      "h": 0.6,
+      "density": 0.3,
+      "seed": 83,
+      "fit": "squash",
+      "anim": "sway",
+      "opacity": 0.7
+    },
+    {
+      "type": "patch",
+      "startBeat": 1008,
+      "endBeat": 1040,
+      "texture": "dashes",
+      "envelope": "column",
+      "h": 0.45,
+      "density": 0.15,
+      "seed": 89,
+      "fit": "squash",
+      "anim": "shimmer",
+      "opacity": 0.45
+    },
+    {
+      "type": "patch",
+      "startBeat": 1040,
+      "endBeat": 1088,
+      "texture": "dashes",
+      "envelope": "column",
+      "h": 0.35,
+      "density": 0.08,
+      "seed": 97,
+      "fit": "squash",
+      "anim": "sway",
+      "opacity": 0.35,
+      "fadeOut": 1.0
+    }
   ],
   "events": [
-    { "time": 0, "state": "Bbmaj7", "direction": { "lyric": "", "marking": "", "note": "Cycle 1. The riff plain: C-F-G-C, always." } },
-    { "time": 32, "state": "Bb7", "direction": { "lyric": "", "marking": "", "note": "Bb chain accelerates (8-4-4 bars)" } },
-    { "time": 48, "state": "Bb6", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 64, "state": "Bbm6", "direction": { "lyric": "", "marking": "", "note": "Lands long on the darkest Bb (12 bars)" } },
-    { "time": 112, "state": "Am7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 144, "state": "Abmaj7", "direction": { "lyric": "", "marking": "", "note": "Plateau: 16 bars, deep rest" } },
-    { "time": 208, "state": "G7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 240, "state": "Gm7", "direction": { "lyric": "", "marking": "", "note": "Quick (4 bars)" } },
-    { "time": 256, "state": "Fm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 288, "state": "F7", "direction": { "lyric": "", "marking": "", "note": "Long tension build (12 bars)" } },
-    { "time": 336, "state": "Ebmaj7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 368, "state": "Eb7", "direction": { "lyric": "", "marking": "", "note": "Quick (4 bars)" } },
-    { "time": 384, "state": "Dm7", "direction": { "lyric": "", "marking": "", "note": "Chromatic slip into the far point" } },
-    { "time": 400, "state": "Dbmaj7", "direction": { "lyric": "", "marking": "", "note": "Far point: 16 bars, the strangest rest" } },
-    { "time": 464, "state": "Cm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 496, "state": "C7", "direction": { "lyric": "", "marking": "", "note": "Turnaround (12 bars) back to Bb" } },
-    { "time": 544, "state": "Bbmaj7", "direction": { "lyric": "", "marking": "", "note": "Cycle 2 begins" } },
-    { "time": 576, "state": "Bb7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 592, "state": "Bb6", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 608, "state": "Bbm6", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 656, "state": "Am7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 688, "state": "Abmaj7", "direction": { "lyric": "", "marking": "", "note": "Plateau" } },
-    { "time": 752, "state": "G7_hm", "direction": { "lyric": "", "marking": "", "note": "Substitution: C harmonic minor under G7 (Ab = b9)" } },
-    { "time": 784, "state": "Gm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 800, "state": "Fm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 832, "state": "F7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 880, "state": "Ebmaj7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 912, "state": "Eb7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 928, "state": "Dm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 944, "state": "Dbmaj7", "direction": { "lyric": "", "marking": "", "note": "Far point, last visit" } },
-    { "time": 1008, "state": "Cm7", "direction": { "lyric": "", "marking": "", "note": "" } },
-    { "time": 1040, "state": "C7_hm", "direction": { "lyric": "", "marking": "", "note": "Substitution: F harmonic minor under C7 (Db = b9). Final turnaround; ends at beat 1088 (9:04)." } }
+    {
+      "time": 0,
+      "state": "Bbmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Cycle 1. The riff plain: C-F-G-C, always."
+      }
+    },
+    {
+      "time": 32,
+      "state": "Bb7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Bb chain accelerates (8-4-4 bars)"
+      }
+    },
+    {
+      "time": 48,
+      "state": "Bb6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 64,
+      "state": "Bbm6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Lands long on the darkest Bb (12 bars)"
+      }
+    },
+    {
+      "time": 112,
+      "state": "Am7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 144,
+      "state": "Abmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Plateau: 16 bars, deep rest"
+      }
+    },
+    {
+      "time": 208,
+      "state": "G7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 240,
+      "state": "Gm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Quick (4 bars)"
+      }
+    },
+    {
+      "time": 256,
+      "state": "Fm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 288,
+      "state": "F7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Long tension build (12 bars)"
+      }
+    },
+    {
+      "time": 336,
+      "state": "Ebmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 368,
+      "state": "Eb7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Quick (4 bars)"
+      }
+    },
+    {
+      "time": 384,
+      "state": "Dm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Chromatic slip into the far point"
+      }
+    },
+    {
+      "time": 400,
+      "state": "Dbmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Far point: 16 bars, the strangest rest"
+      }
+    },
+    {
+      "time": 464,
+      "state": "Cm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 496,
+      "state": "C7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Turnaround (12 bars) back to Bb"
+      }
+    },
+    {
+      "time": 544,
+      "state": "Bbmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Cycle 2 begins"
+      }
+    },
+    {
+      "time": 576,
+      "state": "Bb7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 592,
+      "state": "Bb6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 608,
+      "state": "Bbm6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 656,
+      "state": "Am7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 688,
+      "state": "Abmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Plateau"
+      }
+    },
+    {
+      "time": 752,
+      "state": "G7_hm",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Substitution: C harmonic minor under G7 (Ab = b9)"
+      }
+    },
+    {
+      "time": 784,
+      "state": "Gm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 800,
+      "state": "Fm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 832,
+      "state": "F7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 880,
+      "state": "Ebmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 912,
+      "state": "Eb7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 928,
+      "state": "Dm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 944,
+      "state": "Dbmaj7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Far point, last visit"
+      }
+    },
+    {
+      "time": 1008,
+      "state": "Cm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1040,
+      "state": "C7_hm",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Substitution: F harmonic minor under C7 (Db = b9). Final turnaround; ends at beat 1088 (9:04)."
+      }
+    }
   ]
 }

@@ -240,9 +240,19 @@
 .enter-portal .portal__form-strip {
   display: flex;
   flex-direction: column;
-  padding: 4px 16px 6px;
+  position: relative;
+  padding: 0 16px;
   border: 1px dashed var(--fg);
   border-top: none;
+}
+
+/* The FORM label floats over the canvas instead of taking a flow row, so
+   the strip graphics cover the panel's full height edge to edge. */
+.enter-portal .portal__form-strip .portal__bay-label {
+  position: absolute;
+  top: 2px;
+  left: 16px;
+  z-index: 1;
 }
 
 .enter-portal .portal__form-svg {
@@ -275,33 +285,50 @@
   display: block;
 }
 
-/* Patch animations — all deliberately subtle: the strip is ambient context,
-   not a fireworks show. Phases are staggered per patch via animationDelay. */
+/* Patch animations — each one clearly legible from across the room, and each
+   texture family moves in its OWN way: pulse throbs, breathe swells, wriggle
+   swims, shimmer flickers, flicker glitches, sway drifts, rise bobs upward.
+   Phases are staggered per patch via animationDelay. */
 .enter-portal .portal__patch--pulse {
-  animation: patch-pulse 4.2s ease-in-out infinite;
+  animation: patch-pulse 2.6s ease-in-out infinite;
 }
 
 .enter-portal .portal__patch--breathe {
   transform-origin: 50% 100%;
-  animation: patch-breathe 5.6s ease-in-out infinite;
+  animation: patch-breathe 4.2s ease-in-out infinite;
 }
 
 .enter-portal .portal__patch--wriggle {
   transform-origin: 50% 100%;
-  animation: patch-wriggle 3.4s ease-in-out infinite;
+  animation: patch-wriggle 2.4s ease-in-out infinite;
 }
 
 .enter-portal .portal__patch--shimmer {
-  animation: patch-shimmer 6.1s linear infinite;
+  animation: patch-shimmer 3.3s linear infinite;
+}
+
+.enter-portal .portal__patch--flicker {
+  animation: patch-flicker 1.7s steps(1, end) infinite;
+}
+
+.enter-portal .portal__patch--sway {
+  transform-origin: 50% 100%;
+  animation: patch-sway 5s ease-in-out infinite;
+}
+
+.enter-portal .portal__patch--rise {
+  animation: patch-rise 3.8s ease-in-out infinite;
 }
 
 @keyframes patch-pulse {
   0%,
   100% {
-    opacity: 0.6;
+    opacity: 0.35;
+    transform: scale(0.97);
   }
   50% {
     opacity: 1;
+    transform: scale(1.03);
   }
 }
 
@@ -309,41 +336,108 @@
   0%,
   100% {
     transform: scaleY(1);
+    opacity: 0.75;
   }
   50% {
-    transform: scaleY(1.07);
+    transform: scaleY(1.18);
+    opacity: 1;
   }
 }
 
 @keyframes patch-wriggle {
   0%,
   100% {
-    transform: skewX(0deg);
+    transform: skewX(0deg) translateX(0);
   }
   30% {
-    transform: skewX(1.4deg);
+    transform: skewX(4deg) translateX(1.5%);
   }
   70% {
-    transform: skewX(-1.4deg);
+    transform: skewX(-4deg) translateX(-1.5%);
   }
 }
 
 @keyframes patch-shimmer {
   0%,
   100% {
-    opacity: 0.85;
+    opacity: 0.9;
   }
-  17% {
-    opacity: 0.65;
+  15% {
+    opacity: 0.4;
   }
-  38% {
+  32% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 0.55;
+  }
+  63% {
     opacity: 0.95;
   }
-  54% {
-    opacity: 0.7;
+  81% {
+    opacity: 0.45;
   }
-  79% {
+}
+
+/* Hard-stepped glitch: abrupt jumps, no easing — for rects and static. */
+@keyframes patch-flicker {
+  0% {
     opacity: 1;
+    transform: translateX(0);
+  }
+  12% {
+    opacity: 0.4;
+    transform: translateX(0.6%);
+  }
+  21% {
+    opacity: 0.95;
+    transform: translateX(-0.5%);
+  }
+  38% {
+    opacity: 0.55;
+    transform: translateX(0);
+  }
+  52% {
+    opacity: 1;
+    transform: translateX(0.4%);
+  }
+  71% {
+    opacity: 0.35;
+    transform: translateX(-0.6%);
+  }
+  86% {
+    opacity: 0.9;
+    transform: translateX(0);
+  }
+}
+
+/* Slow lateral drift with a lean — lines and dashes adrift. */
+@keyframes patch-sway {
+  0%,
+  100% {
+    transform: translateX(-2.5%) rotate(-0.6deg);
+  }
+  50% {
+    transform: translateX(2.5%) rotate(0.6deg);
+  }
+}
+
+/* Bubbling up: continuous upward drift, fading in at the bottom of the loop
+   and out at the top so the wrap-around reads as new bubbles surfacing. */
+@keyframes patch-rise {
+  0% {
+    transform: translateY(9%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.95;
+  }
+  78% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-16%);
+    opacity: 0;
   }
 }
 
@@ -351,23 +445,28 @@
   .enter-portal .portal__patch--pulse,
   .enter-portal .portal__patch--breathe,
   .enter-portal .portal__patch--wriggle,
-  .enter-portal .portal__patch--shimmer {
+  .enter-portal .portal__patch--shimmer,
+  .enter-portal .portal__patch--flicker,
+  .enter-portal .portal__patch--sway,
+  .enter-portal .portal__patch--rise {
     animation: none;
   }
 }
 
 .enter-portal .portal__form-contour {
-  stroke: var(--fg-dim);
-  stroke-width: 1.5;
+  stroke: #fff;
+  stroke-width: 4.5;
+  opacity: 0.9;
 }
 
 /* Harmonic-state boundaries: dashed verticals in the same style as the
    panel's dashed border, sitting behind the contour. */
+/* Same language as the portal's dashed white borders — bright white dashes,
+   full opacity, but heavier so they read at strip size. */
 .enter-portal .portal__form-section {
-  stroke: var(--fg);
-  stroke-width: 1;
-  stroke-dasharray: 4 4;
-  opacity: 0.45;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-dasharray: 3 3;
 }
 
 /* The playhead is the signal: full-height, bright, unmistakable.
@@ -376,7 +475,7 @@
    silent no-ops. 0.25s matches the 4 Hz video-clock sampling. */
 .enter-portal .portal__form-playhead {
   stroke: var(--note-incoming-color, #6ab8ff);
-  stroke-width: 2;
+  stroke-width: 4.5;
   transition: transform 0.25s linear;
 }
 
