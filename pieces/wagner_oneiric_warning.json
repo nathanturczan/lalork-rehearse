@@ -3,9 +3,390 @@
   "comment": "Wagner's Oneiric Warning (Brang\u00e4ne's Watch) - 29 harmonic states. 48 beats (24s) each at 120 BPM. Total: 696 seconds (11.6 minutes).",
   "youtube_id": "FW3dtzHdftI",
   "formContour": [
-    [0.0, 0.35], [0.14, 0.5], [0.17, 0.35], [0.28, 0.15], [0.31, 0.3],
-    [0.41, 0.15], [0.55, 0.25], [0.66, 0.15], [0.72, 0.2], [0.76, 0.95],
-    [0.79, 0.3], [0.86, 0.6], [0.9, 0.25], [1.0, 0.05]
+    [
+      0.0,
+      0.065
+    ],
+    [
+      0.0105,
+      0.079
+    ],
+    [
+      0.0211,
+      0.101
+    ],
+    [
+      0.0316,
+      0.068
+    ],
+    [
+      0.0421,
+      0.175
+    ],
+    [
+      0.0526,
+      0.155
+    ],
+    [
+      0.0632,
+      0.232
+    ],
+    [
+      0.0737,
+      0.324
+    ],
+    [
+      0.0842,
+      0.139
+    ],
+    [
+      0.0947,
+      0.182
+    ],
+    [
+      0.1053,
+      0.217
+    ],
+    [
+      0.1158,
+      0.161
+    ],
+    [
+      0.1263,
+      0.243
+    ],
+    [
+      0.1368,
+      0.086
+    ],
+    [
+      0.1474,
+      0.095
+    ],
+    [
+      0.1579,
+      0.106
+    ],
+    [
+      0.1684,
+      0.116
+    ],
+    [
+      0.1789,
+      0.906
+    ],
+    [
+      0.1895,
+      0.832
+    ],
+    [
+      0.2,
+      0.95
+    ],
+    [
+      0.2105,
+      0.795
+    ],
+    [
+      0.2211,
+      0.254
+    ],
+    [
+      0.2316,
+      0.441
+    ],
+    [
+      0.2421,
+      0.489
+    ],
+    [
+      0.2526,
+      0.258
+    ],
+    [
+      0.2632,
+      0.261
+    ],
+    [
+      0.2737,
+      0.3
+    ],
+    [
+      0.2842,
+      0.286
+    ],
+    [
+      0.2947,
+      0.243
+    ],
+    [
+      0.3053,
+      0.46
+    ],
+    [
+      0.3158,
+      0.868
+    ],
+    [
+      0.3263,
+      0.758
+    ],
+    [
+      0.3368,
+      0.907
+    ],
+    [
+      0.3474,
+      0.902
+    ],
+    [
+      0.3579,
+      0.741
+    ],
+    [
+      0.3684,
+      0.874
+    ],
+    [
+      0.3789,
+      0.713
+    ],
+    [
+      0.3895,
+      0.313
+    ],
+    [
+      0.4,
+      0.356
+    ],
+    [
+      0.4105,
+      0.869
+    ],
+    [
+      0.4211,
+      0.557
+    ],
+    [
+      0.4316,
+      0.431
+    ],
+    [
+      0.4421,
+      0.848
+    ],
+    [
+      0.4526,
+      0.887
+    ],
+    [
+      0.4632,
+      0.766
+    ],
+    [
+      0.4737,
+      0.753
+    ],
+    [
+      0.4842,
+      0.836
+    ],
+    [
+      0.4947,
+      0.271
+    ],
+    [
+      0.5053,
+      0.284
+    ],
+    [
+      0.5158,
+      0.797
+    ],
+    [
+      0.5263,
+      0.293
+    ],
+    [
+      0.5368,
+      0.339
+    ],
+    [
+      0.5474,
+      0.826
+    ],
+    [
+      0.5579,
+      0.692
+    ],
+    [
+      0.5684,
+      0.555
+    ],
+    [
+      0.5789,
+      0.9
+    ],
+    [
+      0.5895,
+      0.428
+    ],
+    [
+      0.6,
+      0.341
+    ],
+    [
+      0.6105,
+      0.29
+    ],
+    [
+      0.6211,
+      0.91
+    ],
+    [
+      0.6316,
+      0.914
+    ],
+    [
+      0.6421,
+      0.965
+    ],
+    [
+      0.6526,
+      0.972
+    ],
+    [
+      0.6632,
+      0.737
+    ],
+    [
+      0.6737,
+      0.765
+    ],
+    [
+      0.6842,
+      0.787
+    ],
+    [
+      0.6947,
+      0.185
+    ],
+    [
+      0.7053,
+      0.202
+    ],
+    [
+      0.7158,
+      0.188
+    ],
+    [
+      0.7263,
+      0.862
+    ],
+    [
+      0.7368,
+      0.413
+    ],
+    [
+      0.7474,
+      0.678
+    ],
+    [
+      0.7579,
+      0.835
+    ],
+    [
+      0.7684,
+      0.963
+    ],
+    [
+      0.7789,
+      0.964
+    ],
+    [
+      0.7895,
+      0.992
+    ],
+    [
+      0.8,
+      0.807
+    ],
+    [
+      0.8105,
+      0.719
+    ],
+    [
+      0.8211,
+      0.856
+    ],
+    [
+      0.8316,
+      0.998
+    ],
+    [
+      0.8421,
+      0.944
+    ],
+    [
+      0.8526,
+      0.954
+    ],
+    [
+      0.8632,
+      0.983
+    ],
+    [
+      0.8737,
+      0.681
+    ],
+    [
+      0.8842,
+      0.726
+    ],
+    [
+      0.8947,
+      0.299
+    ],
+    [
+      0.9053,
+      0.142
+    ],
+    [
+      0.9158,
+      0.164
+    ],
+    [
+      0.9263,
+      0.192
+    ],
+    [
+      0.9368,
+      0.315
+    ],
+    [
+      0.9474,
+      0.208
+    ],
+    [
+      0.9579,
+      0.28
+    ],
+    [
+      0.9684,
+      0.438
+    ],
+    [
+      0.9789,
+      0.135
+    ],
+    [
+      0.9895,
+      0.06
+    ],
+    [
+      1.0,
+      0.0
+    ]
   ],
   "events": [
     {
@@ -269,5 +650,513 @@
         "note": "die Nacht = the night; ending"
       }
     }
-  ]
+  ],
+  "formContourComment": "Derived from wagner_stereo.wav by pieces/01-wagner/analyze_form.py (lalork repo): RMS -> 4s moving average -> sqrt -> normalize -> histogram-equalize blend 0.7 -> S-curve around MIDPOINT 0.6 with EXPAND 0.55 -> full 0-1 range. 96 breakpoints. Replaces the 14-point placeholder.",
+  "formGlyphs": [
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 48,
+      "texture": "lantern",
+      "envelope": "column",
+      "h": 0.95,
+      "density": 1.0,
+      "seed": 91,
+      "fit": "squash",
+      "opacity": 0.95,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 96,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 11,
+      "fit": "squash",
+      "tilt": 85,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 48,
+      "endBeat": 144,
+      "texture": "clouds",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.25,
+      "seed": 5,
+      "fit": "squash",
+      "opacity": 0.7,
+      "fadeIn": 0.1,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 240,
+      "texture": "stipple",
+      "envelope": "column",
+      "h": 0.3,
+      "density": 0.2,
+      "seed": 77,
+      "fit": "squash",
+      "anim": "shimmer",
+      "opacity": 0.6,
+      "fadeIn": 0.4
+    },
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 264,
+      "texture": "moon",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 3,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.1,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 96,
+      "endBeat": 192,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 12,
+      "fit": "squash",
+      "tilt": 71,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 144,
+      "endBeat": 240,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 13,
+      "fit": "squash",
+      "tilt": 85,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 144,
+      "endBeat": 240,
+      "texture": "rook",
+      "envelope": "column",
+      "h": 0.85,
+      "density": 0.55,
+      "seed": 213,
+      "fit": "squash",
+      "opacity": 0.7,
+      "fadeIn": 0.1,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 144,
+      "endBeat": 1296,
+      "texture": "stars",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.35,
+      "seed": 9,
+      "fit": "squash",
+      "opacity": 0.55,
+      "fadeIn": 0.12,
+      "fadeOut": 0.08
+    },
+    {
+      "type": "patch",
+      "startBeat": 240,
+      "endBeat": 336,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 14,
+      "fit": "squash",
+      "tilt": 29,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 240,
+      "endBeat": 432,
+      "texture": "wisps",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.2,
+      "seed": 101,
+      "fit": "squash",
+      "opacity": 0.85,
+      "fadeIn": 0.1,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 240,
+      "endBeat": 288,
+      "texture": "wisps",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 1.0,
+      "seed": 77,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.1,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 312,
+      "endBeat": 360,
+      "texture": "wisps",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 1.0,
+      "seed": 78,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.1,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 288,
+      "endBeat": 384,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 15,
+      "fit": "squash",
+      "tilt": 43,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 384,
+      "endBeat": 408,
+      "texture": "comet",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 107,
+      "fit": "squash",
+      "opacity": 1.0
+    },
+    {
+      "type": "patch",
+      "startBeat": 432,
+      "endBeat": 576,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 16,
+      "fit": "squash",
+      "tilt": 64,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 432,
+      "endBeat": 576,
+      "texture": "briar",
+      "envelope": "column",
+      "h": 0.8,
+      "density": 0.8,
+      "seed": 109,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.05,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 528,
+      "endBeat": 576,
+      "texture": "rose",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 223,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.1,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 576,
+      "endBeat": 720,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 17,
+      "fit": "squash",
+      "tilt": 71,
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 576,
+      "endBeat": 720,
+      "texture": "sleepers",
+      "envelope": "column",
+      "h": 0.85,
+      "density": 1.0,
+      "seed": 113,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.1,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 720,
+      "endBeat": 864,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 18,
+      "fit": "squash",
+      "tilt": 78,
+      "opacity": 0.85
+    },
+    {
+      "type": "patch",
+      "startBeat": 720,
+      "endBeat": 864,
+      "texture": "runes",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.8,
+      "seed": 127,
+      "fit": "squash",
+      "opacity": 0.85,
+      "fadeIn": 0.05,
+      "fadeOut": 0.1
+    },
+    {
+      "type": "patch",
+      "startBeat": 864,
+      "endBeat": 960,
+      "texture": "runes",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.9,
+      "seed": 139,
+      "fit": "squash",
+      "opacity": 0.85,
+      "fadeIn": 0.1,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 864,
+      "endBeat": 960,
+      "texture": "runes",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.9,
+      "seed": 151,
+      "tilt": 62,
+      "fit": "squash",
+      "opacity": 0.85,
+      "fadeIn": 0.1,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 864,
+      "endBeat": 1056,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 19,
+      "fit": "squash",
+      "tilt": 85,
+      "opacity": 0.85
+    },
+    {
+      "type": "patch",
+      "startBeat": 960,
+      "endBeat": 1008,
+      "texture": "frost",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.7,
+      "seed": 47,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.15,
+      "fadeOut": 0.15
+    },
+    {
+      "type": "patch",
+      "startBeat": 1008,
+      "endBeat": 1056,
+      "texture": "stipple",
+      "envelope": "wedge",
+      "h": 0.7,
+      "density": 0.6,
+      "seed": 49,
+      "fit": "squash",
+      "anim": "pulse",
+      "opacity": 0.8
+    },
+    {
+      "type": "patch",
+      "startBeat": 1008,
+      "endBeat": 1296,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 20,
+      "fit": "squash",
+      "tilt": 50,
+      "opacity": 0.85
+    },
+    {
+      "type": "patch",
+      "startBeat": 1056,
+      "endBeat": 1152,
+      "texture": "bell",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.8,
+      "seed": 53,
+      "fit": "squash",
+      "opacity": 1.0,
+      "fadeOut": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 1104,
+      "endBeat": 1152,
+      "texture": "stars",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 1.0,
+      "seed": 61,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.2,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 1152,
+      "endBeat": 1200,
+      "texture": "stars",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 1.0,
+      "seed": 62,
+      "fit": "squash",
+      "opacity": 0.9,
+      "fadeIn": 0.2,
+      "fadeOut": 0.2
+    },
+    {
+      "type": "patch",
+      "startBeat": 1200,
+      "endBeat": 1272,
+      "texture": "bell",
+      "envelope": "column",
+      "h": 0.7,
+      "density": 0.5,
+      "seed": 59,
+      "fit": "squash",
+      "opacity": 0.7,
+      "fadeIn": 0.1,
+      "fadeOut": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 1200,
+      "endBeat": 1392,
+      "texture": "thread",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 21,
+      "fit": "squash",
+      "tilt": 15,
+      "opacity": 0.85,
+      "fadeOut": 0.3
+    },
+    {
+      "type": "patch",
+      "startBeat": 1200,
+      "endBeat": 1392,
+      "texture": "stipple",
+      "envelope": "column",
+      "h": 0.3,
+      "density": 0.2,
+      "seed": 77,
+      "fit": "squash",
+      "anim": "shimmer",
+      "opacity": 0.6,
+      "fadeOut": 0.6
+    },
+    {
+      "type": "patch",
+      "startBeat": 1344,
+      "endBeat": 1392,
+      "texture": "moon",
+      "envelope": "column",
+      "h": 1.0,
+      "density": 0.5,
+      "seed": 3,
+      "fit": "squash",
+      "opacity": 0.8,
+      "fadeIn": 0.2,
+      "fadeOut": 0.5
+    },
+    {
+      "type": "patch",
+      "startBeat": 1296,
+      "endBeat": 1344,
+      "texture": "rook",
+      "envelope": "column",
+      "h": 0.95,
+      "density": 0.8,
+      "seed": 211,
+      "fit": "squash",
+      "opacity": 0.75,
+      "fadeIn": 0.08,
+      "fadeOut": 0.12
+    },
+    {
+      "type": "patch",
+      "startBeat": 1296,
+      "endBeat": 1392,
+      "texture": "fallingStars",
+      "envelope": "column",
+      "h": 0.9,
+      "density": 0.3,
+      "seed": 67,
+      "fit": "squash",
+      "opacity": 0.6,
+      "fadeIn": 0.2,
+      "fadeOut": 0.5
+    }
+  ],
+  "formGlyphsComment": "v3 fantasy night (Aug 2026 notes): lantern (big, windowed, Hermit's) alone in cell 1; clouds spread + sailing, moon = deep crescent 2x wide; rook watches the opening moon in cells 4-5 and the closing moon in cell 28. Scenes: wisps 2:00-3:36 (Traum der Liebe), heptagram shooting star 3:12 (lacht), briar 3:36-4:48 (fast growth) with a small rose at the top of cell 12, sleeping eye PAIRS 4:48-6:00 (each pair blinks together; once per loop a pair wakes = Schlimmes), rune inscription 6:00-8:00 set as TYPE on one baseline, letters carving in one at a time and holding (unbroken common-tone chain; neutral letters only: fehu uruz raido kenaz gebo wunjo). Threads (common tones) now ghost-faint (~0.1) and morph flat-sine-triangle-square-pulse. tilt on thread = line y (C#=85 D=78 D#=71 E=64 F#=50 G=43 A=29 B=15). Pictorial textures aspect-compensate via measured patch aspect (unsquish)."
 }

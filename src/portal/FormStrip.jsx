@@ -15,7 +15,7 @@
 // x1/x2 — SVG line geometry attributes aren't CSS-animatable, so transitions
 // on them silently do nothing and the playhead teleports.
 
-import { useId } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 const VIEW_W = 100
 const VIEW_H = 20
@@ -51,10 +51,18 @@ function envelopeShape(envelope) {
 // Procedural texture marks inside the 100×100 patch box. All white; opacity
 // variation carries the depth. Deterministic per seed. `tilt` (patch units of
 // vertical drop across the box, positive = downhill) only affects 'lines'.
-function textureMarks(texture, density, seed, tilt = 0) {
+function textureMarks(texture, density, seed, tilt = 0, aspect = 1) {
   const rnd = makeRng(seed)
   const d = clamp01(density)
   const els = []
+  // Aspect compensation: the patch SVG stretches non-uniformly (preserve-
+  // AspectRatio="none"), which squashes pictorial shapes. Shapes that must
+  // read true (moon, clouds, stars, rook) are drawn round in user space and
+  // pre-compressed horizontally about their own center; the viewBox stretch
+  // then undoes the compression and they render round in pixels.
+  const xs = 1 / Math.max(aspect, 0.0001)
+  const unsquish = (cx) =>
+    `translate(${cx.toFixed(2)} 0) scale(${xs.toFixed(4)} 1) translate(${(-cx).toFixed(2)} 0)`
   // non-scaling-stroke means this width is in screen pixels regardless of
   // how the patch is squashed — 2px reads confidently at every strip size.
   const stroke = {
@@ -525,6 +533,803 @@ function textureMarks(texture, density, seed, tilt = 0) {
       }
       break
     }
+    case 'thread': {
+      // The Watcher's Thread (Wagner): one thin persistent line at a height
+      // encoding the current common tone (`tilt` = y, patch units from the
+      // top). Ghost-faint (~0.1) and alive: it morphs straight -> sine ->
+      // triangle -> square -> pulse -> straight on a slow loop. SMIL
+      // interpolates between equal-length point lists, so all waveforms
+      // sample the same x positions; square/pulse jumps become steep
+      // near-vertical segments, which reads exactly like a scope trace.
+      const y = tilt || 50
+      const AMP = 5
+      const cycles = 3
+      const N = 96
+      const flat = []
+      const sine = []
+      const tri = []
+      const sq = []
+      const pulse = []
+      for (let i = 0; i <= N; i++) {
+        const x = ((i / N) * 100).toFixed(1)
+        const p = (i / N) * cycles
+        const sv = Math.sin(p * Math.PI * 2)
+        const tv = 4 * Math.abs(p - Math.floor(p + 0.5)) - 1
+        const qv = sv >= 0 ? 1 : -1
+        const pv = p - Math.floor(p) < 0.18 ? 1 : -1
+        flat.push(`${x},${y}`)
+        sine.push(`${x},${(y - AMP * sv).toFixed(1)}`)
+        tri.push(`${x},${(y - AMP * tv).toFixed(1)}`)
+        sq.push(`${x},${(y - AMP * qv).toFixed(1)}`)
+        pulse.push(`${x},${(y - AMP * pv).toFixed(1)}`)
+      }
+      const F = flat.join(' ')
+      els.push(
+        <polyline key="thread" points={F} {...stroke} opacity={0.1}>
+          <animate
+            attributeName="points"
+            calcMode="spline"
+            keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1"
+            values={`${F};${sine.join(' ')};${tri.join(' ')};${sq.join(' ')};${pulse.join(' ')};${F}`}
+            keyTimes="0;0.2;0.4;0.6;0.8;1"
+            dur={`${(26 + rnd() * 10).toFixed(1)}s`}
+            begin={`-${(rnd() * 30).toFixed(1)}s`}
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.12;0.06;0.12"
+            dur={`${(5 + rnd() * 4).toFixed(2)}s`}
+            begin={`-${(rnd() * 5).toFixed(2)}s`}
+            repeatCount="indefinite"
+          />
+        </polyline>
+      )
+      break
+    }
+    case 'moon': {
+      // Crescent moon, upper sky: outer arc + wider inner return arc. Slow
+      // glow pulse and a barely perceptible drift across the night.
+      const cx = 58 + rnd() * 10
+      const cy = 22 + rnd() * 12
+      const r = 11 + d * 9
+      // Inner return arc only slightly larger than the outer radius: the
+      // closer it is to r, the deeper the scoop. 1.05 leaves a thin waist
+      // (~0.27r) — a true crescent, not an upper-case D.
+      const crescent = `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx} ${cy + r} A ${r * 1.05} ${r * 1.05} 0 0 0 ${cx} ${cy - r} Z`
+      els.push(
+        // 2x horizontal stretch on top of the aspect compensation (Nathan's
+        // call): wide crescent, same height.
+        <g
+          key="moon"
+          transform={`translate(${cx.toFixed(2)} 0) scale(${(2 * xs).toFixed(4)} 1) translate(${(-cx).toFixed(2)} 0)`}
+        >
+          <path d={crescent} {...stroke} opacity={0.85}>
+            <animate
+              attributeName="opacity"
+              values="0.85;0.6;0.85"
+              dur={`${(7 + rnd() * 4).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              calcMode="spline"
+              keySplines="0.45 0 0.55 1;0.45 0 0.55 1"
+              values="-2 0;2 0.8;-2 0"
+              dur="40s"
+              repeatCount="indefinite"
+            />
+          </path>
+        </g>
+      )
+      break
+    }
+    case 'clouds': {
+      // Puffy, super simple clouds: one closed bumpy OUTLINE per cloud (no
+      // fill) — sample points around a wide ellipse with radius jitter, join
+      // them with outward-bulging arcs. Dissolving is the patch's fadeOut:
+      // night sky giving way to the stars.
+      const n = Math.round(2 + d * 4)
+      for (let i = 0; i < n; i++) {
+        // Even horizontal slots (one cloud per lane, small jitter) so they
+        // spread across the sky instead of bunching, and a big slow
+        // left-right sail so the drift actually reads.
+        const cx = ((i + 0.25 + rnd() * 0.5) / n) * 100
+        const cy = 14 + rnd() * 24 // upper sky — clouds ride the top of the cell
+        const ry = 9 + rnd() * 8
+        const rx = ry * (2.0 + rnd() * 0.8)
+        const op = 0.5 + rnd() * 0.35
+        const drift = (14 + rnd() * 16) * (rnd() < 0.5 ? 1 : -1)
+        const bumps = 9 + Math.floor(rnd() * 4)
+        const pts = []
+        for (let k = 0; k < bumps; k++) {
+          const a = (k / bumps) * Math.PI * 2
+          const jit = 0.8 + rnd() * 0.35
+          pts.push([cx + Math.cos(a) * rx * jit, cy + Math.sin(a) * ry * jit])
+        }
+        let dPath = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`
+        for (let k = 1; k <= bumps; k++) {
+          const [px, py] = pts[k - 1]
+          const [x, y] = pts[k % bumps]
+          const r = Math.hypot(x - px, y - py) * 0.62
+          dPath += ` A ${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`
+        }
+        dPath += ' Z'
+        els.push(
+          <g key={i} transform={unsquish(cx)} opacity={op}>
+            <path d={dPath} {...stroke}>
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                calcMode="spline"
+                keySplines="0.45 0 0.55 1;0.45 0 0.55 1"
+                values={`${(-drift).toFixed(1)} 0;${drift.toFixed(1)} 0;${(-drift).toFixed(1)} 0`}
+                dur={`${(10 + rnd() * 10).toFixed(2)}s`}
+                begin={`-${(rnd() * 12).toFixed(2)}s`}
+                repeatCount="indefinite"
+              />
+            </path>
+          </g>
+        )
+      }
+      break
+    }
+    case 'stars': {
+      // Actual star polygons — pentagrams and heptagrams — twinkling, some
+      // rotating almost imperceptibly. D&D fantasy night sky.
+      // supralinear top end: ambient patches (d~0.35) stay sparse (~9),
+      // d=1.0 = a packed night sky (~52 stars in one box)
+      const n = Math.round(4 + d * 14 + Math.pow(d, 8) * 34)
+      for (let i = 0; i < n; i++) {
+        const cx = 4 + rnd() * 92
+        const cy = 6 + rnd() * 80
+        const spikes = rnd() < 0.6 ? 5 : 7
+        const R = 2 + rnd() * 4.5
+        const rIn = R * 0.42
+        const rot0 = rnd() * Math.PI
+        const pts = []
+        for (let k = 0; k < spikes * 2; k++) {
+          const rad = k % 2 === 0 ? R : rIn
+          const a = rot0 + (k * Math.PI) / spikes
+          pts.push(`${(cx + rad * Math.sin(a)).toFixed(1)},${(cy - rad * Math.cos(a)).toFixed(1)}`)
+        }
+        const op = 0.35 + rnd() * 0.6
+        const filled = rnd() < 0.4
+        els.push(
+          <g key={i} transform={unsquish(cx)}>
+            <polygon
+              points={pts.join(' ')}
+              {...(filled ? { fill: '#fff' } : stroke)}
+              {...(filled ? {} : { strokeWidth: 1.5 })}
+              opacity={op}
+            >
+              <animate
+                attributeName="opacity"
+                values={`${op.toFixed(2)};${(op * 0.2).toFixed(2)};${op.toFixed(2)}`}
+                dur={`${(2 + rnd() * 4).toFixed(2)}s`}
+                begin={`-${(rnd() * 4).toFixed(2)}s`}
+                repeatCount="indefinite"
+              />
+              {rnd() < 0.5 && (
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  values={`0 ${cx.toFixed(1)} ${cy.toFixed(1)};360 ${cx.toFixed(1)} ${cy.toFixed(1)}`}
+                  dur={`${(25 + rnd() * 30).toFixed(0)}s`}
+                  repeatCount="indefinite"
+                />
+              )}
+            </polygon>
+          </g>
+        )
+      }
+      break
+    }
+    case 'bell': {
+      // A bell strike: expanding concentric rings blooming from one point,
+      // sfz -> pp (ring grows as it fades), staggered echoes. Watchtower.
+      const cx = 30 + rnd() * 40
+      const cy = 35 + rnd() * 25
+      const rings = 3
+      const CYCLE = 4.5
+      for (let i = 0; i < rings; i++) {
+        els.push(
+          <circle key={i} cx={cx} cy={cy} r={4} {...stroke} strokeWidth={2.5} opacity={0}>
+            <animate
+              attributeName="r"
+              calcMode="spline"
+              keySplines="0.2 0 0.4 1"
+              values={`4;${(30 + d * 24).toFixed(0)}`}
+              dur={`${CYCLE}s`}
+              begin={`${(i * 0.7).toFixed(1)}s`}
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="opacity"
+              values="0;0.95;0"
+              keyTimes="0;0.08;1"
+              dur={`${CYCLE}s`}
+              begin={`${(i * 0.7).toFixed(1)}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+        )
+      }
+      els.push(<circle key="clapper" cx={cx} cy={cy} r={1.6} fill="#fff" opacity={0.9} />)
+      break
+    }
+    case 'frost': {
+      // Quiet-but-glassy: tiny glitter pinned to the TOP of the strip while
+      // the contour lies on the floor. High, cold, faint.
+      const n = Math.round(40 + d * 120)
+      for (let i = 0; i < n; i++) {
+        const op = 0.25 + rnd() * 0.55
+        els.push(
+          <circle key={i} cx={rnd() * 100} cy={rnd() * 26} r={0.5 + rnd() * 1} fill="#fff" opacity={op}>
+            <animate
+              attributeName="opacity"
+              values={`${op.toFixed(2)};${(op * 0.1).toFixed(2)};${op.toFixed(2)}`}
+              dur={`${(0.7 + rnd() * 1.6).toFixed(2)}s`}
+              begin={`-${(rnd() * 2).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+        )
+      }
+      break
+    }
+    case 'rook': {
+      // Chess rook / watchtower, outline only — Brangäne's post. Stands on
+      // the floor of the patch, crenellated top, still except for a slow
+      // watchfire breathe. density scales the tower. Sits right-of-center
+      // in its box (right of the moon it watches).
+      const cx = 66 + rnd() * 24
+      const s = 0.75 + d * 0.45
+      const P = [
+        [-18, 100], [-18, 90], [-12, 84], [-12, 40], [-18, 40], [-18, 22],
+        [-11, 22], [-11, 29], [-4, 29], [-4, 22], [4, 22], [4, 29],
+        [11, 29], [11, 22], [18, 22], [18, 40], [12, 40], [12, 84],
+        [18, 90], [18, 100],
+      ]
+      const dPath =
+        P.map(
+          ([lx, ly], k) =>
+            `${k === 0 ? 'M' : 'L'} ${(cx + lx * s).toFixed(1)} ${(100 - (100 - ly) * s).toFixed(1)}`
+        ).join(' ') + ' Z'
+      els.push(
+        <g key="rook" transform={unsquish(cx)}>
+          <path d={dPath} {...stroke} opacity={0.8}>
+            <animate
+              attributeName="opacity"
+              values="0.8;0.55;0.8"
+              dur={`${(8 + rnd() * 5).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </path>
+        </g>
+      )
+      break
+    }
+    case 'wisps': {
+      // Will-o'-wisps: glowing lights that TRAVEL on slow meandering loops
+      // (every other dot texture twinkles in place). The dream of love as
+      // lights that lead astray; each pulse a harp pluck.
+      // density is a count knob with a supralinear top end: d=0.2 ~ 7
+      // ambient lights, d=1.0 = MAXIMUM OVERDRIVE (~140 wisps in one box)
+      const n = Math.round(2 + d * 26 + Math.pow(d, 8) * 112)
+      for (let i = 0; i < n; i++) {
+        const x0 = 10 + rnd() * 80
+        const y0 = 22 + rnd() * 56
+        const w1x = (rnd() - 0.5) * 56
+        const w1y = (rnd() - 0.5) * 40
+        const w2x = (rnd() - 0.5) * 56
+        const w2y = (rnd() - 0.5) * 40
+        const path =
+          `M ${x0.toFixed(1)} ${y0.toFixed(1)} ` +
+          `C ${(x0 + w1x).toFixed(1)} ${(y0 + w1y).toFixed(1)}, ${(x0 + w2x).toFixed(1)} ${(y0 + w1y).toFixed(1)}, ${(x0 + w2x * 0.6).toFixed(1)} ${(y0 + w2y).toFixed(1)} ` +
+          `C ${(x0 + w2x * 0.2).toFixed(1)} ${(y0 + w2y * 0.5).toFixed(1)}, ${(x0 - w1x * 0.5).toFixed(1)} ${(y0 - w1y * 0.6).toFixed(1)}, ${x0.toFixed(1)} ${y0.toFixed(1)}`
+        const op = 0.5 + rnd() * 0.4
+        els.push(
+          <g key={i} opacity={op}>
+            {/* circles ride at the group origin; the scale-only wrap keeps
+                them round after the viewBox stretch */}
+            <g transform={`scale(${xs.toFixed(4)} 1)`}>
+              <circle cx={0} cy={0} r={4} fill="#fff" opacity={0.22} />
+              <circle cx={0} cy={0} r={1.5} fill="#fff" />
+            </g>
+            <animate
+              attributeName="opacity"
+              values={`${op.toFixed(2)};${(op * 0.25).toFixed(2)};${op.toFixed(2)}`}
+              dur={`${(2 + rnd() * 2.5).toFixed(2)}s`}
+              begin={`-${(rnd() * 3).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+            <animateMotion
+              path={path}
+              dur={`${(16 + rnd() * 16).toFixed(1)}s`}
+              begin={`-${(rnd() * 20).toFixed(1)}s`}
+              repeatCount="indefinite"
+            />
+          </g>
+        )
+      }
+      break
+    }
+    case 'comet': {
+      // One shooting star, unmissable: a heptagram ({7/3} star polygon)
+      // head with a long three-strand tail, dark most of the loop, then a
+      // slow bright streak down through the box. "lacht".
+      const DUR = 10
+      const x0 = 12 + rnd() * 30
+      const dx = 30 + rnd() * 18
+      const dy = 130
+      const len = Math.hypot(dx, dy)
+      const ux = dx / len
+      const uy = dy / len
+      const TAIL = 46
+      const R = 7
+      const hp = []
+      for (let k = 0; k < 7; k++) {
+        // connect every 3rd vertex of a heptagon = unicursal {7/3} star
+        const a = ((k * 3) % 7) * ((Math.PI * 2) / 7) - Math.PI / 2
+        hp.push(`${(R * Math.cos(a)).toFixed(2)},${(R * Math.sin(a)).toFixed(2)}`)
+      }
+      els.push(
+        <g key="comet" opacity={0}>
+          <line
+            x1={(-ux * TAIL).toFixed(1)}
+            y1={(-uy * TAIL).toFixed(1)}
+            x2={0}
+            y2={0}
+            {...stroke}
+            strokeWidth={2.5}
+            opacity={0.85}
+          />
+          <line
+            x1={(-ux * TAIL * 0.72 - uy * 4).toFixed(1)}
+            y1={(-uy * TAIL * 0.72 + ux * 4).toFixed(1)}
+            x2={0}
+            y2={0}
+            {...stroke}
+            strokeWidth={1.5}
+            opacity={0.5}
+          />
+          <line
+            x1={(-ux * TAIL * 0.72 + uy * 4).toFixed(1)}
+            y1={(-uy * TAIL * 0.72 - ux * 4).toFixed(1)}
+            x2={0}
+            y2={0}
+            {...stroke}
+            strokeWidth={1.5}
+            opacity={0.5}
+          />
+          <g transform={`scale(${xs.toFixed(4)} 1)`}>
+            <polygon points={hp.join(' ')} fill="#fff" fillRule="evenodd" opacity={0.95} />
+            <polygon points={hp.join(' ')} {...stroke} strokeWidth={1.5} />
+          </g>
+          <animate
+            attributeName="opacity"
+            values="0;0;1;1;0"
+            keyTimes="0;0.72;0.75;0.95;1"
+            dur={`${DUR}s`}
+            repeatCount="indefinite"
+          />
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values={`${x0.toFixed(0)} -20;${x0.toFixed(0)} -20;${(x0 + dx).toFixed(0)} ${dy - 20}`}
+            keyTimes="0;0.72;1"
+            dur={`${DUR}s`}
+            repeatCount="indefinite"
+          />
+        </g>
+      )
+      break
+    }
+    case 'briar': {
+      // A thorned vine drawing itself left → right (stroke-dashoffset),
+      // thorns popping in as the tip passes them. Growth = the crescendo
+      // (gesteigert). Regrows each loop — quick draw (~6s), long hold.
+      const DUR = 14
+      const GROW = 0.45
+      const segs = 9 + Math.round(d * 5)
+      const pts = []
+      for (let k = 0; k <= segs; k++) {
+        const x = 2 + (k / segs) * 96
+        const y = 55 + Math.sin(k * 1.9) * 15 + (rnd() - 0.5) * 12
+        pts.push([x, y])
+      }
+      let vine = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`
+      for (let k = 1; k < segs; k++) {
+        const mx = (pts[k][0] + pts[k + 1][0]) / 2
+        const my = (pts[k][1] + pts[k + 1][1]) / 2
+        vine += ` Q ${pts[k][0].toFixed(1)} ${pts[k][1].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`
+      }
+      els.push(
+        <path
+          key="vine"
+          d={vine}
+          {...stroke}
+          pathLength={100}
+          strokeDasharray={100}
+          strokeDashoffset={100}
+          opacity={0.85}
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            values="100;0;0"
+            keyTimes={`0;${GROW};1`}
+            dur={`${DUR}s`}
+            repeatCount="indefinite"
+          />
+        </path>
+      )
+      for (let k = 1; k < segs; k++) {
+        const [x, y] = pts[k]
+        const up = k % 2 === 0 ? -1 : 1
+        const t = (k / segs) * GROW
+        // long hooked thorn: curves out and away from the vine
+        const L = 12 + rnd() * 6
+        const thorn = `M ${x.toFixed(1)} ${y.toFixed(1)} Q ${(x + 2).toFixed(1)} ${(y + up * L * 0.55).toFixed(1)} ${(x + 5.5).toFixed(1)} ${(y + up * L).toFixed(1)}`
+        els.push(
+          <path
+            key={`th${k}`}
+            d={thorn}
+            {...stroke}
+            strokeWidth={1.5}
+            opacity={0}
+          >
+            <animate
+              attributeName="opacity"
+              values="0;0;0.9;0.9"
+              keyTimes={`0;${t.toFixed(3)};${Math.min(t + 0.04, 1).toFixed(3)};1`}
+              dur={`${DUR}s`}
+              repeatCount="indefinite"
+            />
+          </path>
+        )
+      }
+      break
+    }
+    case 'sleepers': {
+      // Sleeping eyes in PAIRS — two eyes to a sleeper, and each pair
+      // always opens/closes TOGETHER. Once per loop a pair snaps open for
+      // a moment — "Schlimmes": dread as eyes opening in the dark. Pairs
+      // are staggered so at most one face wakes at a time.
+      const DUR = 16
+      const T0 = 0.7
+      const T1 = 0.82
+      const nPairs = Math.max(1, Math.round(1 + d * 1.6))
+      for (let p = 0; p < nPairs; p++) {
+        const pcx = Number((14 + ((p + 0.5) / nPairs) * 72 + (rnd() - 0.5) * 6).toFixed(1))
+        const ey = Number((52 + rnd() * 14).toFixed(1))
+        const w = 10
+        const beginOff = `-${(p * 6.1 + rnd()).toFixed(1)}s`
+        const eyeXs = [pcx - 14, pcx + 14]
+        const lids = eyeXs.map((ex, i) => (
+          <g key={i}>
+            <path
+              d={`M ${(ex - w).toFixed(1)} ${ey} Q ${ex.toFixed(1)} ${(ey + 8).toFixed(1)} ${(ex + w).toFixed(1)} ${ey}`}
+              {...stroke}
+            />
+            <line x1={ex - 5} y1={ey + 5.5} x2={ex - 7} y2={ey + 10} {...stroke} strokeWidth={1.5} />
+            <line x1={ex} y1={ey + 7.5} x2={ex} y2={ey + 12} {...stroke} strokeWidth={1.5} />
+            <line x1={ex + 5} y1={ey + 5.5} x2={ex + 7} y2={ey + 10} {...stroke} strokeWidth={1.5} />
+          </g>
+        ))
+        const opens = eyeXs.map((ex, i) => (
+          <g key={i}>
+            <path
+              d={`M ${(ex - w).toFixed(1)} ${ey} Q ${ex.toFixed(1)} ${(ey - 8).toFixed(1)} ${(ex + w).toFixed(1)} ${ey} Q ${ex.toFixed(1)} ${(ey + 8).toFixed(1)} ${(ex - w).toFixed(1)} ${ey} Z`}
+              {...stroke}
+            />
+            <circle cx={ex} cy={ey} r={2.4} fill="#fff" />
+          </g>
+        ))
+        els.push(
+          // outer g = aspect compensation only; the breathe translate lives
+          // on an inner g (animateTransform REPLACES a static transform, so
+          // they must not share an element)
+          <g key={p} transform={unsquish(pcx)} opacity={0.85}>
+            <g>
+              <g>
+                {lids}
+                <animate
+                  attributeName="opacity"
+                  calcMode="discrete"
+                  values="1;0;1"
+                  keyTimes={`0;${T0};${T1}`}
+                  dur={`${DUR}s`}
+                  begin={beginOff}
+                  repeatCount="indefinite"
+                />
+              </g>
+              <g opacity={0}>
+                {opens}
+                <animate
+                  attributeName="opacity"
+                  calcMode="discrete"
+                  values="0;1;0"
+                  keyTimes={`0;${T0};${T1}`}
+                  dur={`${DUR}s`}
+                  begin={beginOff}
+                  repeatCount="indefinite"
+                />
+              </g>
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                calcMode="spline"
+                keySplines="0.45 0 0.55 1;0.45 0 0.55 1"
+                values="0 -1;0 1;0 -1"
+                dur={`${(5 + rnd() * 3).toFixed(2)}s`}
+                begin={`-${(rnd() * 4).toFixed(2)}s`}
+                repeatCount="indefinite"
+              />
+            </g>
+          </g>
+        )
+      }
+      break
+    }
+    case 'runes': {
+      // Angular sigils fading in one at a time and HOLDING (fill=freeze) —
+      // the unbroken common-tone chain made visible. "ahnt". Neutral
+      // letters only: fehu, uruz, raido, kenaz, gebo, wunjo.
+      const RUNES = [
+        [[[0, 16], [0, 0]], [[0, 3], [8, 0]], [[0, 9], [8, 5]]], // fehu
+        [[[0, 16], [0, 0], [8, 6], [8, 16]]], // uruz
+        [[[0, 16], [0, 0]], [[0, 0], [7, 4], [0, 8]], [[0, 8], [8, 16]]], // raido
+        [[[6, 0], [0, 8], [6, 16]]], // kenaz (torch)
+        [[[0, 0], [8, 16]], [[8, 0], [0, 16]]], // gebo
+        [[[0, 16], [0, 0]], [[0, 0], [7, 4], [0, 8]]], // wunjo
+      ]
+      // Set like TYPE, not scribbles: uniform size, one shared baseline,
+      // even letter advance across the box. Letters still carve themselves
+      // in one at a time and hold — an inscription being written.
+      const n = Math.round(5 + d * 5)
+      const s = 1.7
+      // tilt picks the baseline row (default 34): glyphs run
+      // capTop .. capTop + 16*s, so a second patch with tilt ~62 sets a
+      // second line of type under the first. The second row waits for the
+      // first row to finish carving before it starts.
+      const capTop = tilt || 34
+      const startDelay = tilt && tilt > 34 ? 26 : 1.5
+      for (let i = 0; i < n; i++) {
+        const shape = RUNES[Math.floor(rnd() * RUNES.length) % RUNES.length]
+        const cx = 4 + ((i + 0.5) / n) * 92
+        const op = 0.75 + rnd() * 0.2
+        els.push(
+          <g key={i} transform={unsquish(cx)} opacity={0}>
+            {shape.map((poly, j) => (
+              <polyline
+                key={j}
+                points={poly
+                  .map(([lx, ly]) => `${(cx + (lx - 4) * s).toFixed(1)},${(capTop + ly * s).toFixed(1)}`)
+                  .join(' ')}
+                {...stroke}
+              />
+            ))}
+            <animate
+              attributeName="opacity"
+              values={`0;${op.toFixed(2)}`}
+              begin={`${(startDelay + i * 2.2).toFixed(1)}s`}
+              dur="2s"
+              fill="freeze"
+            />
+          </g>
+        )
+      }
+      break
+    }
+    case 'lantern': {
+      // The Hermit's lantern, BIG: outline cage with a 3x3 window-pane
+      // grid, peaked cap, ring handle, glowing flickering flame. "Einsam
+      // wachend" — the lone watcher's light. Stands on the floor, dead
+      // center of its box.
+      const cx = 50
+      const s = 0.55 + d * 0.3
+      const lift = 20 // raised off the floor — hangs higher in the box
+      const X = (lx) => Number((cx + lx * s).toFixed(1))
+      const Y = (ly) => Number((100 - (100 - ly) * s - lift).toFixed(1))
+      const body = `M ${X(-13)} ${Y(90)} L ${X(-13)} ${Y(54)} Q ${X(-13)} ${Y(48)} ${X(-7)} ${Y(48)} L ${X(7)} ${Y(48)} Q ${X(13)} ${Y(48)} ${X(13)} ${Y(54)} L ${X(13)} ${Y(90)} Z`
+      const cap = `M ${X(-10)} ${Y(48)} L ${X(0)} ${Y(36)} L ${X(10)} ${Y(48)}`
+      els.push(
+        <g key="lantern" transform={unsquish(cx)} opacity={0.95}>
+          {/* window mullions: 2 vertical + 2 horizontal = 3x3 panes */}
+          <line x1={X(-4.5)} y1={Y(49)} x2={X(-4.5)} y2={Y(89)} {...stroke} strokeWidth={1.6} />
+          <line x1={X(4.5)} y1={Y(49)} x2={X(4.5)} y2={Y(89)} {...stroke} strokeWidth={1.6} />
+          <line x1={X(-13)} y1={Y(62)} x2={X(13)} y2={Y(62)} {...stroke} strokeWidth={1.6} />
+          <line x1={X(-13)} y1={Y(76)} x2={X(13)} y2={Y(76)} {...stroke} strokeWidth={1.6} />
+          <path d={body} {...stroke} />
+          <path d={cap} {...stroke} />
+          {/* ring handle */}
+          <circle cx={X(0)} cy={Y(28)} r={7 * s} {...stroke} />
+          {/* ground line */}
+          <line x1={X(-18)} y1={Y(96)} x2={X(18)} y2={Y(96)} {...stroke} />
+          {/* flame: soft glow + bright core, fast flicker */}
+          <circle cx={X(0)} cy={Y(69)} r={9.5 * s} fill="#fff" opacity={0.25}>
+            <animate
+              attributeName="opacity"
+              values="0.25;0.1;0.22;0.08;0.25"
+              dur={`${(1.6 + rnd()).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+          <circle cx={X(0)} cy={Y(69)} r={5 * s} fill="#fff" opacity={0.95}>
+            <animate
+              attributeName="opacity"
+              values="0.95;0.5;0.85;0.45;0.95"
+              dur={`${(1.6 + rnd()).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+          {/* light rays emanating outward: radial lines that expand and
+              fade in a repeating pulse, centered on the flame */}
+          <g transform={`translate(${X(0)} ${Y(69)})`}>
+            <g>
+              {Array.from({ length: 8 }, (_, k) => {
+                const a = (k / 8) * Math.PI * 2 - Math.PI / 2
+                const r1 = 17 * s
+                const r2 = 40 * s
+                return (
+                  <line
+                    key={`ray-${k}`}
+                    x1={(Math.cos(a) * r1).toFixed(1)}
+                    y1={(Math.sin(a) * r1).toFixed(1)}
+                    x2={(Math.cos(a) * r2).toFixed(1)}
+                    y2={(Math.sin(a) * r2).toFixed(1)}
+                    {...stroke}
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                  />
+                )
+              })}
+              <animateTransform
+                attributeName="transform"
+                type="scale"
+                values="0.7;1.35"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.85;0"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
+            </g>
+          </g>
+          <animate
+            attributeName="opacity"
+            values="0.95;0.8;0.95"
+            dur={`${(9 + rnd() * 4).toFixed(2)}s`}
+            repeatCount="indefinite"
+          />
+        </g>
+      )
+      break
+    }
+    case 'rose': {
+      // A small rose high in the box, seen from above: a scalloped ring of
+      // petals around an inward spiral bloom. Gentle glow-breathe only —
+      // it just appears, quietly, at the top.
+      const cx = 40 + rnd() * 20
+      const cy = 16
+      const R = 7 + d * 5
+      const petals = 5
+      const opts = []
+      for (let k = 0; k < petals; k++) {
+        const a = (k / petals) * Math.PI * 2 - Math.PI / 2
+        opts.push([cx + Math.cos(a) * R, cy + Math.sin(a) * R])
+      }
+      let outline = `M ${opts[0][0].toFixed(1)} ${opts[0][1].toFixed(1)}`
+      for (let k = 1; k <= petals; k++) {
+        const [x, y] = opts[k % petals]
+        outline += ` A ${(R * 0.75).toFixed(1)} ${(R * 0.75).toFixed(1)} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`
+      }
+      outline += ' Z'
+      // spiral of shrinking semicircles, all the same sweep = rose heart
+      const rr = [R * 0.55, R * 0.36, R * 0.2, R * 0.08]
+      let spiral = `M ${(cx + rr[0]).toFixed(1)} ${cy}`
+      for (let k = 0; k < rr.length - 1; k++) {
+        const rMid = ((rr[k] + rr[k + 1]) / 2).toFixed(1)
+        const endX = (cx + (k % 2 === 0 ? -rr[k + 1] : rr[k + 1])).toFixed(1)
+        spiral += ` A ${rMid} ${rMid} 0 0 0 ${endX} ${cy}`
+      }
+      // stem: wiggly chain of alternating Q-bends from bloom to root crown,
+      // with pointed leaves sprouting from the upper joints
+      const rootY = 86
+      const topY = cy + R
+      const nSeg = 4
+      const wig = 5 + rnd() * 2.5
+      let stem = `M ${cx.toFixed(1)} ${topY.toFixed(1)}`
+      const joints = []
+      let py = topY
+      for (let k = 0; k < nSeg; k++) {
+        const ny = topY + ((k + 1) / nSeg) * (rootY - topY)
+        const side = k % 2 === 0 ? 1 : -1
+        const qx = cx + side * wig
+        const qy = (py + ny) / 2
+        const nx = k === nSeg - 1 ? cx : cx + side * wig * 0.4
+        stem += ` Q ${qx.toFixed(1)} ${qy.toFixed(1)} ${nx.toFixed(1)} ${ny.toFixed(1)}`
+        joints.push([nx, ny, side])
+        py = ny
+      }
+      // leaves: pointed lens shapes off the first two joints, alternating
+      // sides, tips angled slightly upward
+      const leaves = joints.slice(0, 2).map(([jx, jy, side]) => {
+        const L = 10 + rnd() * 3
+        const tx = jx + side * L
+        const ty = jy - 3 - rnd() * 2
+        return (
+          `M ${jx.toFixed(1)} ${jy.toFixed(1)}` +
+          ` Q ${(jx + side * L * 0.45).toFixed(1)} ${(jy - 5.5).toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)}` +
+          ` Q ${(jx + side * L * 0.5).toFixed(1)} ${(jy + 2.5).toFixed(1)} ${jx.toFixed(1)} ${jy.toFixed(1)} Z`
+        )
+      })
+      // roots: forks spreading down-and-out from the stem base
+      const roots = []
+      const nRoots = 4
+      for (let k = 0; k < nRoots; k++) {
+        const spread = (k - (nRoots - 1) / 2) * (7 + rnd() * 3)
+        const dip = 8 + rnd() * 5
+        roots.push(
+          `M ${cx.toFixed(1)} ${rootY} Q ${(cx + spread * 0.5).toFixed(1)} ${(rootY + dip * 0.4).toFixed(1)} ${(cx + spread).toFixed(1)} ${(rootY + dip).toFixed(1)}`
+        )
+      }
+      els.push(
+        <g key="rose" transform={unsquish(cx)} opacity={0.9}>
+          <path d={outline} {...stroke} />
+          <path d={spiral} {...stroke} strokeWidth={1.6} />
+          <path d={stem} {...stroke} />
+          {leaves.map((lf, k) => (
+            <path key={`leaf-${k}`} d={lf} {...stroke} strokeWidth={1.6} />
+          ))}
+          {roots.map((r, k) => (
+            <path key={k} d={r} {...stroke} strokeWidth={1.5} />
+          ))}
+          <animate
+            attributeName="opacity"
+            values="0.9;0.65;0.9"
+            dur={`${(6 + rnd() * 4).toFixed(2)}s`}
+            repeatCount="indefinite"
+          />
+        </g>
+      )
+      break
+    }
+    case 'semitone': {
+      // The semitone of dread: two faint rungs and one bright dot that steps
+      // up a half-step and back. E -> E#. "Schlimmes." Nobody will
+      // consciously see it.
+      const yLo = 58
+      const yHi = 50
+      const x0 = 38 + rnd() * 24
+      els.push(
+        <line key="lo" x1={x0 - 7} y1={yLo} x2={x0 + 7} y2={yLo} {...stroke} strokeWidth={1} opacity={0.3} />,
+        <line key="hi" x1={x0 - 7} y1={yHi} x2={x0 + 7} y2={yHi} {...stroke} strokeWidth={1} opacity={0.3} />,
+        <circle key="dot" cx={x0} cy={yLo} r={2.4} fill="#fff" opacity={0.9}>
+          <animate
+            attributeName="cy"
+            calcMode="discrete"
+            values={`${yLo};${yHi};${yLo}`}
+            keyTimes="0;0.5;0.94"
+            dur="7s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.9;1;0.9"
+            keyTimes="0;0.5;1"
+            dur="7s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      )
+      break
+    }
     case 'morphline': {
       // One horizontal line ~1/3 up from the bottom that morphs: straight →
       // sine wave → triangle wave → back, on a slow loop. SMIL interpolates
@@ -607,6 +1412,21 @@ function textureMarks(texture, density, seed, tilt = 0) {
 function PatchSvg({ patch, clipId }) {
   const h = clamp01(patch.h ?? 0.6)
   const fit = patch.fit ?? 'squash'
+  // Measure the patch's rendered pixel aspect so pictorial textures (moon,
+  // clouds, stars, rook) can counter the non-uniform viewBox stretch and
+  // draw true-round shapes. Updates on window resize via ResizeObserver.
+  const svgRef = useRef(null)
+  const [aspect, setAspect] = useState(3)
+  useEffect(() => {
+    const el = svgRef.current
+    if (!el) return
+    const ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect()
+      if (r.width > 0 && r.height > 0) setAspect(r.width / r.height)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
   // Crossfade support (lalork#7): patches may overlap in time; fadeIn/fadeOut
   // are fractions of the patch width over which alpha ramps from/to zero,
   // done with a horizontal gradient mask so marks dissolve mid-stroke.
@@ -622,6 +1442,7 @@ function PatchSvg({ patch, clipId }) {
       : null
   return (
     <svg
+      ref={svgRef}
       className={`portal__patch${
         patch.anim ? ` portal__patch--${patch.anim}` : ''
       }`}
@@ -646,7 +1467,8 @@ function PatchSvg({ patch, clipId }) {
           patch.texture ?? 'stipple',
           patch.density ?? 0.5,
           patch.seed ?? 1,
-          patch.tilt ?? 0
+          patch.tilt ?? 0,
+          aspect
         )}
       </g>
     </svg>
@@ -677,7 +1499,8 @@ export default function FormStrip({ contour, position, sections, glyphs }) {
 
   return (
     <div className="portal__form-strip" aria-label="Piece form">
-      <span className="portal__bay-label">Form</span>
+      {/* "Form" bay label removed (Nathan: it was in the way of the glyphs
+          at the left edge — the lantern lives in cell 1 now). */}
       {/* portal__form-canvas: positioning context so the glyph overlay tracks
           the SVG box exactly (the outer strip has padding + label). */}
       <div className="portal__form-canvas">
