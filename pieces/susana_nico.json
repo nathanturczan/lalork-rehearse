@@ -1,4 +1,5 @@
 {
+  "title": "Untitled",
   "tempo": 88.0,
   "youtube_id": "pR-aXWOkb-Q",
   "comment": "Untitled by Nico + Susana (Susana Pineda Correa + Nicolas Maldonado) - backing track LaptopOrch.wav, 14:28.6 (868.64 s), 88 BPM, 7/4, exactly 182 bars = 1274 beats. D diatonic throughout (think G lydian). Arch form: GQ quintal drone G-D-A-E (mm.1-24) -> 8-bar chord pattern x16 cycles (mm.25-152) -> GQ drone (mm.153-182) -> silence (m.183). All chord slots round-robin their chords_no_supersets options (subsets of chord+ostinato groupings, roots respected). youtube_id pR-aXWOkb-Q (Nico's track upload, Aug 11) drives the clock; track is cut to the bar so the video axis lands on ~1274 beats. Form strip (Nathan, Aug 11 v2): no contour; formSections = phrase boundaries (168 then every 56 beats through 1064); formGlyphs = parallax rain (rainBack + rain, falling), pool at the baseline, and stairs (ostinato) spanning beats 448-952 (5:05-10:49), fadeIn 0.111 = fully in by beat 504 (5:44), hard cut out.",

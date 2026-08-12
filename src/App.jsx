@@ -431,7 +431,8 @@ export default function App() {
       skeleton.formContour || null,
       formSections,
       Boolean(liveRoomId),
-      formGlyphs
+      formGlyphs,
+      skeleton.title || null
     ).catch((err) => console.error('[ensemble] formContour write failed', err))
   }, [ensembleRoomId, skeleton, formSections, formGlyphs, liveRoomId])
 

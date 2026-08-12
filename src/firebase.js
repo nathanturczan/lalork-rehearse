@@ -264,7 +264,8 @@ export async function setFormContour(
   contour,
   sections,
   live = false,
-  glyphs = null
+  glyphs = null,
+  pieceName = null
 ) {
   if (!roomId) return;
   // Firestore rejects nested arrays, so the [x, y] tuples cross the wire as
@@ -290,6 +291,10 @@ export async function setFormContour(
     formSections: xs.length ? xs : null,
     formGlyphs: marks.length ? marks : null,
     formPosition: 0,
+    // Piece display title (skeleton `title`): enter shows it next to the
+    // wordmark. Null when the piece has no title — receivers show nothing.
+    pieceName:
+      (typeof pieceName === "string" && pieceName.trim()) || null,
     updatedAt: Date.now(),
   };
   if (!live) {
