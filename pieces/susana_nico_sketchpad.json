@@ -1,0 +1,256 @@
+{
+  "name": "Susana + Nicolas [TITLE TBD]",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "GQ",
+      "label": "GQ",
+      "scale": "d_diatonic",
+      "chord": "g_Quintal-0",
+      "position": {
+        "x": 100,
+        "y": 50
+      }
+    },
+    {
+      "id": "G_add116",
+      "label": "GM7(add#11/6)",
+      "scale": "d_diatonic",
+      "chord": "g_M7(add#11/6)-56",
+      "position": {
+        "x": 250,
+        "y": 50
+      }
+    },
+    {
+      "id": "G_M711",
+      "label": "GM7#11",
+      "scale": "d_diatonic",
+      "chord": "g_M7#11-55",
+      "position": {
+        "x": 400,
+        "y": 50
+      }
+    },
+    {
+      "id": "G_add11",
+      "label": "GM7(add#11)",
+      "scale": "d_diatonic",
+      "chord": "g_M7(add#11)-24",
+      "position": {
+        "x": 550,
+        "y": 50
+      }
+    },
+    {
+      "id": "A9a",
+      "label": "A9",
+      "scale": "d_diatonic",
+      "chord": "a_9-19",
+      "position": {
+        "x": 100,
+        "y": 150
+      }
+    },
+    {
+      "id": "A9b",
+      "label": "A9",
+      "scale": "d_diatonic",
+      "chord": "a_9-52",
+      "position": {
+        "x": 250,
+        "y": 150
+      }
+    },
+    {
+      "id": "A9c",
+      "label": "A9",
+      "scale": "d_diatonic",
+      "chord": "a_9-78",
+      "position": {
+        "x": 400,
+        "y": 150
+      }
+    },
+    {
+      "id": "A7a",
+      "label": "A7",
+      "scale": "d_diatonic",
+      "chord": "a_7-17",
+      "position": {
+        "x": 550,
+        "y": 150
+      }
+    },
+    {
+      "id": "A7b",
+      "label": "A7",
+      "scale": "d_diatonic",
+      "chord": "a_7-51",
+      "position": {
+        "x": 700,
+        "y": 150
+      }
+    },
+    {
+      "id": "Em69a",
+      "label": "Em6/9",
+      "scale": "d_diatonic",
+      "chord": "e_m6/9-8",
+      "position": {
+        "x": 100,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em69b",
+      "label": "Em6/9",
+      "scale": "d_diatonic",
+      "chord": "e_m6/9-9",
+      "position": {
+        "x": 250,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em69c",
+      "label": "Em6/9",
+      "scale": "d_diatonic",
+      "chord": "e_m6/9-43",
+      "position": {
+        "x": 400,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em69d",
+      "label": "Em6/9",
+      "scale": "d_diatonic",
+      "chord": "e_m6/9-73",
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em6a",
+      "label": "Em6",
+      "scale": "d_diatonic",
+      "chord": "e_m6-6",
+      "position": {
+        "x": 700,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em6b",
+      "label": "Em6",
+      "scale": "d_diatonic",
+      "chord": "e_m6-7",
+      "position": {
+        "x": 850,
+        "y": 250
+      }
+    },
+    {
+      "id": "Em96",
+      "label": "Em9(add6)",
+      "scale": "d_diatonic",
+      "chord": "e_m9(add6)-94",
+      "position": {
+        "x": 100,
+        "y": 350
+      }
+    },
+    {
+      "id": "D6",
+      "label": "D6",
+      "scale": "d_diatonic",
+      "chord": "d_6-4",
+      "position": {
+        "x": 250,
+        "y": 350
+      }
+    },
+    {
+      "id": "tacet",
+      "label": "tacet",
+      "scale": "d_diatonic",
+      "chord": null,
+      "position": {
+        "x": 400,
+        "y": 350
+      }
+    },
+    {
+      "id": "A13",
+      "label": "A13",
+      "scale": "d_diatonic",
+      "chord": "a_13-53",
+      "position": {
+        "x": 850,
+        "y": 150
+      }
+    },
+    {
+      "id": "A69",
+      "label": "A6/9",
+      "scale": "d_diatonic",
+      "chord": "a_6/9-42",
+      "position": {
+        "x": 1000,
+        "y": 150
+      }
+    },
+    {
+      "id": "A13b",
+      "label": "A13",
+      "scale": "d_diatonic",
+      "chord": "a_13-101",
+      "position": {
+        "x": 1150,
+        "y": 150
+      }
+    },
+    {
+      "id": "Em7",
+      "label": "Em7",
+      "scale": "d_diatonic",
+      "chord": "e_m7-14",
+      "position": {
+        "x": 1000,
+        "y": 250
+      }
+    },
+    {
+      "id": "D69",
+      "label": "D6/9",
+      "scale": "d_diatonic",
+      "chord": "d_6/9-5",
+      "position": {
+        "x": 550,
+        "y": 350
+      }
+    },
+    {
+      "id": "DM9",
+      "label": "DM9",
+      "scale": "d_diatonic",
+      "chord": "d_M9-2",
+      "position": {
+        "x": 700,
+        "y": 350
+      }
+    },
+    {
+      "id": "DM96",
+      "label": "DM9(add6)",
+      "scale": "d_diatonic",
+      "chord": "d_M9(add6)-41",
+      "position": {
+        "x": 850,
+        "y": 350
+      }
+    }
+  ]
+}

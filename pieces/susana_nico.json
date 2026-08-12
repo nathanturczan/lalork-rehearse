@@ -1,0 +1,1252 @@
+{
+  "tempo": 88.0,
+  "youtube_id": "pR-aXWOkb-Q",
+  "comment": "Susana Pineda Correa + Nicolas Maldonado [TITLE TBD] - backing track LaptopOrch.wav, 14:28.6 (868.64 s), 88 BPM, 7/4, exactly 182 bars = 1274 beats. D diatonic throughout (think G lydian). Arch form: GQ quintal drone G-D-A-E (mm.1-24) -> 8-bar chord pattern x16 cycles (mm.25-152) -> GQ drone (mm.153-182) -> silence (m.183). All chord slots round-robin their chords_no_supersets options (subsets of chord+ostinato groupings, roots respected). youtube_id pR-aXWOkb-Q (Nico's track upload, Aug 11) drives the clock; track is cut to the bar so the video axis lands on ~1274 beats. Form strip (Nathan, Aug 11 v2): no contour; formSections = phrase boundaries (168 then every 56 beats through 1064); formGlyphs = parallax rain (rainBack + rain, falling), pool at the baseline, and stairs (ostinato) spanning beats 448-952 (5:05-10:49), fadeIn 0.111 = fully in by beat 504 (5:44), hard cut out.",
+  "formSections": [
+    168,
+    224,
+    280,
+    336,
+    392,
+    448,
+    504,
+    560,
+    616,
+    672,
+    728,
+    784,
+    840,
+    896,
+    952,
+    1008,
+    1064
+  ],
+  "formGlyphs": [
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 1274,
+      "texture": "rainBack",
+      "envelope": "column",
+      "h": 1,
+      "density": 0.5,
+      "seed": 21,
+      "fit": "squash"
+    },
+    {
+      "type": "patch",
+      "startBeat": 448,
+      "endBeat": 952,
+      "texture": "stairs",
+      "envelope": "column",
+      "h": 1,
+      "density": 0.5,
+      "seed": 7,
+      "fit": "squash",
+      "fadeIn": 0.111
+    },
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 1274,
+      "texture": "rain",
+      "envelope": "column",
+      "h": 1,
+      "density": 0.55,
+      "seed": 22,
+      "fit": "squash"
+    },
+    {
+      "type": "patch",
+      "startBeat": 0,
+      "endBeat": 1274,
+      "texture": "pool",
+      "envelope": "column",
+      "h": 0.18,
+      "density": 0.6,
+      "seed": 23,
+      "fit": "squash"
+    }
+  ],
+  "events": [
+    {
+      "time": 0,
+      "state": "GQ",
+      "direction": {
+        "lyric": "",
+        "marking": "drone",
+        "note": "GQ quintal chord (G-D-A-E stacked fifths) drone, mm.1-24. Chord progression enters at m.25."
+      }
+    },
+    {
+      "time": 168,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Pattern: | G | A | G | A | Em | D | Em | D | one bar (7 beats) each. 16 cycles, mm.25-152. Every slot round-robins its options (G x3, A x8, Em x8, D x4 - Aug 11 amendments added A13/A6/9/A13b, Em7, D6/9/DM9/DM9(add6); AM9(add6) was swapped for A13b (a_13-101) because its G# is outside D diatonic)."
+      }
+    },
+    {
+      "time": 175,
+      "state": "A9a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 182,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 189,
+      "state": "A7a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 196,
+      "state": "Em69a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 203,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 210,
+      "state": "Em6a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 217,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 224,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 231,
+      "state": "A13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 238,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 245,
+      "state": "A9b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 252,
+      "state": "Em69b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 259,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 266,
+      "state": "Em7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 273,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 280,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 287,
+      "state": "A69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 294,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 301,
+      "state": "A7b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 308,
+      "state": "Em69c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 315,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 322,
+      "state": "Em6b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 329,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 336,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 343,
+      "state": "A13b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 350,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 357,
+      "state": "A9c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 364,
+      "state": "Em69d",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 371,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 378,
+      "state": "Em96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 385,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 392,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 399,
+      "state": "A9a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 406,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 413,
+      "state": "A7a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 420,
+      "state": "Em69a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 427,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 434,
+      "state": "Em6a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 441,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 448,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 455,
+      "state": "A13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 462,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 469,
+      "state": "A9b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 476,
+      "state": "Em69b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 483,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 490,
+      "state": "Em7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 497,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 504,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 511,
+      "state": "A69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 518,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 525,
+      "state": "A7b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 532,
+      "state": "Em69c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 539,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 546,
+      "state": "Em6b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 553,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 560,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 567,
+      "state": "A13b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 574,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 581,
+      "state": "A9c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 588,
+      "state": "Em69d",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 595,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 602,
+      "state": "Em96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 609,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 616,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 623,
+      "state": "A9a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 630,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 637,
+      "state": "A7a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 644,
+      "state": "Em69a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 651,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 658,
+      "state": "Em6a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 665,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 672,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 679,
+      "state": "A13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 686,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 693,
+      "state": "A9b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 700,
+      "state": "Em69b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 707,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 714,
+      "state": "Em7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 721,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 728,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 735,
+      "state": "A69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 742,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 749,
+      "state": "A7b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 756,
+      "state": "Em69c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 763,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 770,
+      "state": "Em6b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 777,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 784,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 791,
+      "state": "A13b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 798,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 805,
+      "state": "A9c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 812,
+      "state": "Em69d",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 819,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 826,
+      "state": "Em96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 833,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 840,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 847,
+      "state": "A9a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 854,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 861,
+      "state": "A7a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 868,
+      "state": "Em69a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 875,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 882,
+      "state": "Em6a",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 889,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 896,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 903,
+      "state": "A13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 910,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 917,
+      "state": "A9b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 924,
+      "state": "Em69b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 931,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 938,
+      "state": "Em7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 945,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 952,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 959,
+      "state": "A69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 966,
+      "state": "G_add11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 973,
+      "state": "A7b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 980,
+      "state": "Em69c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 987,
+      "state": "D6",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 994,
+      "state": "Em6b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1001,
+      "state": "D69",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1008,
+      "state": "G_add116",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1015,
+      "state": "A13b",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1022,
+      "state": "G_M711",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1029,
+      "state": "A9c",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1036,
+      "state": "Em69d",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1043,
+      "state": "DM9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1050,
+      "state": "Em96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1057,
+      "state": "DM96",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": ""
+      }
+    },
+    {
+      "time": 1064,
+      "state": "GQ",
+      "direction": {
+        "lyric": "",
+        "marking": "strip down",
+        "note": "GQ quintal returns, mm.153-182 (reverse of the opening arc)."
+      }
+    },
+    {
+      "time": 1274,
+      "state": "tacet",
+      "direction": {
+        "lyric": "",
+        "marking": "silence",
+        "note": "End of track: m.183 = 14:28.64. Silence."
+      }
+    }
+  ]
+}

@@ -21,6 +21,7 @@ const BROADCAST_DEBOUNCE_MS = 100
 const PIECES = [
   { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
   { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
+  { id: 'susana_nico', label: 'Susana + Nicolas [TITLE TBD]' },
 ]
 
 // YouTube iframe API loader
@@ -370,8 +371,15 @@ export default function App() {
         ? (videoDuration / 60) * skeleton.tempo
         : lastBeat
     if (!(total > 0)) return null
+    // Skeleton formSections (beat space) override: pieces whose every event
+    // is a chord change (susana_nico: 128 pattern events) supply their real
+    // phrase boundaries instead of getting a divider per event.
+    const beats =
+      Array.isArray(skeleton?.formSections) && skeleton.formSections.length
+        ? skeleton.formSections
+        : events.map((e) => e.time)
     const xs = [
-      ...new Set(events.map((e) => e.time / total).filter((x) => x > 0 && x < 1)),
+      ...new Set(beats.map((b) => b / total).filter((x) => x > 0 && x < 1)),
     ]
     return xs.length ? xs : null
   }, [skeleton, videoDuration])

@@ -29,7 +29,16 @@ import harmonicMinorSvg from './shapes/harmonic_minor.svg'
 import hexatonicSvg from './shapes/hexatonic.svg'
 import octatonicSvg from './shapes/octatonic.svg'
 
+import umbrellaGif from '../assets/umbrella.gif'
+
 import './EnterPortal.css'
+
+// Aug 15 hard-code (Susana + Nico): during the piece's two GQ drone bookends
+// the Now bay shows Nico's umbrella (pre-baked spin of the sketchpad's 3D
+// scale art — rehearse has no three.js) instead of the scale symbol.
+// 'g_Quintal-0' is unique to this piece, so no other piece can trigger it.
+// Remove post-Aug 15 (generic path tracked in lalork-rehearse's umbrella issue).
+const UMBRELLA_CHORD_KEY = 'g_Quintal-0'
 
 // ---------------------------------------------------------------------------
 // Key parsing (rehearse-specific): keys → entry / chord objects
@@ -329,7 +338,16 @@ export default function EnterPortal({
                   <span className="portal__group-label">Scale</span> Now
                 </span>
                 <div className="portal__scale" ref={scaleRef}>
-                  <ScaleSymbol entry={keyData} size={36} />
+                  {chordKey === UMBRELLA_CHORD_KEY ? (
+                    <img
+                      src={umbrellaGif}
+                      alt="umbrella"
+                      draggable={false}
+                      style={{ width: 36, height: 36, flex: 'none' }}
+                    />
+                  ) : (
+                    <ScaleSymbol entry={keyData} size={36} />
+                  )}
                   <span className="portal__scale-name">
                     {keyData
                       ? abbrevLevel >= 2

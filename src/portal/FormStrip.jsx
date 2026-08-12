@@ -1405,6 +1405,164 @@ function textureMarks(texture, density, seed, tilt = 0, aspect = 1) {
       }
       break
     }
+    case 'rain': {
+      // Foreground rain (susana_nico): long bright streaks falling straight
+      // down, each drop on its own clock — continuous downpour, never a
+      // group flash. The streak starts fully above the box (y in [-len, 0])
+      // and translates past the bottom, so entry and exit are seamless.
+      const n = Math.round(25 + d * 150)
+      for (let i = 0; i < n; i++) {
+        const x = rnd() * 100
+        const len = 8 + rnd() * 8
+        const op = 0.5 + rnd() * 0.4
+        const dur = 1.6 + rnd() * 1.0
+        els.push(
+          <line key={i} x1={x} y1={-len} x2={x} y2={0} {...stroke} opacity={op}>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              from="0 0"
+              to={`0 ${(100 + len).toFixed(1)}`}
+              dur={`${dur.toFixed(2)}s`}
+              begin={`-${(rnd() * dur).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </line>
+        )
+      }
+      break
+    }
+    case 'rainBack': {
+      // Background rain layer: shorter, fainter, thinner, slower drops —
+      // the parallax distance behind 'rain'.
+      const n = Math.round(35 + d * 190)
+      for (let i = 0; i < n; i++) {
+        const x = rnd() * 100
+        const len = 3 + rnd() * 4
+        const op = 0.12 + rnd() * 0.2
+        const dur = 3.5 + rnd() * 2.5
+        els.push(
+          <line
+            key={i}
+            x1={x}
+            y1={-len}
+            x2={x}
+            y2={0}
+            {...stroke}
+            strokeWidth={1}
+            opacity={op}
+          >
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              from="0 0"
+              to={`0 ${(100 + len).toFixed(1)}`}
+              dur={`${dur.toFixed(2)}s`}
+              begin={`-${(rnd() * dur).toFixed(2)}s`}
+              repeatCount="indefinite"
+            />
+          </line>
+        )
+      }
+      break
+    }
+    case 'pool': {
+      // Pooling water: ripples. Each mark starts as a point and widens
+      // symmetrically from its center while fading out (rain hitting the
+      // pool), on its own clock. x1/x2 are SMIL-animatable line geometry.
+      const n = Math.round(14 + d * 70)
+      for (let i = 0; i < n; i++) {
+        const cx = 3 + rnd() * 94
+        const y = 15 + rnd() * 80
+        const half = (2.5 + rnd() * 4.5) / 2
+        const op = 0.35 + rnd() * 0.4
+        const dur = 2.2 + rnd() * 2.8
+        const begin = `-${(rnd() * dur).toFixed(2)}s`
+        const timing = {
+          dur: `${dur.toFixed(2)}s`,
+          begin,
+          repeatCount: 'indefinite',
+        }
+        els.push(
+          <line key={i} x1={cx} y1={y} x2={cx} y2={y} {...stroke} opacity={op}>
+            <animate
+              attributeName="x1"
+              values={`${cx.toFixed(1)};${(cx - half).toFixed(1)}`}
+              {...timing}
+            />
+            <animate
+              attributeName="x2"
+              values={`${cx.toFixed(1)};${(cx + half).toFixed(1)}`}
+              {...timing}
+            />
+            <animate
+              attributeName="opacity"
+              values={`${op.toFixed(2)};${op.toFixed(2)};0`}
+              keyTimes="0;0.3;1"
+              {...timing}
+            />
+          </line>
+        )
+      }
+      break
+    }
+    case 'stairs': {
+      // Upward staircases (susana_nico ostinato): right-angular rise/run
+      // lines, sitting behind the rain. Drawn square in user space and
+      // aspect-compensated (unsquish) so the right angles read as stairs at
+      // any patch width. Each stair gets its own horizontal slot (jittered,
+      // never overlapping — two stairs on top of each other stop reading as
+      // stairs). ALL stairs ascend left→right (Nathan: upward only, no
+      // downward staircases). ~40% are escalators: translated along their
+      // own period vector so the loop is seamless and the motion reads as
+      // riding up the incline.
+      const n = Math.round(6 + d * 22)
+      for (let i = 0; i < n; i++) {
+        const escalator = rnd() < 0.4
+        const dir = 1 // every stair ascends left→right
+        const segs = 3 + Math.floor(rnd() * 2)
+        const rise = 14 + rnd() * 8 // uniform within a stair (seamless loop)
+        const run = 11 + rnd() * 8
+        let x = 0
+        let y = 96 - rnd() * 22
+        const pts = [`${x.toFixed(1)},${y.toFixed(1)}`]
+        for (let s = 0; s < segs; s++) {
+          y -= rise
+          pts.push(`${x.toFixed(1)},${y.toFixed(1)}`)
+          x += dir * run
+          pts.push(`${x.toFixed(1)},${y.toFixed(1)}`)
+        }
+        y -= rise * 0.6 // final rise
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`)
+        // Slot i of n with small jitter: guarantees horizontal separation.
+        const cx = ((i + 0.35 + rnd() * 0.3) / n) * 100
+        const op = 0.5 + rnd() * 0.4
+        const stepDur = 2.2 + rnd() * 1.6
+        els.push(
+          <g key={i} transform={unsquish(cx)} opacity={op}>
+            <polyline
+              points={pts.join(' ')}
+              {...stroke}
+              transform={`translate(${(cx - x / 2).toFixed(1)} 0)`}
+            >
+              {escalator && (
+                <animateTransform
+                  attributeName="transform"
+                  type="translate"
+                  additive="sum"
+                  from="0 0"
+                  to={`${(dir * run).toFixed(1)} ${(-rise).toFixed(1)}`}
+                  dur={`${stepDur.toFixed(2)}s`}
+                  begin={`-${(rnd() * stepDur).toFixed(2)}s`}
+                  repeatCount="indefinite"
+                />
+              )}
+            </polyline>
+          </g>
+        )
+      }
+      break
+    }
   }
   return els
 }
@@ -1480,21 +1638,27 @@ export default function FormStrip({ contour, position, sections, glyphs }) {
   // every strip clip with the first instance's shapes.
   const patchIdPrefix = useId()
 
-  if (!contour || contour.length < 2) return null
+  const patches = Array.isArray(glyphs)
+    ? glyphs.filter((g) => g && g.type === 'patch')
+    : []
+  // A contour is no longer required (lalork#7): glyphs-only pieces (e.g.
+  // susana_nico's rain strip) draw the strip with sections + playhead and no
+  // energy-arc polyline. Nothing at all still renders nothing.
+  const hasContour = Boolean(contour && contour.length >= 2)
+  if (!hasContour && !patches.length) return null
 
-  const points = contour
-    .map(([x, y]) => {
-      const px = clamp01(x) * VIEW_W
-      const py = PAD_Y + (1 - clamp01(y)) * (VIEW_H - PAD_Y * 2)
-      return `${px},${py}`
-    })
-    .join(' ')
+  const points = hasContour
+    ? contour
+        .map(([x, y]) => {
+          const px = clamp01(x) * VIEW_W
+          const py = PAD_Y + (1 - clamp01(y)) * (VIEW_H - PAD_Y * 2)
+          return `${px},${py}`
+        })
+        .join(' ')
+    : ''
   const playheadX = position != null ? clamp01(position) * VIEW_W : null
   const sectionXs = Array.isArray(sections)
     ? [...new Set(sections.filter((x) => typeof x === 'number' && x > 0 && x < 1))]
-    : []
-  const patches = Array.isArray(glyphs)
-    ? glyphs.filter((g) => g && g.type === 'patch')
     : []
 
   return (
@@ -1530,12 +1694,14 @@ export default function FormStrip({ contour, position, sections, glyphs }) {
               vectorEffect="non-scaling-stroke"
             />
           ))}
-          <polyline
-            className="portal__form-contour"
-            points={points}
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-          />
+          {hasContour && (
+            <polyline
+              className="portal__form-contour"
+              points={points}
+              fill="none"
+              vectorEffect="non-scaling-stroke"
+            />
+          )}
           {playheadX != null && (
             <line
               className="portal__form-playhead"
