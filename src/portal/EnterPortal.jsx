@@ -36,9 +36,11 @@ import './EnterPortal.css'
 // Aug 15 hard-code (Susana + Nico): during the piece's two GQ drone bookends
 // the Now bay shows Nico's umbrella (pre-baked spin of the sketchpad's 3D
 // scale art — rehearse has no three.js) instead of the scale symbol.
-// 'g_Quintal-0' is unique to this piece, so no other piece can trigger it.
+// Both keys are unique to this piece, so no other piece can trigger it.
+// 'g_5-0' staged Aug 12: the drone may become a bare fifth pending Nico's
+// approval — either spelling fires the umbrella, so the flip is skeleton-only.
 // Remove post-Aug 15 (generic path tracked in lalork-rehearse's umbrella issue).
-const UMBRELLA_CHORD_KEY = 'g_Quintal-0'
+const UMBRELLA_CHORD_KEYS = new Set(['g_Quintal-0', 'g_5-0'])
 
 // ---------------------------------------------------------------------------
 // Key parsing (rehearse-specific): keys → entry / chord objects
@@ -153,6 +155,9 @@ function formatChordName(chord) {
   }
   suffix = suffix.replace(/#/g, '\u266F').replace(/b/g, '\u266D')
   const root = rootPc != null ? PC_NAMES[rootPc] : ''
+  // Bare-fifth power chords spell out ('g_5-0' → 'G5 (open fifth)'):
+  // added Aug 12 for Moorland's drone bookends (pending Nico's approval).
+  if (suffix === '5' && root) return `${root}5 (open fifth)`
   return `${root}${suffix ? ' ' + suffix : ''}`.trim() || '\u2014'
 }
 
@@ -338,7 +343,7 @@ export default function EnterPortal({
                   <span className="portal__group-label">Scale</span> Now
                 </span>
                 <div className="portal__scale" ref={scaleRef}>
-                  {chordKey === UMBRELLA_CHORD_KEY ? (
+                  {UMBRELLA_CHORD_KEYS.has(chordKey) ? (
                     <img
                       src={umbrellaGif}
                       alt="umbrella"
