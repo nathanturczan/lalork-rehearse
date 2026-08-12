@@ -21,7 +21,7 @@ const BROADCAST_DEBOUNCE_MS = 100
 const PIECES = [
   { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
   { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
-  { id: 'susana_nico', label: 'Susana + Nicolas [TITLE TBD]' },
+  { id: 'susana_nico', label: 'Untitled by Nico + Susana' },
 ]
 
 // YouTube iframe API loader
