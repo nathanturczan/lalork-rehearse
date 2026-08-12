@@ -19,9 +19,9 @@ const BROADCAST_DEBOUNCE_MS = 100
 
 // Pieces: /<id>.json (skeleton) + /<id>_sketchpad.json must exist in pieces/
 const PIECES = [
-  { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
   { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
   { id: 'susana_nico', label: 'Untitled by Nico + Susana' },
+  { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
 ]
 
 // YouTube iframe API loader
