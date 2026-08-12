@@ -52,9 +52,6 @@ const prettyChordLabelFromKey = (key) => {
   const rootPretty = preferred[rootTokenRaw.toLowerCase()] || rootTokenRaw
   let rest = restRaw.replace(/-\d+$/, '').replace(/_/g, ' ')
 
-  // Bare-fifth power chords spell out ('g_5-0' → 'G5 (open fifth)'):
-  // added Aug 12 for Moorland's drone bookends (pending Nico's approval).
-  if (rest === '5') return `${rootPretty}5 (open fifth)`
   return rest ? `${rootPretty} ${rest}` : rootPretty
 }
 
