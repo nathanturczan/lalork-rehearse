@@ -195,6 +195,19 @@ export async function updateEnsembleState({
     patch.nextScaleData = nextScaleKey || null;
   }
 
+  // Stale hover previews (rehearse#20): the Dashboard writes
+  // hoverScale/hoverChord and clears them on mouse-out/unmount — but that
+  // clear never runs if its tab dies mid-hover, and enter gives hover
+  // precedence over nextChordData, so a ghost hover owns every receiver's
+  // NEXT slot forever. Any harmony broadcast from this app re-asserts
+  // authority: piece playback owns Next, so hover is nulled alongside it.
+  if ("chordData" in patch || "scaleData" in patch) {
+    patch.hoverScale = null;
+    patch.hoverChord = null;
+    patch.hoverScaleInfo = null;
+    patch.hoverChordInfo = null;
+  }
+
   if (!Object.keys(patch).length) return;
 
   patch.updatedAt = Date.now();
@@ -295,6 +308,12 @@ export async function setFormContour(
     // wordmark. Null when the piece has no title — receivers show nothing.
     pieceName:
       (typeof pieceName === "string" && pieceName.trim()) || null,
+    // Piece load also flushes any stale Dashboard hover preview (rehearse#20)
+    // so receivers' NEXT slots are trustworthy before the first broadcast.
+    hoverScale: null,
+    hoverChord: null,
+    hoverScaleInfo: null,
+    hoverChordInfo: null,
     updatedAt: Date.now(),
   };
   if (!live) {
