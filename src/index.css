@@ -714,6 +714,24 @@ h1 {
     margin-bottom: 6px;
   }
 
+  /* Title + piece selector stay on ONE line: the title ellipsizes instead
+     of pushing the select onto a new row. */
+  .app-header {
+    flex-wrap: nowrap;
+  }
+
+  .app-header h1 {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .piece-select {
+    flex-shrink: 0;
+    max-width: 50vw;
+  }
+
   .card-row {
     flex-direction: column;
   }
