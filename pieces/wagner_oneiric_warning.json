@@ -395,7 +395,7 @@
       "state": "Db7",
       "direction": {
         "lyric": "Ein-",
-        "marking": "p, Str.",
+        "marking": "",
         "note": "Opening, strings enter"
       }
     },
@@ -421,7 +421,7 @@
       "time": 144,
       "state": "Eb7",
       "direction": {
-        "lyric": "in der",
+        "lyric": "",
         "marking": "poco cresc.",
         "note": ""
       }
@@ -431,26 +431,26 @@
       "state": "Db7",
       "direction": {
         "lyric": "Nacht,",
-        "marking": "Hob.",
-        "note": "Nacht = Night; Oboe enters"
+        "marking": "",
+        "note": "Nacht = Night"
       }
     },
     {
       "time": 240,
       "state": "D",
       "direction": {
-        "lyric": "wem",
-        "marking": "Harfe, Holzbl., H\u00f6rn. dim.",
-        "note": "wem = to whom; Harp, woodwinds, horns diminuendo"
+        "lyric": "w",
+        "marking": "diminuendo",
+        "note": "wem = to whom;"
       }
     },
     {
       "time": 288,
       "state": "A7",
       "direction": {
-        "lyric": "Traum der",
-        "marking": "pp, Harfe",
-        "note": "Traum = Dream; very soft, harp"
+        "lyric": "Traum",
+        "marking": "pp",
+        "note": "Dream; very soft"
       }
     },
     {
@@ -458,7 +458,7 @@
       "state": "G",
       "direction": {
         "lyric": "Lie- -be",
-        "marking": "pi\u00f9 p",
+        "marking": "p",
         "note": "Liebe = Love; even softer"
       }
     },
@@ -466,26 +466,26 @@
       "time": 384,
       "state": "C#",
       "direction": {
-        "lyric": "lacht,",
-        "marking": "ppp, II. Viol. ausdrucksvoll",
-        "note": "lacht = laughs; 2nd violin expressive"
+        "lyric": "",
+        "marking": "ppp, ausdrucksvoll",
+        "note": "lacht = laughs"
       }
     },
     {
       "time": 432,
       "state": "Am",
       "direction": {
-        "lyric": "hab' der",
-        "marking": "gesteigert, Viol.I ausdrucksvoll",
-        "note": "gesteigert = intensified; 1st violin expressive"
+        "lyric": "",
+        "marking": "",
+        "note": "gesteigert = intensified, expressive"
       }
     },
     {
       "time": 480,
       "state": "Em",
       "direction": {
-        "lyric": "Ei- -nen",
-        "marking": "espress., ppp",
+        "lyric": "",
+        "marking": "ppp",
         "note": "Einen = the one"
       }
     },
@@ -494,7 +494,7 @@
       "state": "C#m",
       "direction": {
         "lyric": "Ruf in",
-        "marking": "poco cresc., ausdrucksvoll",
+        "marking": "poco cresc.",
         "note": "Ruf = call"
       }
     },
@@ -503,7 +503,7 @@
       "state": "D#",
       "direction": {
         "lyric": "acht, die den",
-        "marking": "sehr zart u. ausdrucksvoll, ppp",
+        "marking": "sehr zart, ppp",
         "note": "acht = heed; sehr zart = very tender"
       }
     },
@@ -511,8 +511,8 @@
       "time": 624,
       "state": "G#m_1",
       "direction": {
-        "lyric": "Schl\u00e4- -fern",
-        "marking": "Viol.II, Br. u. Vcll. Solo",
+        "lyric": "",
+        "marking": "",
         "note": "Schl\u00e4fern = sleepers (E natural here)"
       }
     },
@@ -520,7 +520,7 @@
       "time": 672,
       "state": "G#m_2",
       "direction": {
-        "lyric": "Schlim- -mes",
+        "lyric": "",
         "marking": "",
         "note": "Schlimmes = something bad (E# here)"
       }
@@ -529,8 +529,8 @@
       "time": 720,
       "state": "D",
       "direction": {
-        "lyric": "ahnt, ban-",
-        "marking": "ppp, ausdrucksvoll",
+        "lyric": "ahnt, bange",
+        "marking": "ppp",
         "note": "ahnt = senses; bange = anxious"
       }
     },
@@ -538,8 +538,8 @@
       "time": 768,
       "state": "Gm",
       "direction": {
-        "lyric": "-ge zum Er-",
-        "marking": "morendo, poco cresc.",
+        "lyric": "",
+        "marking": "poco cresc.",
         "note": "morendo = dying away"
       }
     },
@@ -547,9 +547,9 @@
       "time": 816,
       "state": "G#\u00f87",
       "direction": {
-        "lyric": "wa-",
-        "marking": "Fl. u. Hob., dim.",
-        "note": "Flute and oboe"
+        "lyric": "",
+        "marking": "",
+        "note": "dim"
       }
     },
     {
@@ -557,17 +557,17 @@
       "state": "F#m",
       "direction": {
         "lyric": "",
-        "marking": "Engl.H., Br. u. Vcll.",
-        "note": "English horn, viola and cello"
+        "marking": "",
+        "note": ""
       }
     },
     {
       "time": 912,
       "state": "C#",
       "direction": {
-        "lyric": "-chen",
-        "marking": "Sehr ruhig",
-        "note": "Erwachen = awakening; Sehr ruhig = Very calm"
+        "lyric": "Erwachen = awakening",
+        "marking": "",
+        "note": "Sehr ruhig = Very calm"
       }
     },
     {
@@ -575,7 +575,7 @@
       "state": "C#7",
       "direction": {
         "lyric": "",
-        "marking": "pi\u00f9 p",
+        "marking": "p",
         "note": ""
       }
     },
@@ -584,7 +584,7 @@
       "state": "F#",
       "direction": {
         "lyric": "mahnt!",
-        "marking": "pp, Harfe",
+        "marking": "pp",
         "note": "mahnt = warns"
       }
     },
@@ -592,18 +592,18 @@
       "time": 1056,
       "state": "D_22",
       "direction": {
-        "lyric": "Ha- -bet",
-        "marking": "f, immer gleichm\u00e4\u00dfig",
-        "note": "Habet = Have/Take; forte, always evenly"
+        "lyric": "",
+        "marking": "forte",
+        "note": "Habet = Have/Take; always evenly"
       }
     },
     {
       "time": 1104,
       "state": "F#",
       "direction": {
-        "lyric": "acht!",
-        "marking": "sfz p, pp",
-        "note": "acht = heed; sforzando then soft"
+        "lyric": "!",
+        "marking": "pp",
+        "note": "acht = heed;"
       }
     },
     {
@@ -619,9 +619,9 @@
       "time": 1200,
       "state": "B",
       "direction": {
-        "lyric": "Ha- -bet",
+        "lyric": "Habet",
         "marking": "mf",
-        "note": "Second 'Habet acht'"
+        "note": ""
       }
     },
     {
@@ -637,7 +637,7 @@
       "time": 1296,
       "state": "B\u00f87",
       "direction": {
-        "lyric": "Bald ent- -weicht",
+        "lyric": "",
         "marking": "morendo",
         "note": "Bald entweicht = Soon fades"
       }
@@ -646,7 +646,7 @@
       "time": 1344,
       "state": "C#7",
       "direction": {
-        "lyric": "die Nacht!",
+        "lyric": "",
         "marking": "pp dolce, morendo",
         "note": "die Nacht = the night; ending"
       }
