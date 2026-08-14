@@ -439,7 +439,7 @@
       "time": 240,
       "state": "D",
       "direction": {
-        "lyric": "w",
+        "lyric": "",
         "marking": "diminuendo",
         "note": "wem = to whom;"
       }
@@ -457,7 +457,7 @@
       "time": 336,
       "state": "G",
       "direction": {
-        "lyric": "Lie- -be",
+        "lyric": "",
         "marking": "p",
         "note": "Liebe = Love; even softer"
       }
@@ -493,7 +493,7 @@
       "time": 528,
       "state": "C#m",
       "direction": {
-        "lyric": "Ruf in",
+        "lyric": "",
         "marking": "poco cresc.",
         "note": "Ruf = call"
       }
@@ -502,9 +502,9 @@
       "time": 576,
       "state": "D#",
       "direction": {
-        "lyric": "acht, die den",
-        "marking": "sehr zart, ppp",
-        "note": "acht = heed; sehr zart = very tender"
+        "lyric": "acht = heed",
+        "marking": "ppp",
+        "note": " sehr zart = very tender"
       }
     },
     {
