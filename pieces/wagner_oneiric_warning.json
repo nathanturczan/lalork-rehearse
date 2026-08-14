@@ -1,7 +1,7 @@
 {
-  "title": "Brangäne's Warning",
+  "title": "Brang\u00e4ne's Warning",
   "tempo": 120.0,
-  "comment": "Wagner's Oneiric Warning (Brangäne's Watch) - 29 harmonic states. 48 beats (24s) each at 120 BPM. Total: 696 seconds (11.6 minutes).",
+  "comment": "Wagner's Oneiric Warning (Brang\u00e4ne's Watch) - 29 harmonic states. 48 beats (24s) each at 120 BPM. Total: 696 seconds (11.6 minutes).",
   "youtube_id": "FW3dtzHdftI",
   "formContour": [
     [
@@ -170,51 +170,51 @@
     ],
     [
       0.4316,
-      0.828
+      0.782
     ],
     [
       0.4421,
-      0.849
+      0.552
     ],
     [
       0.4526,
-      0.71
+      0.376
     ],
     [
       0.4632,
-      0.691
+      0.314
     ],
     [
       0.4737,
-      0.712
+      0.253
     ],
     [
       0.4842,
-      0.726
+      0.204
     ],
     [
       0.4947,
-      0.73
+      0.268
     ],
     [
       0.5053,
-      0.765
+      0.469
     ],
     [
       0.5158,
-      0.835
+      0.662
     ],
     [
       0.5263,
-      0.85
+      0.739
     ],
     [
       0.5368,
-      0.85
+      0.785
     ],
     [
       0.5474,
-      0.85
+      0.831
     ],
     [
       0.5579,
@@ -513,7 +513,7 @@
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "Schläfern = sleepers (E natural here)"
+        "note": "Schl\u00e4fern = sleepers (E natural here)"
       }
     },
     {
@@ -545,7 +545,7 @@
     },
     {
       "time": 816,
-      "state": "G#ø7",
+      "state": "G#\u00f87",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -626,16 +626,16 @@
     },
     {
       "time": 1248,
-      "state": "G#ø7",
+      "state": "G#\u00f87",
       "direction": {
         "lyric": "acht!",
-        "marking": "pp, più p",
+        "marking": "pp, pi\u00f9 p",
         "note": ""
       }
     },
     {
       "time": 1296,
-      "state": "Bø7",
+      "state": "B\u00f87",
       "direction": {
         "lyric": "",
         "marking": "morendo",
@@ -652,7 +652,7 @@
       }
     }
   ],
-  "formContourComment": "Derived from wagner_stereo.wav by pieces/01-wagner/analyze_form.py (lalork repo): RMS + spectral centroid (50/50 blend) -> 48s moving average -> normalize -> histogram-equalize blend 0.35 -> S-curve around MIDPOINT 0.6 with EXPAND 0.55 -> cos^2-crossfaded gain warps -> soft ceiling 0.90 -> centred bin-average to 96 breakpoints. The centroid is blended in because it is terraced where RMS wobbles, and the 48s window nulls the per-chord transient that was spiking the contour on every harmonic boundary (change-rate at boundaries was 1.74x average at the old 4s window). Hand-drawn: 2:00-2:24 small step then relax; 5:12-8:00 extra 96s smoothing + 0.80 trim; 6:00-6:48 forte 0.85; 6:48-7:36 very quiet 0.10; 8:00-8:24 diagonal build to 0.80; 8:48 0.65; 9:12 0.20; building to MAX 1.0 at 10:00, held to 10:20; steep decline to 0.10 by 10:24; tail keeps its analysed shape rescaled. The 10:00 climax is the unique global maximum (next highest 0.895) and is asserted in the script.",
+  "formContourComment": "Derived from wagner_stereo.wav by pieces/01-wagner/analyze_form.py (lalork repo): RMS + spectral centroid (50/50 blend) -> 48s moving average -> normalize -> histogram-equalize blend 0.35 -> S-curve around MIDPOINT 0.6 with EXPAND 0.55 -> cos^2-crossfaded gain warps -> soft ceiling 0.90 -> centred bin-average to 96 breakpoints. The centroid is blended in because it is terraced where RMS wobbles, and the 48s window nulls the per-chord transient that was spiking the contour on every harmonic boundary (change-rate at boundaries was 1.74x average at the old 4s window). Hand-drawn: 2:00-2:24 small step then relax; 5:12-8:00 extra 96s smoothing + 0.80 trim; descent from the analysed envelope at 5:00 to 0.40 at 5:12 and a 0.20 trough at 5:36; back up to 0.70 at 6:00 and 0.85 by 6:24; forte 0.85 held to 6:42; 6:48-7:36 very quiet 0.10; 8:00-8:24 diagonal build to 0.80; 8:48 0.65; 9:12 0.20; building to MAX 1.0 at 10:00, held to 10:20; steep decline to 0.10 by 10:24; tail keeps its analysed shape rescaled. Trough/corner anchors are held for ~6s because the 7.3s centred bin-average would otherwise round a single-point corner off. The 10:00 climax is the unique global maximum (next highest 0.895) and is asserted in the script.",
   "formGlyphs": [
     {
       "type": "patch",
