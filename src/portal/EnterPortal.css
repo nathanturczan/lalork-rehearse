@@ -211,14 +211,28 @@
 .enter-portal .portal__direction-pos {
   position: absolute;
   transform: translate(-50%, -50%);
+  /* Containment invariant for the scatter (DirectionField.jsx X_MIN 25 /
+     X_MAX 75): a chip is centered on its x, so at x = 75% its right edge sits
+     at 75% + width/2. Capping width at half the field puts that edge at
+     exactly 100% (and at x = 25% the left edge at exactly 0%) — so no chip can
+     leave the field, which clips with overflow: hidden. Without this the long
+     baked glossary cues ran off the right edge.
+     width: max-content is load-bearing — an auto-width absolute box shrinks to
+     "containing block − left", so without it the same cue would wrap at
+     x = 70% and not at x = 30%. */
+  width: max-content;
+  max-width: 50%;
 }
 
 .enter-portal .portal__direction-chip {
   display: inline-block;
+  max-width: 100%;
   font-size: 22px;
   font-weight: 700;
   line-height: 1.2;
-  white-space: nowrap;
+  /* Wrap only when a chip hits the 50% cap; short cues stay on one line. */
+  overflow-wrap: break-word;
+  text-align: center;
 }
 
 .enter-portal .portal__direction-chip--incoming {
@@ -475,7 +489,9 @@
    silent no-ops. 0.25s matches the 4 Hz video-clock sampling. */
 .enter-portal .portal__form-playhead {
   stroke: var(--note-incoming-color, #6ab8ff);
-  stroke-width: 4.5;
+  /* 4x the original 4.5. non-scaling-stroke means CSS pixels, not viewBox
+     units, so this is 18px of ink regardless of strip width. */
+  stroke-width: 18;
   transition: transform 0.25s linear;
 }
 
