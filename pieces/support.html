@@ -188,6 +188,7 @@ already on the page. So in Enter, <strong>no ensemble name printed = correct roo
     <li><a href="#5-strudel-im-not-connected-the-harmony-isnt-changing">5. STRUDEL — "I'm not connected / the harmony isn't changing"</a></li>
     <li><a href="#6-enter-notation-read-my-score-isnt-updating-looks-wrong">6. ENTER NOTATION (READ) — "My score isn't updating / looks wrong"</a></li>
     <li><a href="#7-midi-path-no-ports-or-nothing-coming-through">7. MIDI PATH — no ports, or nothing coming through</a></li>
+    <li><a href="#8-timing-it-changes-but-at-the-wrong-moment">8. TIMING — "it changes, but at the wrong moment"</a></li>
     <li class="lvl1"><a href="#still-broken-orientation-station">STILL BROKEN? → ORIENTATION STATION</a></li>
     <li class="lvl1"><a href="#reference">REFERENCE</a></li>
     <li><a href="#what-to-download-ableton-people-only">What to download (Ableton people only)</a></li>
@@ -383,6 +384,7 @@ Tell them to keep the phone awake.</p>
 "connected" light to check. The ensemble name in the badge is the only tell. If the room
 genuinely failed to load they'd have seen <code>Connecting to room…</code>, <code>Room not found.</code>, or
 <code>Error: …</code> instead of the instrument.</p>
+<p><strong>If the harmony <em>is</em> changing but at the wrong moment, that's a different branch — §8.</strong></p>
 <hr />
 <h2 id="3-ableton-im-not-connected-the-harmony-isnt-changing">3. ABLETON — "I'm not connected / the harmony isn't changing"</h2>
 <p><strong>Ensemble first:</strong> the banner must be purple <code>● PERFORMING — LA LAPTOP ORCHESTRA</code>.</p>
@@ -546,6 +548,40 @@ exclusively. Redo the IAC/loopMIDI step, then refresh the Enter page.
 <strong>Also:</strong> the browser must be allowed MIDI access — if that prompt was dismissed, refresh
 and accept it.</p>
 <hr />
+<h2 id="8-timing-it-changes-but-at-the-wrong-moment">8. TIMING — "it changes, but at the wrong moment"</h2>
+<p><strong>Different problem from §2.</strong> In §2 the harmony never changes at all. Here it <em>is</em>
+changing — it just isn't landing with everybody else. Don't run the connection checks.</p>
+<p><strong>Ensemble first</strong>, as always. A performer in the wrong room will look like a timing
+problem and isn't one.</p>
+<h3 id="how-its-supposed-to-work">How it's supposed to work</h3>
+<p>Nathan broadcasts every chord change <strong>early</strong>, and every app holds it for the same
+couple of seconds before playing it. Everyone's hold expires at the same instant, so
+everyone changes together. Nobody has to set anything for this — it comes from the room.</p>
+<h3 id="8a-one-phone-is-changing-early-ahead-of-the-room">8a. One phone is changing EARLY, ahead of the room</h3>
+<p>Ensemble Jammer ignored the room's timing until a fix deployed <strong>Aug 14</strong>. A phone
+running the old page changes about <strong>two seconds early</strong> — noticeably ahead of everyone.</p>
+<p><strong>Fix: a real reload.</strong> Close the tab and come back in through
+<code>enter.lalaptoporchestra.com</code> → <strong>JAM</strong>. A tab that's been sitting open since this
+morning is still running the old code; pull-to-refresh on a phone is usually enough, but
+re-entering through Enter is the reliable version.</p>
+<blockquote>
+<p><strong>Do not touch "Receive delay" in User Settings.</strong> In LA Laptop Orchestra the room sets
+the timing for everybody and that slider is ignored. If someone was told earlier in the
+week to type <code>2000</code> in there, they can leave it — it does nothing now, and it won't
+double up.</p>
+</blockquote>
+<h3 id="8b-the-tv-is-behind-everybody">8b. The TV is behind everybody</h3>
+<p><strong>Known, expected, not worth fixing on Saturday.</strong> The Samsung TV app asks the server for
+changes on a timer instead of being pushed them, so it lands <strong>up to 1.5 seconds late</strong>,
+and the amount varies from change to change. It is <strong>always late, never early.</strong></p>
+<p><strong>Do not use the TV as a timing reference,</strong> and never troubleshoot a performer's laptop
+by comparing it to the TV. Compare two laptops instead.</p>
+<h3 id="8c-everybody-is-landing-late-together">8c. <em>Everybody</em> is landing late, together</h3>
+<p>Not a performer problem — don't send them anywhere. This is conductor-side.</p>
+<p><strong>Tell Nathan: "check Broadcast lead — it should be 2500."</strong> It lives in Rehearse and is
+remembered per-browser, so a different browser, a different profile, or cleared site data
+puts it back to 400, which lands the whole ensemble about two seconds behind the video.</p>
+<hr />
 <h1 id="still-broken-orientation-station" class="banner">STILL BROKEN? → ORIENTATION STATION</h1>
 <p>Say the words: <strong>"Let's get you to the orientation station."</strong> That is a complete,
 correct answer. These in particular have <strong>no verified self-serve fix</strong> — don't guess:</p>
@@ -707,6 +743,15 @@ changes chord, held notes re-pitch. Rhythm, timbre, and when to play stay entire
    browser (Chrome), which is the recommended path anyway — don't send anyone hunting for
    an app that isn't there. No Android-specific audio failures are documented; if one
    appears, treat it as undocumented and escalate.</p>
+</li>
+<li>
+<p><strong>The TV runs late and the apps don't.</strong> Up to 1.5 s behind, varying per change, never
+   early. Everything else in the room is within a fraction of a beat of each other. The
+   TV is a display, not a clock — don't measure anything against it. §8b.</p>
+</li>
+<li>
+<p><strong>Ensemble Jammer needed a reload on Aug 14.</strong> The fix that puts Jammer on the room's
+   timing shipped that day. Pages opened before it change ~2 s early. §8a.</p>
 </li>
 <li>
 <p><strong>The iOS app does not join the show by itself.</strong> There <em>is</em> an iPhone app on the App
