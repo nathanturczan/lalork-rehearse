@@ -10,12 +10,14 @@
   --bg: #ffffff; --fg: #16181d; --muted: #5c6370; --rule: #e2e5ea;
   --accent: #6b21a8; --card: #f6f7f9; --warn-bg: #fff4e5; --warn-br: #d98324;
   --stop-bg: #fdecec; --stop-br: #c62828;
+  --alert-bg: #c62828; --alert-fg: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #14161a; --fg: #e8eaed; --muted: #a0a6b0; --rule: #2b2f36;
     --accent: #c084fc; --card: #1c1f25; --warn-bg: #2e2416; --warn-br: #d98324;
     --stop-bg: #2e1a1a; --stop-br: #ef5350;
+    --alert-bg: #8c1d1d; --alert-fg: #ffecec;
   }
 }
 * { box-sizing: border-box; }
@@ -28,6 +30,23 @@ body {
   overflow-wrap: break-word;
 }
 h1 { font-size: 1.6rem; line-height: 1.25; margin: .2em 0 .1em; letter-spacing: -.02em; }
+
+/* Body-level H1s are section banners: they break the page into the four
+   things you do in order -- check the room, work the tree, escalate, look up. */
+h1.banner {
+  font-size: 1.3rem; line-height: 1.3; margin: 2.4em 0 .9em;
+  padding: .6em .75em; border-radius: 9px;
+  background: var(--card); border: 1px solid var(--rule);
+  scroll-margin-top: .6rem;
+}
+/* The room check is the one thing that must not be scrolled past. */
+h1.banner.alert {
+  background: var(--alert-bg); color: var(--alert-fg); border-color: transparent;
+  font-size: 1.42rem; padding: .75em .8em; margin-top: 1.6em;
+}
+h1.banner + hr { display: none; }
+h1.banner + h2, h1.banner + hr + h2 { border-top: 0; padding-top: 0; margin-top: 1.1em; }
+
 h2 {
   font-size: 1.22rem; margin: 2.2em 0 .5em; padding-top: .9em;
   border-top: 2px solid var(--rule); letter-spacing: -.01em;
@@ -63,6 +82,13 @@ blockquote.stop {
   border-left-width: 5px; font-size: 1.06rem; font-weight: 600;
 }
 
+/* The one question to ask before touching anyone's device. */
+blockquote.ask {
+  background: var(--stop-bg); border-left-color: var(--stop-br);
+  border-left-width: 5px; font-size: 1.2rem; font-weight: 650;
+  padding: .85em 1em; text-align: center;
+}
+
 nav.jump {
   background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
   padding: .75em .9em; margin: 1.4em 0;
@@ -71,7 +97,9 @@ nav.jump p { margin: 0 0 .45em; font-weight: 650; font-size: .82rem;
   text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 /* No list markers: the section headings already carry their own numbers. */
 nav.jump ul { margin: 0; padding: 0; list-style: none; font-size: .95rem; }
-nav.jump li { margin: .34em 0; }
+nav.jump li { margin: .34em 0; padding-left: .95em; }
+nav.jump li.lvl1 { margin: .7em 0 .3em; padding-left: 0; font-weight: 700; }
+nav.jump li.lvl1:first-child { margin-top: 0; }
 nav.jump a { text-decoration: none; }
 nav.jump a:hover { text-decoration: underline; }
 
@@ -80,7 +108,9 @@ nav.jump a:hover { text-decoration: underline; }
 @media print {
   body { max-width: none; font-size: 11pt; padding: 0; }
   nav.jump { break-inside: avoid; }
-  h2 { break-after: avoid; }
+  h1.banner, h2 { break-after: avoid; }
+  h1.banner { background: none; border: 2px solid #000; }
+  h1.banner.alert { color: #000; }
   table, blockquote { break-inside: avoid; }
   a { color: inherit; text-decoration: none; }
 }</style>
@@ -91,56 +121,23 @@ nav.jump a:hover { text-decoration: underline; }
      Regenerate: python3 scripts/build_support_html.py -->
 
 <h1>SATURDAY TECH SUPPORT — LA Laptop Orchestra, Aug 15 2026</h1>
-<p>Support manual for laptop performers. Symptom-first: find the symptom, apply the fix.</p>
-<p><strong>Verification status:</strong> everything in the VERIFIED sections was checked against the
-live site and the shipping device on <strong>Aug 14 2026</strong>. Anything not verified that day is
-marked. Older docs in this repo (<code>ABLETON_TEST.md</code>, <code>QUARGS_TEST.md</code>) describe an
-<strong>earlier device</strong> and contradict this file in places — where they disagree, <strong>this file
-is correct</strong>. See "Corrections to older docs" at the bottom.</p>
-<p>The Ensemble Jammer and "which ensemble" material (§0, §8) was read directly out of the
-Jammer and Enter source on Aug 14 rather than tested on a handset — phone-specific claims
-are flagged where that distinction matters.</p>
+<p>Orientation-station manual. <strong>Symptom-first:</strong> find the sentence the performer just said
+to you, follow that branch, stop when it works.</p>
 <hr />
-<nav class="jump">
-  <p>Jump to</p>
-  <ul>
-    <li><a href="#the-escalation-rule">THE ESCALATION RULE</a></li>
-    <li><a href="#0-ask-this-first-which-ensemble-are-you-in">0. ASK THIS FIRST: WHICH ENSEMBLE ARE YOU IN?</a></li>
-    <li><a href="#1-what-you-should-download">1. WHAT YOU SHOULD DOWNLOAD</a></li>
-    <li><a href="#2-what-it-looks-like-when-its-working">2. WHAT IT LOOKS LIKE WHEN IT'S WORKING</a></li>
-    <li><a href="#3-the-1-question-the-bridge-isnt-showing-the-room-its-gray">3. THE #1 QUESTION: "The Bridge isn't showing the room / it's gray"</a></li>
-    <li><a href="#4-bridge-troubleshooting">4. BRIDGE TROUBLESHOOTING</a></li>
-    <li><a href="#5-enter-the-web-app-enterlalaptoporchestracom">5. ENTER (the web app) — <code>enter.lalaptoporchestra.com</code></a></li>
-    <li><a href="#6-midi-routing-for-the-midi-path">6. MIDI ROUTING (for the MIDI path)</a></li>
-    <li><a href="#7-strudel-live-coders">7. STRUDEL (live coders)</a></li>
-    <li><a href="#8-ensemble-jammer-phones-tablets-laptops-the-jam-path">8. ENSEMBLE JAMMER — phones, tablets, laptops (the JAM path)</a></li>
-    <li><a href="#9-known-gotchas-verified-aug-14">9. KNOWN GOTCHAS (verified Aug 14)</a></li>
-    <li><a href="#10-no-verified-fix-send-to-orientation">10. NO VERIFIED FIX — SEND TO ORIENTATION</a></li>
-    <li><a href="#11-if-it-all-goes-wrong-from-failure_modesmd">11. IF IT ALL GOES WRONG (from <code>FAILURE_MODES.md</code>)</a></li>
-  </ul>
-</nav>
-<h2 id="the-escalation-rule">THE ESCALATION RULE</h2>
-<p><strong>Do not invent fixes.</strong> If the symptom is not in this document, say:</p>
-<blockquote class="stop">
-<p>"I don't have a verified fix for that. Go to the orientation station."</p>
+<h1 id="check-this-first-are-they-in-la-laptop-orchestra" class="banner alert">CHECK THIS FIRST — ARE THEY IN LA-LAPTOP-ORCHESTRA?</h1>
+<p>Before anything else, before you look at their screen, ask:</p>
+<blockquote class="ask">
+<p><strong>"What ensemble does it say you're in?"</strong></p>
 </blockquote>
-<p>A wrong fix five minutes before a piece is worse than no fix. The orientation station
-(Leone) handles humans, phones, and anything unusual. This document handles the
-repetitive laptop questions.</p>
-<p><strong>Second rule, from <code>FAILURE_MODES.md</code>:</strong> if something breaks, <em>simplify</em>. Don't
-troubleshoot during the event. A performer who can't connect can listen, share a
-device, or play acoustically. The piece is not precious.</p>
-<hr />
-<h2 id="0-ask-this-first-which-ensemble-are-you-in">0. ASK THIS FIRST: WHICH ENSEMBLE ARE YOU IN?</h2>
-<p>Before troubleshooting anything else, on every path, ask:</p>
-<blockquote>
-<p><strong>"Which ensemble are you in?"</strong></p>
-</blockquote>
-<p>On Saturday there is exactly one right answer: <strong>LA Laptop Orchestra</strong>
-(room id <code>la-laptop-orchestra</code>). If they see <code>rehearse-5bwwko</code>, <code>Private Rehearsal</code>,
-or somebody else's ensemble name, stop — nothing else you do will help. They are
-following harmony from the wrong place. Fix the room first, then troubleshoot.</p>
-<p>Where each path shows it:</p>
+<p>There is <strong>one</strong> right answer on Saturday: <strong>LA Laptop Orchestra</strong>.</p>
+<p>If they say <code>rehearse-5bwwko</code>, <code>Private Rehearsal</code>, <code>Untitled Ensemble</code>, <code>Demo Ensemble</code>,
+or any other ensemble name — <strong>STOP TROUBLESHOOTING. They are in the wrong room.</strong>
+Everything else you check will look broken, because it <em>is</em> broken, but not for the
+reason you're about to investigate.</p>
+<p><strong>The fix, every time:</strong> go back to <strong><code>enter.lalaptoporchestra.com</code></strong> and come in through
+that page again. Every link on it carries the correct room. In Ableton, use the
+<strong>PERFORMANCE</strong> tab → <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</p>
+<p>Where each path shows the ensemble name:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -151,19 +148,14 @@ following harmony from the wrong place. Fix the room first, then troubleshoot.</
 </thead>
 <tbody>
 <tr>
-<td><strong>Ableton</strong> (Bridge)</td>
-<td>banner at the top of the device</td>
-<td>purple <code>● PERFORMING — LA LAPTOP ORCHESTRA</code></td>
-</tr>
-<tr>
 <td><strong>Ensemble Jammer</strong></td>
 <td>top scale badge, right side</td>
 <td><code>LA Laptop Orchestra</code></td>
 </tr>
 <tr>
-<td><strong>Enter</strong> (READ / MIDI / portal)</td>
-<td>line above the scale panel</td>
-<td><strong>no name at all</strong> — see below</td>
+<td><strong>Ableton</strong> (Bridge)</td>
+<td>banner at the top of the device</td>
+<td>purple <code>● PERFORMING — LA LAPTOP ORCHESTRA</code></td>
 </tr>
 <tr>
 <td><strong>Strudel</strong></td>
@@ -171,212 +163,352 @@ following harmony from the wrong place. Fix the room first, then troubleshoot.</
 <td>green <code>● LIVE — la-laptop-orchestra</code></td>
 </tr>
 <tr>
-<td><strong>Rehearse app</strong></td>
-<td>—</td>
-<td>performers shouldn't have it open at all (§5)</td>
+<td><strong>Enter</strong> (notation / MIDI / portal)</td>
+<td>line above the scale panel</td>
+<td><strong>no name at all</strong> — see below</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Anything else is wrong</strong>, including: green <code>● REHEARSING — PRIVATE ROOM</code> in the Bridge,
-amber <code>● REHEARSAL — rehearse-xxxxxx</code> in Strudel, and <code>Untitled Ensemble</code> or
-<code>Demo Ensemble</code> in Jammer.</p>
-<p><strong>Enter is the odd one out, and it trips people up.</strong> Enter <em>hides</em> the ensemble name
-when you're in the right room, because it would just repeat the LA Laptop Orchestra
-wordmark on the page. So in Enter, <strong>seeing no ensemble name is the good state.</strong>
-If a name is printed above the scale panel, they're somewhere else.</p>
-<p><strong>Universal fix, browser paths:</strong> go back to <code>enter.lalaptoporchestra.com</code> and start
-again from there. Every link on that page carries the correct room.
-<strong>Universal fix, Ableton:</strong> PERFORMANCE tab → <strong>JOIN LA LAPTOP ORCHESTRA</strong> (§3).</p>
+<p><strong>Enter is the exception, and it will fool you.</strong> Enter <em>hides</em> the ensemble name when
+you're in the right room, because it would just repeat the LA Laptop Orchestra wordmark
+already on the page. So in Enter, <strong>no ensemble name printed = correct room.</strong> If a name
+<em>is</em> printed above the scale panel, they're somewhere else.</p>
 <hr />
-<h2 id="1-what-you-should-download">1. WHAT YOU SHOULD DOWNLOAD</h2>
-<p>Both downloads are on the <strong>ABLETON</strong> page in Enter (<code>enter.lalaptoporchestra.com</code>).</p>
+<nav class="jump">
+  <p>Jump to</p>
+  <ul>
+    <li class="lvl1"><a href="#check-this-first-are-they-in-la-laptop-orchestra">CHECK THIS FIRST — ARE THEY IN LA-LAPTOP-ORCHESTRA?</a></li>
+    <li><a href="#the-escalation-rule">THE ESCALATION RULE</a></li>
+    <li><a href="#which-door-should-they-have-come-in">WHICH DOOR SHOULD THEY HAVE COME IN?</a></li>
+    <li class="lvl1"><a href="#the-symptom-tree">THE SYMPTOM TREE</a></li>
+    <li><a href="#1-phone-ensemble-jammer-i-cant-hear-anything">1. PHONE / ENSEMBLE JAMMER — "I can't hear anything"</a></li>
+    <li><a href="#2-phone-ensemble-jammer-it-makes-sound-but-the-harmony-isnt-changing">2. PHONE / ENSEMBLE JAMMER — "It makes sound but the harmony isn't changing"</a></li>
+    <li><a href="#3-ableton-im-not-connected-the-harmony-isnt-changing">3. ABLETON — "I'm not connected / the harmony isn't changing"</a></li>
+    <li><a href="#4-ableton-its-connected-but-i-get-no-sound">4. ABLETON — "It's connected but I get no sound"</a></li>
+    <li><a href="#5-strudel-im-not-connected-the-harmony-isnt-changing">5. STRUDEL — "I'm not connected / the harmony isn't changing"</a></li>
+    <li><a href="#6-enter-notation-read-my-score-isnt-updating-looks-wrong">6. ENTER NOTATION (READ) — "My score isn't updating / looks wrong"</a></li>
+    <li><a href="#7-midi-path-no-ports-or-nothing-coming-through">7. MIDI PATH — no ports, or nothing coming through</a></li>
+    <li class="lvl1"><a href="#still-broken-orientation-station">STILL BROKEN? → ORIENTATION STATION</a></li>
+    <li class="lvl1"><a href="#reference">REFERENCE</a></li>
+    <li><a href="#what-to-download-ableton-people-only">What to download (Ableton people only)</a></li>
+    <li><a href="#bridge-banner-states-exact-strings">Bridge banner states (exact strings)</a></li>
+    <li><a href="#what-working-sounds-like">What "working" sounds like</a></li>
+    <li><a href="#known-gotchas">Known gotchas</a></li>
+  </ul>
+</nav>
+<h2 id="the-escalation-rule">THE ESCALATION RULE</h2>
+<p><strong>Do not invent fixes.</strong> If the symptom is not in this document, say:</p>
+<blockquote class="stop">
+<p>"I don't have a verified fix for that. Let's get you to the orientation station."</p>
+</blockquote>
+<p>A wrong fix five minutes before a piece is worse than no fix. Every step below
+corresponds to something that has actually gone wrong or to behavior the app actually
+has. Nothing here is "try restarting it and see."</p>
+<p><strong>Second rule, from <code>FAILURE_MODES.md</code>:</strong> if something breaks, <em>simplify</em>. Don't
+troubleshoot during the event. A performer who can't connect can listen, share a device,
+or play acoustically. The piece is not precious.</p>
+<hr />
+<h2 id="which-door-should-they-have-come-in">WHICH DOOR SHOULD THEY HAVE COME IN?</h2>
+<p>Some "tech support" questions are really someone using the wrong tool. Check this second:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Button</th>
-<th>What it is</th>
-<th>Use it if</th>
+<th>They have</th>
+<th>They want</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Download Ableton Set</strong></td>
-<td>Full template, ~2.7 MB zip. Contains the Bridge already placed on tracks.</td>
-<td>You want the ready-made Set. <strong>Recommended.</strong></td>
+<td>A phone</td>
+<td><strong>Ensemble Jammer</strong> — <code>enter.lalaptoporchestra.com</code> → <strong>JAM</strong></td>
 </tr>
 <tr>
-<td><strong>Bridge Only</strong></td>
-<td>Just the Max for Live device, ~208 KB <code>.amxd</code></td>
-<td>You want to add LALORK to your <em>own</em> Set.</td>
+<td>Ableton Live</td>
+<td><strong>LALORK Bridge</strong> — Enter → <strong>ABLETON</strong></td>
+</tr>
+<tr>
+<td>Live coding</td>
+<td><strong>Strudel</strong> — Enter → <strong>CODE</strong></td>
+</tr>
+<tr>
+<td>An acoustic instrument or voice</td>
+<td><strong>Enter notation</strong> — Enter → <strong>READ</strong></td>
+</tr>
+<tr>
+<td>Other DAW or hardware synth</td>
+<td><strong>MIDI</strong> — Enter → <strong>MIDI</strong></td>
+</tr>
+<tr>
+<td>Nothing / just listening</td>
+<td><strong>Nothing. Listening is participating.</strong></td>
 </tr>
 </tbody>
 </table></div>
-<p>Both were confirmed live and current on Aug 14. The Bridge inside the zip and the
-standalone Bridge are now the <strong>same device</strong> (they were briefly different — fixed
-Aug 14).</p>
-<p><strong>Correct device:</strong> <code>LA Laptop Orchestra Bridge.amxd</code>, <strong>212,811 bytes</strong>.
-If someone has a ~207 KB copy, it is the old Aug 4 build — <strong>have them re-download.</strong>
-The old one is missing the downbeat-hold behavior.</p>
+<p><strong>Nobody but Nathan uses the Rehearse app.</strong> See §6.</p>
 <hr />
-<h2 id="2-what-it-looks-like-when-its-working">2. WHAT IT LOOKS LIKE WHEN IT'S WORKING</h2>
-<h3 id="the-bridge-device-in-ableton">The Bridge device (in Ableton)</h3>
-<p>Two tabs at the top: <strong>REHEARSAL</strong> and <strong>PERFORMANCE</strong>.</p>
-<p>On Saturday everyone uses <strong>PERFORMANCE</strong>, then presses <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</p>
-<p>Banner states, exactly as they appear:</p>
+<h1 id="the-symptom-tree" class="banner">THE SYMPTOM TREE</h1>
+<hr />
+<h2 id="1-phone-ensemble-jammer-i-cant-hear-anything">1. PHONE / ENSEMBLE JAMMER — "I can't hear anything"</h2>
+<p><strong>Ensemble first</strong> (top of this document). Then, in this order:</p>
+<h3 id="1a-are-they-on-an-instrument-that-hasnt-been-started">1a. Are they on an instrument that hasn't been started?</h3>
+<p><strong>This is the most likely cause and it looks exactly like a broken app.</strong></p>
+<p>The JAM link assigns an instrument <strong>at random</strong> out of seven. <strong>Three of those seven make
+no sound at all until you press a play button:</strong></p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
-<th>Banner</th>
-<th>Color</th>
+<th>Instrument</th>
+<th>Starts silent?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Melody Maker</strong></td>
+<td><strong>YES — press ▶</strong></td>
+</tr>
+<tr>
+<td><strong>Drone</strong></td>
+<td><strong>YES — press ▶</strong></td>
+</tr>
+<tr>
+<td><strong>SNaPS</strong></td>
+<td><strong>YES — press ▶</strong></td>
+</tr>
+<tr>
+<td>Harp</td>
+<td>no — touch the strings</td>
+</tr>
+<tr>
+<td>X/Y Lead</td>
+<td>no — drag on the pad</td>
+</tr>
+<tr>
+<td>Venn</td>
+<td>no — tap a region</td>
+</tr>
+<tr>
+<td>Looper</td>
+<td>no — tap a pad</td>
+</tr>
+</tbody>
+</table></div>
+<p>The control is a <strong>▶ button</strong> in the bar with the volume slider; it turns into <strong>■</strong> once
+it's running. On a phone it's compact and easy to miss.</p>
+<p><strong>So: if they have Melody Maker, Drone, or SNaPS — have them press ▶.</strong> Roughly two in
+five people who come in through JAM will land on one of these.</p>
+<p>If they'd rather have something that makes noise the moment you touch it, switch them to
+<strong>Harp</strong> in the instrument picker.</p>
+<h3 id="1b-is-their-own-volume-down">1b. Is their own volume down?</h3>
+<p>There is a <strong>mixer</strong> with a volume slider <em>per instrument</em> plus a master labeled <strong>Main</strong>
+(headphones icon on a phone). A slider at <strong>0%</strong> is silent and looks like a dead app.
+Check their instrument's slider and <strong>Main</strong>.</p>
+<h3 id="1c-are-they-actually-doing-the-interaction-that-instrument-wants">1c. Are they actually doing the interaction that instrument wants?</h3>
+<p>Each one needs a specific gesture, and "I tapped it" isn't always enough:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>What makes sound</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Harp</strong></td>
+<td>swipe/tap across the strings (swipe speed = how loud)</td>
+</tr>
+<tr>
+<td><strong>X/Y Lead</strong></td>
+<td><strong>drag</strong> on the pad — a single tap barely does anything</td>
+</tr>
+<tr>
+<td><strong>Venn</strong></td>
+<td>tap inside a circle region</td>
+</tr>
+<tr>
+<td><strong>Looper</strong></td>
+<td>tap a pad</td>
+</tr>
+<tr>
+<td><strong>Melody Maker</strong></td>
+<td>press ▶, then tap grid cells to fill in notes</td>
+</tr>
+<tr>
+<td><strong>Drone</strong></td>
+<td>press ▶</td>
+</tr>
+<tr>
+<td><strong>SNaPS</strong></td>
+<td>press ▶</td>
+</tr>
+<tr>
+<td><strong>Tilt</strong> / <strong>Compass</strong></td>
+<td>hold the pad at the bottom <strong>and</strong> tilt/turn — silent if you're not holding the pad</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="1d-iphone-silent-switch-and-media-volume">1d. iPhone: silent switch and media volume</h3>
+<ol>
+<li><strong>Silent/ring switch</strong> on the left edge → flip it so no orange shows.</li>
+<li><strong>Volume up</strong>, pressed <em>while the app is making sound.</em> iOS keeps ringer and media
+   volume separate, so pressing volume on the home screen can move the wrong one.</li>
+<li><strong>Bluetooth</strong> — audio may be going to headphones, a car, or a speaker in another room.</li>
+</ol>
+<blockquote>
+<p><em>(not device-tested)</em> The app is written to <strong>ignore</strong> the silent switch — the native
+iOS app and the browser on iOS 16.4+ both set the audio session to "playback". So in
+theory the switch shouldn't matter, and on a modern iPhone this step may do nothing.
+It costs three seconds and older iOS does still obey the switch, so check it — but if
+it doesn't help, <strong>go to 1a</strong>, don't keep pushing on the phone's volume.</p>
+</blockquote>
+<h3 id="1e-have-they-touched-the-screen-yet">1e. Have they touched the screen yet?</h3>
+<p>Browsers refuse to play audio until the user touches the page. In Jammer the first touch
+on the instrument <em>is</em> that permission gesture, so this usually resolves itself — but if
+they've been staring at a silent screen without touching it, have them tap a key.</p>
+<h3 id="1f-did-it-go-silent-after-locking-the-phone-or-switching-apps">1f. Did it go silent after locking the phone or switching apps?</h3>
+<p>iOS suspends audio in the background. Return to Jammer and <strong>tap the screen</strong> once.
+Tell them to keep the phone awake.</p>
+<p><strong>Still silent after all of that → orientation station.</strong> Don't improvise.</p>
+<hr />
+<h2 id="2-phone-ensemble-jammer-it-makes-sound-but-the-harmony-isnt-changing">2. PHONE / ENSEMBLE JAMMER — "It makes sound but the harmony isn't changing"</h2>
+<p>This is a <strong>different problem from no sound.</strong> Don't run the volume checks.</p>
+<ol>
+<li><strong>Ensemble.</strong> Top scale badge, right side. Must read <code>LA Laptop Orchestra</code>. If it
+   doesn't, that's the whole answer — back through <code>enter.lalaptoporchestra.com</code> → JAM.</li>
+<li><strong>Is the conductor actually moving?</strong> Look at the TV or another performer's screen.
+   If nobody's harmony is changing, it's not their phone.</li>
+<li><strong>Refresh and re-enter through the event path</strong> — <code>enter.lalaptoporchestra.com</code> → JAM.
+   Do not have them navigate inside the app or pick a room from a lobby.</li>
+</ol>
+<p>Jammer has <strong>no persistent connection indicator</strong> while you're playing — there is no
+"connected" light to check. The ensemble name in the badge is the only tell. If the room
+genuinely failed to load they'd have seen <code>Connecting to room…</code>, <code>Room not found.</code>, or
+<code>Error: …</code> instead of the instrument.</p>
+<hr />
+<h2 id="3-ableton-im-not-connected-the-harmony-isnt-changing">3. ABLETON — "I'm not connected / the harmony isn't changing"</h2>
+<p><strong>Ensemble first:</strong> the banner must be purple <code>● PERFORMING — LA LAPTOP ORCHESTRA</code>.</p>
+<h3 id="the-1-question-of-the-day-a-gray-device-is-not-broken">The #1 question of the day: a gray device is not broken</h3>
+<p><strong><code>ENTER YOUR PRIVATE REHEARSAL CODE</code> in gray means idle, not error.</strong></p>
+<p>The Bridge <strong>does not auto-connect</strong> and <strong>never remembers a room.</strong> Room codes do not
+save with a Live Set. Every single time Live opens, every performer must join again.</p>
+<p><strong>Fix:</strong> <strong>PERFORMANCE</strong> tab → <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</p>
+<blockquote>
+<p>Joining is <strong>global across the Set.</strong> Pressing JOIN on <em>one</em> Bridge joins <em>every</em>
+Bridge in that Live Set — you don't need to do it per track. The
+REHEARSAL/PERFORMANCE tab is synced across all instances too.</p>
+</blockquote>
+<h3 id="red-check-room-wifi">Red <code>✗ CHECK ROOM + WIFI</code></h3>
+<p>In order:
+1. <strong>Are they on the venue Wi-Fi?</strong> Most common cause.
+2. <strong>Are they on the PERFORMANCE tab?</strong> A typo'd code on the REHEARSAL tab gives red.
+   Switch to PERFORMANCE and press JOIN.
+3. Press <strong>JOIN LA LAPTOP ORCHESTRA</strong> again — it retries.
+4. Still red → orientation station. Stop digging.</p>
+<p><strong>Amber <code>connecting...</code> for more than ~10 seconds:</strong> treat as red, above.</p>
+<h3 id="green-rehearsing-private-room-during-the-show">Green <code>● REHEARSING — PRIVATE ROOM</code> during the show</h3>
+<p>They're in their practice room. PERFORMANCE tab → JOIN.</p>
+<h3 id="banner-is-right-but-the-scalechord-fields-are-frozen">Banner is right but the Scale/Chord fields are frozen</h3>
+<p>They've lost the room. Rejoin: PERFORMANCE → JOIN.</p>
+<h3 id="theyre-typing-a-room-code">They're typing a room code</h3>
+<p>On Saturday nobody types a code — that's the REHEARSAL tab. Send them to PERFORMANCE.
+(For reference: the field accepts room ID, slug, or friendly name, case-insensitive,
+spaces OK.)</p>
+<hr />
+<h2 id="4-ableton-its-connected-but-i-get-no-sound">4. ABLETON — "It's connected but I get no sound"</h2>
+<p>Banner purple or green means the Bridge is fine. <strong>This is an audio problem, not a LALORK
+problem.</strong></p>
+<ol>
+<li>Is the track <strong>armed / monitor on</strong>?</li>
+<li>Is the track <strong>muted</strong>, or the master down?</li>
+<li>Is Live's audio output the right device (headphones vs interface)?</li>
+<li><strong>Are they actually playing notes?</strong> The Bridge is silent until it receives MIDI. It
+   re-pitches what you play; it does not generate notes on its own.</li>
+</ol>
+<hr />
+<h2 id="5-strudel-im-not-connected-the-harmony-isnt-changing">5. STRUDEL — "I'm not connected / the harmony isn't changing"</h2>
+<p><strong>Ensemble first:</strong> green <code>● LIVE — la-laptop-orchestra</code>.</p>
+<p>The room name is <strong>baked into the pre-loaded jam</strong> — nobody types it — so a wrong room
+here means they didn't come in through <code>enter.lalaptoporchestra.com</code> → <strong>CODE</strong> →
+<strong>Open Strudel (jam pre-loaded)</strong>. Send them back through those three clicks, then
+<strong>Ctrl+Enter</strong> to play.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Amber <code>● REHEARSAL — rehearse-xxxxxx</code></td>
+<td>Practice room, not the show. Re-open the jam from Enter → CODE.</td>
+</tr>
+<tr>
+<td>Red <code>waiting for room "…"</code></td>
+<td>Room name typo, or the room isn't open yet. It connects by itself once the room exists.</td>
+</tr>
+<tr>
+<td>Green badge, no sound</td>
+<td>Browser blocked audio. Click the page, press play again.</td>
+</tr>
+<tr>
+<td>Plays but never changes</td>
+<td>The room isn't broadcasting — check with the conductor, not the performer.</td>
+</tr>
+<tr>
+<td><strong>Badge invisible in dark mode</strong></td>
+<td><strong>Known bug.</strong> Dark themes (seen in Brave). The badge is there, just unreadable. Not a connection problem — don't chase it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Don't turn this into API documentation. If they want more than the starter jam, that's a
+conversation for after the show.</p>
+<hr />
+<h2 id="6-enter-notation-read-my-score-isnt-updating-looks-wrong">6. ENTER NOTATION (READ) — "My score isn't updating / looks wrong"</h2>
+<p><strong>Ensemble first</strong> — and remember Enter's inversion: <strong>no ensemble name printed above the
+scale panel = correct room.</strong> A name printed = wrong room.</p>
+<p>READ is <strong>completely passive.</strong> There is nothing to join, no button to press. It follows
+the room by itself.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>What they see</th>
 <th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>● PERFORMING — LA LAPTOP ORCHESTRA</code></td>
-<td>purple</td>
-<td><strong>This is the goal on Saturday.</strong></td>
+<td><code>Connecting to the ensemble…</code></td>
+<td>Still loading. Wait, then refresh.</td>
 </tr>
 <tr>
-<td><code>● REHEARSING — PRIVATE ROOM</code></td>
-<td>green</td>
-<td>Connected, but to a private practice room — not the show.</td>
+<td><code>Waiting for scale data from the ensemble…</code></td>
+<td>Room loaded, conductor hasn't broadcast yet. <strong>Not an error.</strong></td>
 </tr>
 <tr>
-<td><code>● CONNECTED</code></td>
-<td>green</td>
-<td>Connected.</td>
-</tr>
-<tr>
-<td><code>connecting...</code> / <code>JOINING LA LAPTOP ORCHESTRA...</code></td>
-<td>amber</td>
-<td>In progress. Wait a few seconds.</td>
-</tr>
-<tr>
-<td><code>✗ CHECK ROOM + WIFI</code></td>
-<td>red</td>
-<td>Not reaching the room. See §4.</td>
-</tr>
-<tr>
-<td><code>disconnected</code></td>
-<td>gray</td>
-<td>Manually disconnected.</td>
-</tr>
-<tr>
-<td><code>ENTER YOUR PRIVATE REHEARSAL CODE</code></td>
-<td>gray</td>
-<td><strong>Idle. Nothing joined yet.</strong> Not an error.</td>
+<td><code>Room "…" not found.</code></td>
+<td>Wrong URL. Go to <code>enter.lalaptoporchestra.com</code>.</td>
 </tr>
 </tbody>
 </table></div>
-<p>The device also displays <strong>BPM</strong>, <strong>Scale</strong> (e.g. <code>C Diatonic</code>), and <strong>Chord</strong>. If those
-are updating as the conductor moves, it is working.</p>
-<h3 id="what-working-sounds-like">What "working" sounds like</h3>
-<p>You play notes; the notes come out <strong>inside the current harmony</strong>. When the conductor
-changes chord, held notes re-pitch. Your rhythm, timbre, and when you play are still
-entirely yours.</p>
-<hr />
-<h2 id="3-the-1-question-the-bridge-isnt-showing-the-room-its-gray">3. THE #1 QUESTION: "The Bridge isn't showing the room / it's gray"</h2>
-<p><strong>A gray <code>ENTER YOUR PRIVATE REHEARSAL CODE</code> device is not broken.</strong></p>
-<p>The device <strong>always starts idle</strong> and <strong>never remembers a room</strong>. Room codes do <em>not</em>
-save with a Live Set. Every single time Live opens, every performer must join again.</p>
-<p><strong>Fix:</strong> click the <strong>PERFORMANCE</strong> tab → click <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</p>
-<p>This is the most common Saturday question and it has a one-click answer.</p>
-<blockquote>
-<p>Note for whoever is helping: joining is <strong>global across the Set</strong>. Pressing JOIN on
-<em>one</em> Bridge joins <em>every</em> Bridge in that Live Set. You do not need to press JOIN on
-each track. Likewise the REHEARSAL/PERFORMANCE tab is synced across all instances.</p>
-</blockquote>
-<hr />
-<h2 id="4-bridge-troubleshooting">4. BRIDGE TROUBLESHOOTING</h2>
-<h3 id="red-check-room-wifi">Red <code>✗ CHECK ROOM + WIFI</code></h3>
-<p>In order:
-1. <strong>Are they on the venue Wi-Fi?</strong> Most common cause.
-2. <strong>Are they on the PERFORMANCE tab?</strong> If they're on REHEARSAL with a typo'd code, they
-   get red. Switch to PERFORMANCE and press JOIN.
-3. Press <strong>JOIN LA LAPTOP ORCHESTRA</strong> again. It retries.
-4. Still red → orientation station. Do not keep digging.</p>
-<h3 id="stuck-on-amber-connecting-for-more-than-10-seconds">Stuck on amber <code>connecting...</code> for more than ~10 seconds</h3>
-<p>Treat as red, above.</p>
-<h3 id="banner-is-greenpurple-but-theres-no-sound">Banner is green/purple but there's no sound</h3>
-<p>The Bridge is connected — this is an <strong>audio</strong> problem, not a LALORK problem.
-1. Is the track <strong>armed / monitor on</strong>?
-2. Is the track <strong>muted</strong>, or is the master down?
-3. Is Live's audio output the right device (headphones vs interface)?
-4. Are they actually <strong>playing notes</strong>? The device is silent until it receives MIDI —
-   it re-pitches what you play, it does not generate notes on its own.</p>
-<h3 id="sound-plays-but-never-follows-the-harmony">Sound plays but never follows the harmony</h3>
-<ol>
-<li>Check the banner is purple/green, not gray.</li>
-<li>Check BPM/Scale/Chord fields on the device are <em>changing</em>.</li>
-<li>If the fields are frozen, they've lost the room → rejoin (§3).</li>
-</ol>
-<h3 id="they-typed-a-room-code-and-it-didnt-work">They typed a room code and it didn't work</h3>
-<p>The room field accepts the room ID, the slug, or the friendly room name. It is
-<strong>case-insensitive and spaces are OK</strong>. But on Saturday nobody should be typing a code
-at all — that's the REHEARSAL tab. Send them to PERFORMANCE.</p>
-<h3 id="theyre-in-rehearsing-private-room-during-the-show">They're in <code>● REHEARSING — PRIVATE ROOM</code> during the show</h3>
-<p>They're connected to their practice room, not the performance. PERFORMANCE tab → JOIN.</p>
-<hr />
-<h2 id="5-enter-the-web-app-enterlalaptoporchestracom">5. ENTER (the web app) — <code>enter.lalaptoporchestra.com</code></h2>
-<p>Five paths. Route people by what they brought:</p>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Path</th>
-<th>For</th>
-<th>What they do</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>READ</strong></td>
-<td>acoustic/traditional players</td>
-<td>Live notation for their instrument</td>
-</tr>
-<tr>
-<td><strong>ABLETON</strong></td>
-<td>Live users</td>
-<td>Download Set or Bridge (§1)</td>
-</tr>
-<tr>
-<td><strong>MIDI</strong></td>
-<td>hardware / other DAWs</td>
-<td>Virtual MIDI out (§6)</td>
-</tr>
-<tr>
-<td><strong>JAM</strong></td>
-<td>anyone, no gear</td>
-<td>Browser instrument, Ensemble Jammer (§8)</td>
-</tr>
-<tr>
-<td><strong>CODE</strong></td>
-<td>live coders</td>
-<td>Strudel (§7)</td>
-</tr>
-</tbody>
-</table></div>
-<p>No install, no sign-in. If a page looks stuck, <strong>refresh</strong> — that is the standard fix and
-it is safe.</p>
-<h3 id="read-notation">READ (notation)</h3>
-<p>Nothing to install and nothing to join — the page follows the room by itself. If the
-notation isn't moving, the ensemble check in §0 applies: an ensemble name printed above
-the scale panel means they're in the wrong room. Otherwise refresh.</p>
+<h3 id="known-bug-wrong-sharpsflats-on-the-incoming-chord">Known bug: wrong sharps/flats on the <em>incoming</em> chord</h3>
+<p>The accidentals on the <strong>preview / next</strong> chord are frequently wrong (it may show C-E-G
+when the next chord is C♯ major). <strong>This is a known bug, not their screen.</strong></p>
+<p><strong>Workaround: use the Triads view — it is correct.</strong></p>
+<p>Related: the spelling shown is sometimes not the ideal one (sharps where flats would read
+better). Also known. Not worth troubleshooting on Saturday.</p>
 <h3 id="the-rehearse-app-is-not-for-performers">The Rehearse app is not for performers</h3>
-<p>At the bottom of the Enter portal there is an <strong>Open Rehearse →</strong> link. On Saturday,
-<strong>nobody but Nathan follows it.</strong> Rehearse is the conductor app — Nathan drives the
-entire performance from it. A performer who opens Rehearse sees a different interface,
-and if they start a rehearsal there they create a private <code>rehearse-…</code> room and pull
-themselves out of the show.</p>
-<p>If someone has ended up in Rehearse: close that tab, go back to
+<p>At the bottom of the Enter portal there is an <strong>Open Rehearse →</strong> link. On Saturday
+<strong>nobody but Nathan follows it.</strong> Rehearse is the conductor app — Nathan drives the entire
+performance from it. A performer who starts a rehearsal there creates a private
+<code>rehearse-…</code> room and pulls themselves out of the show.</p>
+<p>If someone has ended up in Rehearse: <strong>close that tab</strong>, go back to
 <code>enter.lalaptoporchestra.com</code>. No other diagnosis needed.</p>
 <hr />
-<h2 id="6-midi-routing-for-the-midi-path">6. MIDI ROUTING (for the MIDI path)</h2>
-<p>Straight from the app's own <strong>?</strong> help button, so this is current:</p>
+<h2 id="7-midi-path-no-ports-or-nothing-coming-through">7. MIDI PATH — no ports, or nothing coming through</h2>
 <p><strong>Mac:</strong> Audio MIDI Setup → Show MIDI Studio → double-click <strong>IAC Driver</strong> → check
 <strong>"Device is online"</strong> → add a port.</p>
-<p><strong>Windows:</strong> Install and run <strong>loopMIDI</strong> (<code>tobias-erichsen.de/software/loopmidi.html</code>)
-→ create a port.</p>
+<p><strong>Windows:</strong> install and run <strong>loopMIDI</strong>
+(<code>tobias-erichsen.de/software/loopmidi.html</code>) → create a port.</p>
 <p>Then in Enter's MIDI tab: pick the <strong>Port</strong>, set <strong>Channel</strong> (1–16), set <strong>Octave</strong>
 (±12 semitones per click), and choose <strong>Output</strong>:</p>
 <div class="tablewrap"><table>
@@ -405,179 +537,30 @@ themselves out of the show.</p>
 </tr>
 <tr>
 <td>Chord Original Voicing</td>
-<td>Jazz comping voicing. <strong>Some voicings are rootless</strong>, so the bass note may not be the chord root — this is expected, not a bug.</td>
+<td>Jazz comping voicing. <strong>Some voicings are rootless</strong>, so the bass note may not be the chord root — expected, not a bug.</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>If no ports appear in the dropdown:</strong> the virtual port wasn't created or Live/their DAW
-grabbed it exclusively. Redo the IAC/loopMIDI step, then refresh the Enter page.
-<strong>Note:</strong> the browser must be allowed MIDI access — if a permission prompt was dismissed,
-refresh and accept it.</p>
+<p><strong>No ports in the dropdown:</strong> the virtual port wasn't created, or their DAW grabbed it
+exclusively. Redo the IAC/loopMIDI step, then refresh the Enter page.
+<strong>Also:</strong> the browser must be allowed MIDI access — if that prompt was dismissed, refresh
+and accept it.</p>
 <hr />
-<h2 id="7-strudel-live-coders">7. STRUDEL (live coders)</h2>
-<p><em>Documented flow — not re-verified on Aug 14. Confirm with Tyler/Quargs before relying on it.</em></p>
-<ol>
-<li><code>enter.lalaptoporchestra.com</code> → <strong>Jam</strong> → <strong>Code</strong></li>
-<li>Click <strong>Open Strudel (jam pre-loaded)</strong></li>
-<li>Press play (<strong>Ctrl+Enter</strong>)</li>
-</ol>
-<p>Working state: a green badge reading <code>● LIVE — la-laptop-orchestra</code>, with the scale
-polygon, scale name, and chord name.</p>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Red <code>waiting for room "…"</code> badge</td>
-<td>Room name typo, or the room isn't open yet.</td>
-</tr>
-<tr>
-<td>Green badge but no sound</td>
-<td>Browser blocked audio. Click the page, press play again.</td>
-</tr>
-<tr>
-<td>Plays but never changes</td>
-<td>The room isn't broadcasting — check with the conductor.</td>
-</tr>
-<tr>
-<td><strong>Badge invisible in dark mode</strong></td>
-<td><strong>Known bug.</strong> Affects dark themes (seen in Brave). The badge is there, just unreadable. Not a connection problem — don't chase it.</td>
-</tr>
-</tbody>
-</table></div>
-<hr />
-<h2 id="8-ensemble-jammer-phones-tablets-laptops-the-jam-path">8. ENSEMBLE JAMMER — phones, tablets, laptops (the JAM path)</h2>
-<p><em>Behavior below was read out of the Jammer source on Aug 14. It was </em><em>not</em><em> re-tested on
-a physical phone that day — where that matters it is flagged.</em></p>
-<h3 id="how-they-should-get-in">How they should get in</h3>
-<p><code>enter.lalaptoporchestra.com</code> → <strong>JAM</strong>.</p>
-<p>That link opens Jammer <strong>already joined to LA Laptop Orchestra</strong>: no sign-in, no ensemble
-to choose, an instrument assigned at random. <strong>This is the only path to recommend.</strong> It
-works on iPhone, Android, and any laptop browser.</p>
-<h3 id="the-trap-the-installed-app-takes-a-different-route">The trap: the installed app takes a different route</h3>
-<p>There is an <strong>iOS app</strong> on the App Store, and Enter offers it as an alternative. It does
-<strong>not</strong> open into the show. It opens into sign-in → ensemble lobby, and they have to find
-and tap <strong>LA Laptop Orchestra</strong> themselves. Anyone who says <em>"I downloaded the app and
-I'm in the wrong place"</em> — this is why.</p>
+<h1 id="still-broken-orientation-station" class="banner">STILL BROKEN? → ORIENTATION STATION</h1>
+<p>Say the words: <strong>"Let's get you to the orientation station."</strong> That is a complete,
+correct answer. These in particular have <strong>no verified self-serve fix</strong> — don't guess:</p>
 <ul>
-<li><strong>Fastest fix:</strong> stop using the app. Open <code>enter.lalaptoporchestra.com</code> → JAM in the
-  browser instead.</li>
-<li><strong>If they want to stay in the app:</strong> LA Laptop Orchestra is pinned to the top of the
-  lobby list. Tap that one. Private <code>rehearse-…</code> rooms are hidden from the lobby, so a
-  current build shouldn't offer them — but <em>other people's</em> public ensembles are listed
-  and are tappable by mistake. Confirm the name in the top badge afterwards (§0).</li>
-</ul>
-<p><strong>Android: there is no app to download.</strong> No Play Store listing exists. Android users go
-through the browser (Chrome). That's the recommended path anyway, so it costs them
-nothing — but don't send anyone hunting for an Android app that isn't there.</p>
-<h3 id="iphone-no-sound">iPhone: no sound</h3>
-<p>The two usual causes are the silent switch and the media volume.</p>
-<ol>
-<li><strong>Silent/ring switch</strong> on the left edge → flip it to ring (no orange showing).</li>
-<li><strong>Volume up</strong>, pressed <em>while the app is making sound.</em> iOS keeps separate ringer and
-   media volumes, so pressing volume on the home screen can adjust the wrong one.</li>
-<li><strong>Bluetooth</strong> — audio may be going to headphones, a car, or a speaker somewhere else.</li>
-</ol>
-<blockquote>
-<p><em>Detail for whoever's helping:</em> the app is written to <strong>ignore</strong> the silent switch —
-both the native iOS app and the browser on iOS 16.4+ set the audio session to
-"playback". So in theory the switch shouldn't matter. This was never confirmed on a
-real handset, and on older iPhones or older iOS the browser will obey the switch
-anyway. Check it regardless; it costs three seconds.</p>
-</blockquote>
-<h3 id="other-jammer-symptoms">Other Jammer symptoms</h3>
-<div class="tablewrap"><table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Silent on first load, any device</td>
-<td>Browsers block audio until you touch the page. Have them tap a key once.</td>
-</tr>
-<tr>
-<td>Went silent after locking the phone or switching apps</td>
-<td>iOS suspends audio in the background. Return to Jammer and tap the screen. Keep the phone awake.</td>
-</tr>
-<tr>
-<td>Wrong / unwanted instrument</td>
-<td>Use the instrument picker. JAM assigns at random on purpose, so 30 people aren't all playing the same thing.</td>
-</tr>
-<tr>
-<td>Making sound but not following the harmony</td>
-<td>Check the ensemble name in the top badge — §0.</td>
-</tr>
-<tr>
-<td>Phone hot, battery draining</td>
-<td>Expected. Lower the screen brightness. It is a heavy app.</td>
-</tr>
-<tr>
-<td>Asked to sign in</td>
-<td>They're in the standalone app, not the JAM link. See the trap above.</td>
-</tr>
-</tbody>
-</table></div>
-<hr />
-<h2 id="9-known-gotchas-verified-aug-14">9. KNOWN GOTCHAS (verified Aug 14)</h2>
-<ol>
-<li>
-<p><strong>The URLs printed inside the Bridge device are wrong.</strong> The device shows
-   <code>rehearse.laptoporchestra.com</code> and <code>enter.laptoporchestra.com</code> — <strong>missing the
-   second "la"</strong>. Those domains do not resolve at all. The real addresses are
-   <strong><code>rehearse.lalaptoporchestra.com</code></strong> and <strong><code>enter.lalaptoporchestra.com</code></strong>.
-   If someone says "the site is down," check what they typed first.
-   <em>(Fixing this needs a device refreeze — do it after Saturday, not before.)</em></p>
-</li>
-<li>
-<p><strong>The Bridge never remembers a room.</strong> Every Live restart = rejoin. See §3.</p>
-</li>
-<li>
-<p><strong>Old 207 KB Bridge still in circulation.</strong> Anyone who downloaded before Aug 14 may
-   have it. Correct file is <strong>212,811 bytes</strong>. Re-download from Enter.</p>
-</li>
-<li>
-<p><strong>Strudel badge is invisible in dark mode.</strong> Cosmetic only.</p>
-</li>
-<li>
-<p><strong>Enter hides the ensemble name when you're in the right room.</strong> No name printed =
-   correct room. A name printed = wrong room. Counterintuitive; see §0.</p>
-</li>
-<li>
-<p><strong>There is no Android app.</strong> Android goes through the browser.</p>
-</li>
-<li>
-<p><strong>The iOS app does not join the show by itself.</strong> It lands in a lobby. The Enter
-   <strong>JAM</strong> link does join automatically — send people there. See §8.</p>
-</li>
-</ol>
-<hr />
-<h2 id="10-no-verified-fix-send-to-orientation">10. NO VERIFIED FIX — SEND TO ORIENTATION</h2>
-<p>Be honest about these rather than guessing:</p>
-<ul>
-<li><strong>Monitoring / performers can't hear themselves.</strong> A known past failure. There is no
-  documented self-serve fix. → orientation station.</li>
-<li><strong>Audio interface / driver problems</strong> (incl. MOTU + Windows). → orientation station.</li>
+<li><strong>An iPhone still silent</strong> after §1a–1f. The code already ignores the silent switch, so
+  a phone that stays quiet is doing something undocumented.</li>
+<li><strong>Monitoring / performers can't hear themselves.</strong> Known past failure, no documented fix.</li>
+<li><strong>Audio interface / driver problems</strong> (incl. MOTU + Windows).</li>
 <li><strong>Windows-specific Ableton issues.</strong> Almost all testing was on Mac.</li>
 <li><strong>Which sounds/presets to use in the template.</strong> Not documented.</li>
-<li><strong>Incoming-chord accidentals showing wrong sharps/flats.</strong> Known open bug. The
-  <em>triads</em> view is correct — use that as the workaround.</li>
-<li><strong>Conductor cues disappearing.</strong> Known open bug, conductor-side. Nothing a performer
-  can do.</li>
+<li><strong>Conductor cues disappearing.</strong> Known open bug, conductor-side. Nothing a performer can do.</li>
+<li><strong>Anything about the Rehearse app.</strong> It's Nathan's, and he's conducting.</li>
 <li><strong>Anything involving someone's personal Live Set, plugins, or licensing.</strong></li>
-<li><strong>An iPhone that is still silent</strong> after the silent switch, media volume, and Bluetooth
-  checks in §8. The code says the switch should already be ignored, so a phone that stays
-  quiet is doing something undocumented. → orientation station, or lend them a laptop.</li>
-<li><strong>Anything about the Rehearse app.</strong> It's Nathan's, and he's conducting. → §5.</li>
 </ul>
-<hr />
-<h2 id="11-if-it-all-goes-wrong-from-failure_modesmd">11. IF IT ALL GOES WRONG (from <code>FAILURE_MODES.md</code>)</h2>
+<p>And if it's bigger than one person's laptop:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -618,9 +601,129 @@ anyway. Check it regardless; it costs three seconds.</p>
 </table></div>
 <p><strong>Ultimate fallback:</strong> the Oliveros meditation works with zero technology.</p>
 <hr />
-<h2 id="corrections-to-older-docs">CORRECTIONS TO OLDER DOCS</h2>
-<p><code>ABLETON_TEST.md</code> (and the Bridge <code>README.md</code>) describe the <strong>previous</strong> device and are
-wrong in ways that matter on Saturday:</p>
+<h1 id="reference" class="banner">REFERENCE</h1>
+<h2 id="what-to-download-ableton-people-only">What to download (Ableton people only)</h2>
+<p>Both downloads are on the <strong>ABLETON</strong> page in Enter (<code>enter.lalaptoporchestra.com</code>).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it is</th>
+<th>Use it if</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Download Ableton Set</strong></td>
+<td>Full template, ~2.7 MB zip. Bridge already on the tracks.</td>
+<td>They want the ready-made Set. <strong>Recommended.</strong></td>
+</tr>
+<tr>
+<td><strong>Bridge Only</strong></td>
+<td>Just the Max for Live device, ~208 KB <code>.amxd</code></td>
+<td>They want LALORK in their <em>own</em> Set.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Correct device:</strong> <code>LA Laptop Orchestra Bridge.amxd</code>, <strong>212,811 bytes</strong>. A ~207 KB copy
+is the old Aug 4 build — <strong>have them re-download.</strong> The old one is missing the
+downbeat-hold behavior.</p>
+<h2 id="bridge-banner-states-exact-strings">Bridge banner states (exact strings)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Banner</th>
+<th>Color</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>● PERFORMING — LA LAPTOP ORCHESTRA</code></td>
+<td>purple</td>
+<td><strong>The goal on Saturday.</strong></td>
+</tr>
+<tr>
+<td><code>● REHEARSING — PRIVATE ROOM</code></td>
+<td>green</td>
+<td>Connected, but to a practice room — not the show.</td>
+</tr>
+<tr>
+<td><code>● CONNECTED</code></td>
+<td>green</td>
+<td>Connected.</td>
+</tr>
+<tr>
+<td><code>connecting...</code> / <code>JOINING LA LAPTOP ORCHESTRA...</code></td>
+<td>amber</td>
+<td>In progress. Wait a few seconds.</td>
+</tr>
+<tr>
+<td><code>✗ CHECK ROOM + WIFI</code></td>
+<td>red</td>
+<td>Not reaching the room. §3.</td>
+</tr>
+<tr>
+<td><code>disconnected</code></td>
+<td>gray</td>
+<td>Manually disconnected.</td>
+</tr>
+<tr>
+<td><code>ENTER YOUR PRIVATE REHEARSAL CODE</code></td>
+<td>gray</td>
+<td><strong>Idle. Nothing joined yet.</strong> Not an error.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The device also displays <strong>BPM</strong>, <strong>Scale</strong>, and <strong>Chord</strong>. If those update as the
+conductor moves, it's working.</p>
+<h2 id="what-working-sounds-like">What "working" sounds like</h2>
+<p>They play notes; the notes come out <strong>inside the current harmony</strong>. When the conductor
+changes chord, held notes re-pitch. Rhythm, timbre, and when to play stay entirely theirs.</p>
+<h2 id="known-gotchas">Known gotchas</h2>
+<ol>
+<li>
+<p><strong>The URLs printed inside the Bridge device are wrong.</strong> The device shows
+   <code>rehearse.laptoporchestra.com</code> and <code>enter.laptoporchestra.com</code> — <strong>missing the second
+   "la"</strong>. Those domains don't resolve. The real ones are
+   <strong><code>rehearse.lalaptoporchestra.com</code></strong> and <strong><code>enter.lalaptoporchestra.com</code></strong>. If someone
+   says "the site is down," check what they typed.
+   <em>(Fixing this needs a device refreeze — after Saturday, not before.)</em></p>
+</li>
+<li>
+<p><strong>The Bridge never remembers a room.</strong> Every Live restart = rejoin.</p>
+</li>
+<li>
+<p><strong>Old 207 KB Bridge still in circulation.</strong> Correct file is 212,811 bytes.</p>
+</li>
+<li>
+<p><strong>Enter hides the ensemble name when you're in the right room.</strong> No name = correct.</p>
+</li>
+<li>
+<p><strong>Strudel badge is invisible in dark mode.</strong> Cosmetic only.</p>
+</li>
+<li>
+<p><strong>There is no Android app.</strong> No Play Store listing exists. Android goes through the
+   browser (Chrome), which is the recommended path anyway — don't send anyone hunting for
+   an app that isn't there. No Android-specific audio failures are documented; if one
+   appears, treat it as undocumented and escalate.</p>
+</li>
+<li>
+<p><strong>The iOS app does not join the show by itself.</strong> There <em>is</em> an iPhone app on the App
+   Store, and Enter offers it. It opens into sign-in → ensemble lobby, where they must
+   find <strong>LA Laptop Orchestra</strong> themselves. This is where "I downloaded the app and I'm in
+   the wrong place" comes from. <strong>The Enter → JAM link is the path that joins
+   automatically — recommend that instead.</strong> Private <code>rehearse-…</code> rooms are hidden from
+   the lobby and LA Laptop Orchestra is pinned to the top, but <em>other people's</em> public
+   ensembles are listed and tappable by mistake, so confirm the badge afterwards.</p>
+</li>
+</ol>
+<h2 id="corrections-to-older-docs">Corrections to older docs</h2>
+<p>Everything in this file corresponds to a failure actually seen, or to behavior actually
+present in the shipping code. Anything documented but not tested on a real device is
+marked <em>(not device-tested)</em>.</p>
+<p><code>ABLETON_TEST.md</code> and the Bridge <code>README.md</code> describe the <strong>previous</strong> device — where
+they disagree with this file, <strong>this file is correct</strong>:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -631,7 +734,7 @@ wrong in ways that matter on Saturday:</p>
 <tbody>
 <tr>
 <td>"Ensemble Bridge auto-connects to <code>la-laptop-orchestra</code>"</td>
-<td><strong>No auto-connect.</strong> Device starts idle; someone must press <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</td>
+<td><strong>No auto-connect.</strong> Starts idle; someone must press <strong>JOIN LA LAPTOP ORCHESTRA</strong>.</td>
 </tr>
 <tr>
 <td>Banner reads <code>● FOLLOWING LALORK</code></td>
@@ -643,14 +746,16 @@ wrong in ways that matter on Saturday:</p>
 </tr>
 <tr>
 <td>Device is <code>Ensemble Bridge.amxd</code> / <code>Scale Navigator Bridge.amxd</code></td>
-<td>It's <code>LA Laptop Orchestra Bridge.amxd</code>. The other two are legacy and will <strong>not</strong> work with the current room protocol. <code>Ensemble Bridge.amxd</code> was removed from the download server on Aug 14.</td>
+<td>It's <code>LA Laptop Orchestra Bridge.amxd</code>. The others are legacy and will <strong>not</strong> work with the current room protocol. <code>Ensemble Bridge.amxd</code> was removed from the download server Aug 14.</td>
 </tr>
 </tbody>
 </table></div>
-<p>Do not hand <code>ABLETON_TEST.md</code> or <code>QUARGS_TEST.md</code> to a performer — they are test scripts,
+<p>Do not hand <code>ABLETON_TEST.md</code> or <code>QUARGS_TEST.md</code> to a performer — they're test scripts,
 not support docs.</p>
 <hr />
-<p><em>Written Aug 14 2026. Device UI strings extracted from the shipping frozen <code>.amxd</code>;
-download URLs, file sizes, and domains checked live the same day.</em></p>
+<p><em>Written Aug 14 2026. Bridge UI strings extracted from the shipping frozen <code>.amxd</code>;
+download URLs, file sizes, and domains checked live the same day. Ensemble Jammer,
+Strudel, and notation behavior read from the shipping source the same day — phone-specific
+claims are marked where they were not confirmed on a handset.</em></p>
 </body>
 </html>
