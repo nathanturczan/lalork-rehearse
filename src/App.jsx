@@ -22,6 +22,7 @@ const PIECES = [
   { id: 'cfgc_ostinato', label: 'CFGC Ostinato' },
   { id: 'susana_nico', label: 'Moorland (Nico + Susana)' },
   { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
+  { id: 'lied', label: 'Lied (after Popov)' },
 ]
 
 // YouTube iframe API loader

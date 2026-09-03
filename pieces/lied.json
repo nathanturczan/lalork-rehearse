@@ -1,0 +1,32 @@
+{
+  "title": "Lied",
+  "tempo": 120.0,
+  "comment": "After Gavriil Popov, Grand Suite Op. 6 for Piano, mvt. 3 'Lied' — in D. First half (m1-26) of the canonical score (songs/lied/popov-whole.ly). Verse loop D6-Em11-Bm7/F#-Gadd9 under a D-diatonic wash; m17 borrows G# for one bar of A diatonic (the gs entering at m16 beat 4 is an anticipation); chorus m21-26 is a dominantized circle of fifths F#7b9-Bm11-A7b5-E13-A9, landing on V of D with an added turn bar (m22 and m25-26 are D dia; the m26 gs is ornamental). No video yet: click timeline events to advance.",
+  "events": [
+    { "time": 0.0, "state": "D6", "direction": { "lyric": "hey", "marking": "", "note": "Verse" } },
+    { "time": 4.0, "state": "Em11", "direction": { "lyric": "are", "marking": "", "note": "" } },
+    { "time": 8.0, "state": "Bm7/F#", "direction": { "lyric": "you go-", "marking": "", "note": "" } },
+    { "time": 12.0, "state": "Gadd9", "direction": { "lyric": "-in some-", "marking": "", "note": "" } },
+    { "time": 16.0, "state": "D6", "direction": { "lyric": "-where", "marking": "", "note": "" } },
+    { "time": 20.0, "state": "Em11", "direction": { "lyric": "new", "marking": "", "note": "" } },
+    { "time": 24.0, "state": "Bm7/F#", "direction": { "lyric": "where", "marking": "", "note": "" } },
+    { "time": 28.0, "state": "Gadd9", "direction": { "lyric": "you make", "marking": "", "note": "" } },
+    { "time": 32.0, "state": "D6", "direction": { "lyric": "your self", "marking": "", "note": "" } },
+    { "time": 36.0, "state": "Em11", "direction": { "lyric": "brand new", "marking": "", "note": "" } },
+    { "time": 40.0, "state": "Bm7/F#", "direction": { "lyric": "", "marking": "", "note": "held F#" } },
+    { "time": 44.0, "state": "Gadd9", "direction": { "lyric": "where", "marking": "", "note": "" } },
+    { "time": 48.0, "state": "D6", "direction": { "lyric": "you're go-", "marking": "", "note": "" } },
+    { "time": 52.0, "state": "Em11", "direction": { "lyric": "-ing to", "marking": "", "note": "Bridge (octave up)" } },
+    { "time": 56.0, "state": "Bm7/F#", "direction": { "lyric": "you can't", "marking": "", "note": "" } },
+    { "time": 60.0, "state": "Gadd9", "direction": { "lyric": "feel lone-", "marking": "", "note": "G# on beat 4 anticipates m17" } },
+    { "time": 64.0, "state": "D6#11", "direction": { "lyric": "-ly go-", "marking": "", "note": "one bar of A dia (G#)" } },
+    { "time": 68.0, "state": "Em11", "direction": { "lyric": "-ing to", "marking": "", "note": "D dia resumes" } },
+    { "time": 72.0, "state": "Bm7/F#", "direction": { "lyric": "the on-ly", "marking": "", "note": "" } },
+    { "time": 76.0, "state": "Gadd9", "direction": { "lyric": "place that you can", "marking": "", "note": "" } },
+    { "time": 80.0, "state": "F#7b9", "direction": { "lyric": "go when you don't", "marking": "", "note": "Chorus: circle of fifths" } },
+    { "time": 84.0, "state": "Bm11", "direction": { "lyric": "want to be a-", "marking": "", "note": "" } },
+    { "time": 88.0, "state": "A7b5", "direction": { "lyric": "-lone and you don't want", "marking": "", "note": "quintuplet; French sonority on A" } },
+    { "time": 92.0, "state": "E13", "direction": { "lyric": "a-ny-one to", "marking": "", "note": "" } },
+    { "time": 96.0, "state": "A9", "direction": { "lyric": "know, all a-bout you", "marking": "", "note": "A pedal, two bars; turn figure (Turczan addition), gs ornamental" } }
+  ]
+}

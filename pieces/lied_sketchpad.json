@@ -1,0 +1,76 @@
+{
+  "name": "Lied",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "D6",
+      "label": "D6",
+      "scale": "d_diatonic",
+      "chord": "d_6-4",
+      "position": { "x": 100, "y": 50 }
+    },
+    {
+      "id": "Em11",
+      "label": "Em11",
+      "scale": "d_diatonic",
+      "chord": "e_m11-77",
+      "position": { "x": 250, "y": 50 }
+    },
+    {
+      "id": "Bm7/F#",
+      "label": "Bm7/F#",
+      "scale": "d_diatonic",
+      "chord": "b_m7-75",
+      "position": { "x": 400, "y": 50 }
+    },
+    {
+      "id": "Gadd9",
+      "label": "Gadd9",
+      "scale": "d_diatonic",
+      "chord": "g_6/9-42",
+      "position": { "x": 550, "y": 50 }
+    },
+    {
+      "id": "D6#11",
+      "label": "D6(#11)",
+      "scale": "a_diatonic",
+      "chord": "d_6-4",
+      "position": { "x": 700, "y": 50 }
+    },
+    {
+      "id": "F#7b9",
+      "label": "F#7♭9",
+      "scale": "b_harmonic_minor",
+      "chord": "fs_7♭9-86",
+      "position": { "x": 100, "y": 200 }
+    },
+    {
+      "id": "Bm11",
+      "label": "Bm11",
+      "scale": "d_diatonic",
+      "chord": "b_m11-77",
+      "position": { "x": 250, "y": 200 }
+    },
+    {
+      "id": "A7b5",
+      "label": "A7♭5",
+      "scale": "a_acoustic",
+      "chord": "a_7♭5-29",
+      "position": { "x": 400, "y": 200 }
+    },
+    {
+      "id": "E13",
+      "label": "E13",
+      "scale": "a_diatonic",
+      "chord": "e_13-101",
+      "position": { "x": 550, "y": 200 }
+    },
+    {
+      "id": "A9",
+      "label": "A9 pedal",
+      "scale": "d_diatonic",
+      "chord": "a_9-19",
+      "position": { "x": 700, "y": 200 }
+    }
+  ]
+}
