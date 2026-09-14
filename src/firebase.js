@@ -188,6 +188,16 @@ export async function updateEnsembleState({
     if (scaleInfo && typeof scaleInfo === "object" && scaleInfo.id === scaleKey) {
       patch.scaleInfo = scaleInfo;
     } else {
+      if (scaleInfo) {
+        // A payload was built but its id doesn't match the key being written.
+        // That's a bug upstream (alias/normalization drift between the key
+        // pipeline and buildScaleInfo) — receivers will fall back to legacy
+        // key resolution and quietly lose tuning data. Shout about it.
+        console.warn(
+          "[ensemble] DROPPING scaleInfo: id mismatch",
+          { scaleInfoId: scaleInfo.id, scaleKey }
+        );
+      }
       patch.scaleInfo = firebase.firestore.FieldValue.delete();
     }
   }
