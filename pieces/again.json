@@ -1,0 +1,142 @@
+{
+  "title": "Again",
+  "tempo": 120,
+  "events": [
+    {
+      "time": 0,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 16,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 20,
+      "state": "v-am6"
+    },
+    {
+      "time": 28,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 44,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 48,
+      "state": "v-am6"
+    },
+    {
+      "time": 56,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 72,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 76,
+      "state": "v-am6"
+    },
+    {
+      "time": 84,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 100,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 104,
+      "state": "v-am6"
+    },
+    {
+      "time": 120,
+      "state": "ch-fmaj7"
+    },
+    {
+      "time": 136,
+      "state": "ch-fm7"
+    },
+    {
+      "time": 152,
+      "state": "ch-dm7"
+    },
+    {
+      "time": 168,
+      "state": "ch-dfmaj7"
+    },
+    {
+      "time": 184,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 200,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 204,
+      "state": "v-am6"
+    },
+    {
+      "time": 212,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 228,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 232,
+      "state": "v-am6"
+    },
+    {
+      "time": 240,
+      "state": "v-fmaj7"
+    },
+    {
+      "time": 256,
+      "state": "v-bfm6"
+    },
+    {
+      "time": 260,
+      "state": "v-am6"
+    },
+    {
+      "time": 276,
+      "state": "ch-fmaj7"
+    },
+    {
+      "time": 292,
+      "state": "ch-fm7"
+    },
+    {
+      "time": 308,
+      "state": "ch-dm7"
+    },
+    {
+      "time": 324,
+      "state": "ch-dfmaj7"
+    },
+    {
+      "time": 340,
+      "state": "ch-fmaj7"
+    },
+    {
+      "time": 356,
+      "state": "ch-fm7"
+    },
+    {
+      "time": 372,
+      "state": "ch-dm7"
+    },
+    {
+      "time": 388,
+      "state": "ch-dfmaj7"
+    },
+    {
+      "time": 404,
+      "state": "v-fmaj7"
+    }
+  ]
+}

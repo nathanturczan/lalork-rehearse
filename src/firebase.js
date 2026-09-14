@@ -157,6 +157,7 @@ export async function updateEnsembleState({
   bpm,
   chordKey,
   scaleKey,
+  scaleInfo,
   scoreDirection,
   nextChordKey,
   nextScaleKey,
@@ -178,7 +179,17 @@ export async function updateEnsembleState({
   }
   if (typeof scaleKey === "string" || scaleKey === null) {
     patch.scaleData = scaleKey || null;
-    patch.scaleInfo = firebase.firestore.FieldValue.delete();
+    // Harmony Payload v2 scaleInfo (dashboard#393/#395): written on every
+    // scale broadcast — registry and custom (e.g. Again's 24-EDO, fractional
+    // pitch classes) alike — so every payload is self-describing. Receivers
+    // only trust it when scaleInfo.id === scaleData, so the id must match the
+    // key just written; anything else (including a stale payload left by
+    // another host) is deleted rather than allowed to shadow the legacy key.
+    if (scaleInfo && typeof scaleInfo === "object" && scaleInfo.id === scaleKey) {
+      patch.scaleInfo = scaleInfo;
+    } else {
+      patch.scaleInfo = firebase.firestore.FieldValue.delete();
+    }
   }
   // Baked directions from the score (skeleton events). Written every event
   // change; the live `direction` channel is deliberately left alone.

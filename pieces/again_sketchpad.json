@@ -1,0 +1,183 @@
+{
+  "name": "Again",
+  "version": 1,
+  "comment": "24-EDO cartridge. Two chorus collections are custom scales defined in the 'scales' block below using half-step-fractional pitch classes (6.5 = G half-flat, 1.5 = D half-flat). Fractional pitch classes are not yet accepted by the dashboard validator (customHarmony.js is integer-only); rehearse's name-lenient key parsing can display these scale names today, Moorland-style. Chord codes are standard registry codes: the chorus grips are 12-EDO playable in the E A C F# C E scordatura; only the scales are microtonal. Pitch collections verified against MAQAM_RESEARCH.md and again.ly scale labels.",
+  "scales": {
+    "f_neutral_minor": {
+      "name": "F Neutral-Minor",
+      "root": 5,
+      "pitchClasses": [
+        0,
+        1.5,
+        3,
+        5,
+        6.5,
+        8,
+        10
+      ],
+      "cents_above_root": [
+        0,
+        150,
+        300,
+        500,
+        700,
+        850,
+        1000
+      ],
+      "spelling": [
+        "F",
+        "G half-flat",
+        "Ab",
+        "Bb",
+        "C",
+        "D half-flat",
+        "Eb"
+      ]
+    },
+    "df_para_lydian": {
+      "name": "Db Para-Lydian",
+      "root": 1,
+      "pitchClasses": [
+        0,
+        1,
+        3,
+        5,
+        6.5,
+        8,
+        10
+      ],
+      "cents_above_root": [
+        0,
+        200,
+        400,
+        550,
+        700,
+        900,
+        1100
+      ],
+      "spelling": [
+        "Db",
+        "Eb",
+        "F",
+        "G half-flat",
+        "Ab",
+        "Bb",
+        "C"
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "v-fmaj7",
+      "label": "Verse: Fmaj7",
+      "scale": "f_diatonic",
+      "chord": "f_M7-0",
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "v-bfm6",
+      "label": "Verse: Bbm6/F",
+      "scale": "f_harmonic_major",
+      "chord": "as_m6-7",
+      "position": {
+        "x": 250,
+        "y": 100
+      }
+    },
+    {
+      "id": "v-am6",
+      "label": "Verse: Am6/E",
+      "scale": "d_acoustic",
+      "chord": "a_m6-7",
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "ch-fmaj7",
+      "label": "Ch1: Fmaj7",
+      "scale": "f_diatonic",
+      "chord": "f_M7-0",
+      "position": {
+        "x": 100,
+        "y": 250
+      }
+    },
+    {
+      "id": "ch-fm7",
+      "label": "Ch2: Fm7",
+      "scale": "f_neutral_minor",
+      "chord": "f_m7-13",
+      "position": {
+        "x": 250,
+        "y": 250
+      }
+    },
+    {
+      "id": "ch-dm7",
+      "label": "Ch3: Dm7",
+      "scale": "f_diatonic",
+      "chord": "d_m7-13",
+      "position": {
+        "x": 400,
+        "y": 250
+      }
+    },
+    {
+      "id": "ch-dfmaj7",
+      "label": "Ch4: Dbmaj7",
+      "scale": "df_para_lydian",
+      "chord": "cs_M7-0",
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "v-fmaj7",
+      "target": "v-bfm6"
+    },
+    {
+      "source": "v-bfm6",
+      "target": "v-am6"
+    },
+    {
+      "source": "v-am6",
+      "target": "v-fmaj7",
+      "label": "verse cycle"
+    },
+    {
+      "source": "v-am6",
+      "target": "ch-fmaj7",
+      "label": "into chorus"
+    },
+    {
+      "source": "ch-fmaj7",
+      "target": "ch-fm7"
+    },
+    {
+      "source": "ch-fm7",
+      "target": "ch-dm7"
+    },
+    {
+      "source": "ch-dm7",
+      "target": "ch-dfmaj7"
+    },
+    {
+      "source": "ch-dfmaj7",
+      "target": "ch-fmaj7",
+      "label": "chorus again"
+    },
+    {
+      "source": "ch-dfmaj7",
+      "target": "v-fmaj7",
+      "label": "back to verse / outro"
+    }
+  ]
+}
