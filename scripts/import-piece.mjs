@@ -32,6 +32,8 @@ function normalizeScaleKey(display) {
   // Already a machine key? (starts with a valid root token + underscore)
   const machineMatch = trimmed.match(/^(c|cs|df|d|ds|ef|e|f|fs|gf|g|gs|af|a|as|bf|b)_[a-z0-9_]+$/);
   if (machineMatch) return trimmed;
+  // The symmetric scales' registry ids carry no root token (octatonic_3, hexatonic_2, whole_tone_1)
+  if (/^(octatonic|hexatonic|whole_tone)_\d+$/.test(trimmed)) return trimmed;
 
   const spaceIdx = trimmed.indexOf(' ');
   if (spaceIdx === -1) throw new Error(`Cannot parse scale reference "${display}"`);
