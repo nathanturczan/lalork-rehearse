@@ -158,6 +158,7 @@ export async function updateEnsembleState({
   chordKey,
   scaleKey,
   scaleInfo,
+  chordInfo,
   scoreDirection,
   nextChordKey,
   nextScaleKey,
@@ -172,10 +173,17 @@ export async function updateEnsembleState({
   }
   if (typeof chordKey === "string" || chordKey === null) {
     patch.chordData = chordKey || null;
-    // This app doesn't produce Harmony Payload v2 chordInfo; delete any
-    // stale chordInfo left by another host (e.g. Dashboard) so receivers
-    // don't keep playing an old voicing that no longer matches chordData.
-    patch.chordInfo = firebase.firestore.FieldValue.delete();
+    // Harmony Payload v2 chordInfo: written for a custom chord (a sketchpad
+    // node that defines its chord inline; see chordInfo.js), whose id alone
+    // tells receivers nothing. For a registry chord, or a payload whose id
+    // doesn't match the key, any stale chordInfo (e.g. left by the Dashboard)
+    // is deleted so receivers don't keep playing a voicing that no longer
+    // matches chordData.
+    if (chordInfo && typeof chordInfo === "object" && chordInfo.id === chordKey) {
+      patch.chordInfo = chordInfo;
+    } else {
+      patch.chordInfo = firebase.firestore.FieldValue.delete();
+    }
   }
   if (typeof scaleKey === "string" || scaleKey === null) {
     patch.scaleData = scaleKey || null;

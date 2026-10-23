@@ -12,6 +12,7 @@ import {
   signInWithGoogle,
   verifyRoomHost,
 } from './firebase'
+import { customChordsOf, buildChordInfo } from './chordInfo.js'
 import EnterPortal from './portal/EnterPortal'
 import DirectionPanel from './DirectionPanel'
 import { buildScaleInfo, prettyScaleLabelFromKey } from './scaleInfo'
@@ -182,6 +183,9 @@ export default function App() {
   // 24-EDO collections) scales go through the same path, so receivers
   // never need this app's lookup tables. See buildScaleInfo below for the
   // tuning-aware contract.
+  // Custom chords defined inline on sketchpad nodes broadcast their notes as
+  // Harmony Payload v2 chordInfo (chordInfo.js); registry chords need none.
+  const customChords = useMemo(() => customChordsOf(sketchpad), [sketchpad])
   const customScales = sketchpad?.scales || null
   const scaleInfoForKey = useCallback(
     (key) => buildScaleInfo(key, customScales),
@@ -531,6 +535,7 @@ export default function App() {
     // Self-describing scaleInfo accompanies every scale broadcast (registry
     // and custom alike); null only when the key is unknown.
     const scaleInfoToSend = scaleInfoForKey(scaleToSend)
+    const chordInfoToSend = buildChordInfo(chordToSend, customChords)
     const directionToSend = activeScoreDirection || null
     const nextChordToSend = nextNode?.chord || null
     const nextScaleToSend = nextNode?.scale || null
@@ -553,6 +558,7 @@ export default function App() {
         chordKey: chordToSend,
         scaleKey: scaleToSend,
         scaleInfo: scaleInfoToSend,
+        chordInfo: chordInfoToSend,
         nextChordKey: nextChordToSend,
         nextScaleKey: nextScaleToSend,
         // Score channel only — live `direction` belongs to the conductor
@@ -570,7 +576,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, scaleInfoForKey, activeScoreDirection, liveRoomId, nextNode])
+  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
 
   const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
 
