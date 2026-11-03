@@ -2,7 +2,7 @@
   "title": "Farben",
   "tempo": 120,
   "youtube_id": "AwL8UF696WY",
-  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 34 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0; music starts at 3 s.",
+  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 37 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0; first note 2.186 s (Nathan's hand-timed MIDI).",
   "events": [
     {
       "time": 0,
@@ -14,8 +14,17 @@
       }
     },
     {
-      "time": 39,
+      "time": 35.086,
       "state": "F02",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-E-F-G#-A-B / a_harmonic_minor"
+      }
+    },
+    {
+      "time": 40.201,
+      "state": "F03",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -23,8 +32,8 @@
       }
     },
     {
-      "time": 48,
-      "state": "F03",
+      "time": 45.072,
+      "state": "F04",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -32,8 +41,8 @@
       }
     },
     {
-      "time": 61,
-      "state": "F04",
+      "time": 68.319,
+      "state": "F05",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -41,17 +50,26 @@
       }
     },
     {
-      "time": 69,
-      "state": "F05",
+      "time": 72.385,
+      "state": "F06",
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "C-Eb-E-G-G#-Bb / gs_harmonic_major"
+        "note": "C-Eb-E-G-G#-A-Bb / gs_harmonic_major"
       }
     },
     {
-      "time": 93,
-      "state": "F06",
+      "time": 85.302,
+      "state": "F07",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C#-Eb-G#-Bb / gs_harmonic_major"
+      }
+    },
+    {
+      "time": 93.764,
+      "state": "F08",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -59,8 +77,8 @@
       }
     },
     {
-      "time": 164,
-      "state": "F07",
+      "time": 168.98,
+      "state": "F09",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -68,8 +86,8 @@
       }
     },
     {
-      "time": 180,
-      "state": "F08",
+      "time": 180.144,
+      "state": "F10",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -77,8 +95,8 @@
       }
     },
     {
-      "time": 186,
-      "state": "F09",
+      "time": 187,
+      "state": "F11",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -86,44 +104,44 @@
       }
     },
     {
-      "time": 217,
-      "state": "F10",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-C#-D-F-F#-G-Bb-B / b_harmonic_minor"
-      }
-    },
-    {
-      "time": 230,
-      "state": "F11",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C#-D-F-F#-A-Bb / hexatonic_2"
-      }
-    },
-    {
-      "time": 235,
+      "time": 210.891,
       "state": "F12",
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "C#-D-F-F#-Bb / hexatonic_2"
+        "note": "C-D-G-B / g_harmonic_major"
       }
     },
     {
-      "time": 242,
+      "time": 214.583,
       "state": "F13",
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "Eb-E-G-G#-Bb / gs_harmonic_major"
+        "note": "C-G-Bb-B / g_harmonic_major"
       }
     },
     {
-      "time": 249,
+      "time": 232.328,
       "state": "F14",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C#-D-F-F#-Bb / fs_harmonic_major"
+      }
+    },
+    {
+      "time": 240.805,
+      "state": "F15",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C#-Eb-E-G-G#-Bb / gs_harmonic_major"
+      }
+    },
+    {
+      "time": 248.578,
+      "state": "F16",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -131,8 +149,8 @@
       }
     },
     {
-      "time": 258,
-      "state": "F15",
+      "time": 258.822,
+      "state": "F17",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -140,8 +158,8 @@
       }
     },
     {
-      "time": 264,
-      "state": "F16",
+      "time": 261.81,
+      "state": "F18",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -149,35 +167,53 @@
       }
     },
     {
-      "time": 285,
-      "state": "F17",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-C#-D-E-F#-G-G#-A-Bb-B / d_acoustic"
-      }
-    },
-    {
-      "time": 302,
-      "state": "F18",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-D-G-G#-B / c_harmonic_minor"
-      }
-    },
-    {
-      "time": 319,
+      "time": 283.448,
       "state": "F19",
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "C-E-A-B / a_harmonic_minor"
+        "note": "C-C#-D-F#-G#-A-Bb-B / d_acoustic"
       }
     },
     {
-      "time": 329,
+      "time": 298.362,
       "state": "F20",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-G#-A-Bb-B / d_acoustic"
+      }
+    },
+    {
+      "time": 303,
+      "state": "F21",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-G#-B / d_acoustic"
+      }
+    },
+    {
+      "time": 307,
+      "state": "F22",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-D-B / d_acoustic"
+      }
+    },
+    {
+      "time": 323.046,
+      "state": "F23",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-E-G#-A-B / d_acoustic"
+      }
+    },
+    {
+      "time": 327.17,
+      "state": "F24",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -185,8 +221,8 @@
       }
     },
     {
-      "time": 333,
-      "state": "F21",
+      "time": 336.767,
+      "state": "F25",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -194,8 +230,8 @@
       }
     },
     {
-      "time": 340,
-      "state": "F22",
+      "time": 341.897,
+      "state": "F26",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -203,26 +239,17 @@
       }
     },
     {
-      "time": 359,
-      "state": "F23",
+      "time": 361.106,
+      "state": "F27",
       "direction": {
         "lyric": "",
         "marking": "",
-        "note": "C-F-G#-A-Bb / as_acoustic"
+        "note": "C-F-G#-A-Bb / as_diatonic"
       }
     },
     {
-      "time": 363,
-      "state": "F24",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-F-G#-A-Bb-B / a_harmonic_minor"
-      }
-    },
-    {
-      "time": 368,
-      "state": "F25",
+      "time": 370.876,
+      "state": "F28",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -230,8 +257,8 @@
       }
     },
     {
-      "time": 378,
-      "state": "F26",
+      "time": 375.575,
+      "state": "F29",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -239,8 +266,8 @@
       }
     },
     {
-      "time": 389,
-      "state": "F27",
+      "time": 387.443,
+      "state": "F30",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -248,8 +275,8 @@
       }
     },
     {
-      "time": 402,
-      "state": "F28",
+      "time": 398.506,
+      "state": "F31",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -257,8 +284,17 @@
       }
     },
     {
-      "time": 412,
-      "state": "F29",
+      "time": 408.966,
+      "state": "F32",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C-C#-F-Bb / ds_acoustic"
+      }
+    },
+    {
+      "time": 414.109,
+      "state": "F33",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -266,8 +302,8 @@
       }
     },
     {
-      "time": 425,
-      "state": "F30",
+      "time": 422.672,
+      "state": "F34",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -275,8 +311,8 @@
       }
     },
     {
-      "time": 436,
-      "state": "F31",
+      "time": 431.394,
+      "state": "F35",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -284,8 +320,8 @@
       }
     },
     {
-      "time": 440,
-      "state": "F32",
+      "time": 436.624,
+      "state": "F36",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -293,21 +329,12 @@
       }
     },
     {
-      "time": 451,
+      "time": 443.678,
       "state": "F01",
       "direction": {
         "lyric": "",
         "marking": "",
         "note": "C-E-G#-A-B / a_harmonic_minor"
-      }
-    },
-    {
-      "time": 457,
-      "state": "F32",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-E-G#-A / a_harmonic_minor"
       }
     }
   ]
