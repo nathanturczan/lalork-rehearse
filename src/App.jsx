@@ -27,6 +27,7 @@ const PIECES = [
   { id: 'lied', label: 'Lied (after Popov)' },
   { id: 'again', label: 'Again' },
   { id: 'farben', label: 'Schoenberg: Farben' },
+  { id: 'o-successores', label: 'Hildegard: O successores (jazz reharm)' },
 ]
 
 // YouTube iframe API loader

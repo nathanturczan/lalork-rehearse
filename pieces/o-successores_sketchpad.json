@@ -1,0 +1,139 @@
+{
+  "name": "O successores (jazz reharm)",
+  "version": 1,
+  "comment": "Hildegard of Bingen, O successores (antiphon for confessors), jazz reharmonization. Built 2026-11-02 (status: derived, not auditioned). Clock: professorimprov's notation video (youtube XXLpwOrsqto). Method (Nathan): cluster the chant's notes with the drone, take a Boyd chord containing the whole cluster, use Boyd's voicing. Chant from pitch tracking of the video, checked against Beverly Lomer's transcription (ISHBS 2017: D mode, range A3-F5, Bb where signed). Drone tracked from the audio: D throughout, with A added at ~38-46, 56-66, 100-104, 112-118 s (Basic Pitch still hears D under the A spans). Rules: clusters of at most 3 chant pitch classes (4 when absorbing a short fragment), at most 8 s, split at breaths and drone changes; chord = richest Boyd chord (up to 6 notes) holding the cluster + drone, drone in the bass when possible, no added note a half step from a sung note or the drone, not the same chord twice in a row; scale = the Pressing scale holding the chord with the most of the chant's mode.",
+  "nodes": [
+    {
+      "id": "H01",
+      "label": "Fm6/9(Maj7)/D",
+      "scale": "as_acoustic",
+      "chord": "f_m6/9(Maj7)-95",
+      "position": {
+        "x": 100,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H02",
+      "label": "E7 alt./D",
+      "scale": "as_acoustic",
+      "chord": "e_7 alt.-91",
+      "position": {
+        "x": 250,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H03",
+      "label": "A9/11/D",
+      "scale": "c_diatonic",
+      "chord": "a_9/11-99",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H04",
+      "label": "BbM9(add6)/D",
+      "scale": "f_diatonic",
+      "chord": "as_M9(add6)-72",
+      "position": {
+        "x": 550,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H05",
+      "label": "D9/11",
+      "scale": "c_diatonic",
+      "chord": "d_9/11-99",
+      "position": {
+        "x": 700,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H06",
+      "label": "D9",
+      "scale": "c_acoustic",
+      "chord": "d_9-19",
+      "position": {
+        "x": 850,
+        "y": 50
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H07",
+      "label": "D13♭5",
+      "scale": "d_acoustic",
+      "chord": "d_13♭5-61",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H08",
+      "label": "Dm11",
+      "scale": "c_diatonic",
+      "chord": "d_m11-77",
+      "position": {
+        "x": 250,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H09",
+      "label": "Dm11",
+      "scale": "c_diatonic",
+      "chord": "d_m11-49",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H10",
+      "label": "BbM9(add6)/D",
+      "scale": "f_diatonic",
+      "chord": "as_M9(add6)-93",
+      "position": {
+        "x": 550,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H11",
+      "label": "Dm11",
+      "scale": "c_diatonic",
+      "chord": "d_m11-50",
+      "position": {
+        "x": 700,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H12",
+      "label": "Bb13♭5/D",
+      "scale": "as_acoustic",
+      "chord": "as_13♭5-85",
+      "position": {
+        "x": 850,
+        "y": 150
+      },
+      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    }
+  ]
+}

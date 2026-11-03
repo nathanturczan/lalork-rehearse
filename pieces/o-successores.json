@@ -1,0 +1,323 @@
+{
+  "title": "O successores (jazz reharm)",
+  "tempo": 120,
+  "youtube_id": "XXLpwOrsqto",
+  "comment": "O successores, professorimprov notation video (130 s). 35 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0.",
+  "events": [
+    {
+      "time": 0,
+      "state": "H01",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-E-F / drone D"
+      }
+    },
+    {
+      "time": 11.98,
+      "state": "H02",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-F / drone D"
+      }
+    },
+    {
+      "time": 17.55,
+      "state": "H03",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-G / drone D"
+      }
+    },
+    {
+      "time": 25.12,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-F / drone D"
+      }
+    },
+    {
+      "time": 28.98,
+      "state": "H01",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-F / drone D"
+      }
+    },
+    {
+      "time": 39.98,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant G-A / drone D"
+      }
+    },
+    {
+      "time": 43.56,
+      "state": "H06",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-E-A / drone D"
+      }
+    },
+    {
+      "time": 49.13,
+      "state": "H01",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-E-F / drone D"
+      }
+    },
+    {
+      "time": 58.28,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-F-G / drone D"
+      }
+    },
+    {
+      "time": 68.03,
+      "state": "H07",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-B / drone D"
+      }
+    },
+    {
+      "time": 70.08,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-F / drone D+A"
+      }
+    },
+    {
+      "time": 79.04,
+      "state": "H08",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A / drone D+A"
+      }
+    },
+    {
+      "time": 86.7,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant G-A / drone D+A"
+      }
+    },
+    {
+      "time": 93.67,
+      "state": "H09",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant G / drone D"
+      }
+    },
+    {
+      "time": 96.04,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A / drone D"
+      }
+    },
+    {
+      "time": 108.2,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant F-G-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 112.9,
+      "state": "H10",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 120.93,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant G-A-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 132.03,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-G-A / drone D"
+      }
+    },
+    {
+      "time": 139.78,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-F / drone D"
+      }
+    },
+    {
+      "time": 151.53,
+      "state": "H11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant F-G-A / drone D"
+      }
+    },
+    {
+      "time": 156.27,
+      "state": "H12",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-E / drone D"
+      }
+    },
+    {
+      "time": 160.96,
+      "state": "H03",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-A-B / drone D"
+      }
+    },
+    {
+      "time": 163.05,
+      "state": "H01",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-E-F / drone D"
+      }
+    },
+    {
+      "time": 168.02,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A / drone D"
+      }
+    },
+    {
+      "time": 180.33,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant D-F-G / drone D"
+      }
+    },
+    {
+      "time": 186.27,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A / drone D"
+      }
+    },
+    {
+      "time": 195.23,
+      "state": "H11",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant F-G / drone D+A"
+      }
+    },
+    {
+      "time": 200.71,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-A-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 208,
+      "state": "H01",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-E-F / drone D"
+      }
+    },
+    {
+      "time": 210.74,
+      "state": "H09",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D / drone D"
+      }
+    },
+    {
+      "time": 224.12,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant A-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 229.27,
+      "state": "H05",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant E-F / drone D+A"
+      }
+    },
+    {
+      "time": 233.31,
+      "state": "H04",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant A-Bb / drone D+A"
+      }
+    },
+    {
+      "time": 237.22,
+      "state": "H12",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "chant C-D-E / drone D"
+      }
+    }
+  ]
+}
