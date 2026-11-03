@@ -26,6 +26,7 @@ const PIECES = [
   { id: 'wagner_oneiric_warning', label: "Wagner: Brang\u00e4ne's Warning" },
   { id: 'lied', label: 'Lied (after Popov)' },
   { id: 'again', label: 'Again' },
+  { id: 'farben', label: 'Schoenberg: Farben' },
 ]
 
 // YouTube iframe API loader
