@@ -255,6 +255,17 @@
         "y": 350
       },
       "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H24",
+      "label": "Dm9",
+      "scale": "f_diatonic",
+      "chord": "d_m9-15",
+      "position": {
+        "x": 850,
+        "y": 350
+      },
+      "comment": "Nathan, 2026-11-02: the ending needs a resolution. The chant's final D (2:00.3-2:05.2) resolves the whole-tone E9#5b5 to D minor 9 (D aeolian, matching the chant's Bb). Added by hand after the clustering pass."
     }
   ]
 }

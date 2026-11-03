@@ -318,6 +318,15 @@
         "marking": "",
         "note": "chant C-D-E / drone D"
       }
+    },
+    {
+      "time": 240.6,
+      "state": "H24",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "resolution on the chant final D / drone D"
+      }
     }
   ]
 }
