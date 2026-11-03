@@ -2,7 +2,7 @@
   "title": "Farben",
   "tempo": 120,
   "youtube_id": "AwL8UF696WY",
-  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 37 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0; first note 2.186 s (Nathan's hand-timed MIDI).",
+  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 37 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0; first note 2.186 s (Nathan's hand-timed MIDI). Changes sit 0.9 s after the note onsets (Nathan, 2026-11-02: by ear, the page matched the video at Broadcast lead -500; baked in so the default lead of 400 gives the same result). Farben's entrances swell in, so they are heard ~0.5 s after they start.",
   "events": [
     {
       "time": 0,
@@ -14,7 +14,7 @@
       }
     },
     {
-      "time": 35.086,
+      "time": 36.886,
       "state": "F02",
       "direction": {
         "lyric": "",
@@ -23,7 +23,7 @@
       }
     },
     {
-      "time": 40.201,
+      "time": 42.001,
       "state": "F03",
       "direction": {
         "lyric": "",
@@ -32,7 +32,7 @@
       }
     },
     {
-      "time": 45.072,
+      "time": 46.872,
       "state": "F04",
       "direction": {
         "lyric": "",
@@ -41,7 +41,7 @@
       }
     },
     {
-      "time": 68.319,
+      "time": 70.119,
       "state": "F05",
       "direction": {
         "lyric": "",
@@ -50,7 +50,7 @@
       }
     },
     {
-      "time": 72.385,
+      "time": 74.185,
       "state": "F06",
       "direction": {
         "lyric": "",
@@ -59,7 +59,7 @@
       }
     },
     {
-      "time": 85.302,
+      "time": 87.102,
       "state": "F07",
       "direction": {
         "lyric": "",
@@ -68,7 +68,7 @@
       }
     },
     {
-      "time": 93.764,
+      "time": 95.564,
       "state": "F08",
       "direction": {
         "lyric": "",
@@ -77,7 +77,7 @@
       }
     },
     {
-      "time": 168.98,
+      "time": 170.78,
       "state": "F09",
       "direction": {
         "lyric": "",
@@ -86,7 +86,7 @@
       }
     },
     {
-      "time": 180.144,
+      "time": 181.944,
       "state": "F10",
       "direction": {
         "lyric": "",
@@ -95,7 +95,7 @@
       }
     },
     {
-      "time": 187,
+      "time": 188.8,
       "state": "F11",
       "direction": {
         "lyric": "",
@@ -104,7 +104,7 @@
       }
     },
     {
-      "time": 210.891,
+      "time": 212.691,
       "state": "F12",
       "direction": {
         "lyric": "",
@@ -113,7 +113,7 @@
       }
     },
     {
-      "time": 214.583,
+      "time": 216.383,
       "state": "F13",
       "direction": {
         "lyric": "",
@@ -122,7 +122,7 @@
       }
     },
     {
-      "time": 232.328,
+      "time": 234.128,
       "state": "F14",
       "direction": {
         "lyric": "",
@@ -131,7 +131,7 @@
       }
     },
     {
-      "time": 240.805,
+      "time": 242.605,
       "state": "F15",
       "direction": {
         "lyric": "",
@@ -140,7 +140,7 @@
       }
     },
     {
-      "time": 248.578,
+      "time": 250.378,
       "state": "F16",
       "direction": {
         "lyric": "",
@@ -149,7 +149,7 @@
       }
     },
     {
-      "time": 258.822,
+      "time": 260.622,
       "state": "F17",
       "direction": {
         "lyric": "",
@@ -158,7 +158,7 @@
       }
     },
     {
-      "time": 261.81,
+      "time": 263.61,
       "state": "F18",
       "direction": {
         "lyric": "",
@@ -167,7 +167,7 @@
       }
     },
     {
-      "time": 283.448,
+      "time": 285.248,
       "state": "F19",
       "direction": {
         "lyric": "",
@@ -176,7 +176,7 @@
       }
     },
     {
-      "time": 298.362,
+      "time": 300.162,
       "state": "F20",
       "direction": {
         "lyric": "",
@@ -185,7 +185,7 @@
       }
     },
     {
-      "time": 303,
+      "time": 304.8,
       "state": "F21",
       "direction": {
         "lyric": "",
@@ -194,7 +194,7 @@
       }
     },
     {
-      "time": 307,
+      "time": 308.8,
       "state": "F22",
       "direction": {
         "lyric": "",
@@ -203,7 +203,7 @@
       }
     },
     {
-      "time": 323.046,
+      "time": 324.846,
       "state": "F23",
       "direction": {
         "lyric": "",
@@ -212,7 +212,7 @@
       }
     },
     {
-      "time": 327.17,
+      "time": 328.97,
       "state": "F24",
       "direction": {
         "lyric": "",
@@ -221,7 +221,7 @@
       }
     },
     {
-      "time": 336.767,
+      "time": 338.567,
       "state": "F25",
       "direction": {
         "lyric": "",
@@ -230,7 +230,7 @@
       }
     },
     {
-      "time": 341.897,
+      "time": 343.697,
       "state": "F26",
       "direction": {
         "lyric": "",
@@ -239,7 +239,7 @@
       }
     },
     {
-      "time": 361.106,
+      "time": 362.906,
       "state": "F27",
       "direction": {
         "lyric": "",
@@ -248,7 +248,7 @@
       }
     },
     {
-      "time": 370.876,
+      "time": 372.676,
       "state": "F28",
       "direction": {
         "lyric": "",
@@ -257,7 +257,7 @@
       }
     },
     {
-      "time": 375.575,
+      "time": 377.375,
       "state": "F29",
       "direction": {
         "lyric": "",
@@ -266,7 +266,7 @@
       }
     },
     {
-      "time": 387.443,
+      "time": 389.243,
       "state": "F30",
       "direction": {
         "lyric": "",
@@ -275,7 +275,7 @@
       }
     },
     {
-      "time": 398.506,
+      "time": 400.306,
       "state": "F31",
       "direction": {
         "lyric": "",
@@ -284,7 +284,7 @@
       }
     },
     {
-      "time": 408.966,
+      "time": 410.766,
       "state": "F32",
       "direction": {
         "lyric": "",
@@ -293,7 +293,7 @@
       }
     },
     {
-      "time": 414.109,
+      "time": 415.909,
       "state": "F33",
       "direction": {
         "lyric": "",
@@ -302,7 +302,7 @@
       }
     },
     {
-      "time": 422.672,
+      "time": 424.472,
       "state": "F34",
       "direction": {
         "lyric": "",
@@ -311,7 +311,7 @@
       }
     },
     {
-      "time": 431.394,
+      "time": 433.194,
       "state": "F35",
       "direction": {
         "lyric": "",
@@ -320,7 +320,7 @@
       }
     },
     {
-      "time": 436.624,
+      "time": 438.424,
       "state": "F36",
       "direction": {
         "lyric": "",
@@ -329,7 +329,7 @@
       }
     },
     {
-      "time": 443.678,
+      "time": 445.478,
       "state": "F01",
       "direction": {
         "lyric": "",
