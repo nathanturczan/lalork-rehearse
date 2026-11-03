@@ -14,7 +14,7 @@
       }
     },
     {
-      "time": 38,
+      "time": 44,
       "state": "F02",
       "direction": {
         "lyric": "",
@@ -23,7 +23,7 @@
       }
     },
     {
-      "time": 48,
+      "time": 54,
       "state": "F03",
       "direction": {
         "lyric": "",
@@ -32,7 +32,7 @@
       }
     },
     {
-      "time": 61,
+      "time": 67,
       "state": "F04",
       "direction": {
         "lyric": "",
@@ -41,7 +41,7 @@
       }
     },
     {
-      "time": 69,
+      "time": 75,
       "state": "F05",
       "direction": {
         "lyric": "",
@@ -50,7 +50,7 @@
       }
     },
     {
-      "time": 81,
+      "time": 87,
       "state": "F06",
       "direction": {
         "lyric": "",
@@ -59,34 +59,16 @@
       }
     },
     {
-      "time": 90,
+      "time": 96,
       "state": "F07",
       "direction": {
         "lyric": "",
         "marking": "",
         "note": "D-Eb-G-G#-Bb-B / ds_harmonic_major"
-      }
-    },
-    {
-      "time": 164,
-      "state": "F08",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "D-G-B / ds_harmonic_major"
       }
     },
     {
       "time": 170,
-      "state": "F07",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "D-Eb-G-G#-Bb-B / ds_harmonic_major"
-      }
-    },
-    {
-      "time": 177,
       "state": "F08",
       "direction": {
         "lyric": "",
@@ -95,7 +77,25 @@
       }
     },
     {
-      "time": 186,
+      "time": 176,
+      "state": "F07",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "D-Eb-G-G#-Bb-B / ds_harmonic_major"
+      }
+    },
+    {
+      "time": 183,
+      "state": "F08",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "D-G-B / ds_harmonic_major"
+      }
+    },
+    {
+      "time": 192,
       "state": "F09",
       "direction": {
         "lyric": "",
@@ -104,7 +104,7 @@
       }
     },
     {
-      "time": 215,
+      "time": 221,
       "state": "F10",
       "direction": {
         "lyric": "",
@@ -113,7 +113,7 @@
       }
     },
     {
-      "time": 221,
+      "time": 227,
       "state": "F11",
       "direction": {
         "lyric": "",
@@ -122,7 +122,7 @@
       }
     },
     {
-      "time": 234,
+      "time": 240,
       "state": "F12",
       "direction": {
         "lyric": "",
@@ -131,7 +131,7 @@
       }
     },
     {
-      "time": 240,
+      "time": 246,
       "state": "F13",
       "direction": {
         "lyric": "",
@@ -140,7 +140,7 @@
       }
     },
     {
-      "time": 246,
+      "time": 252,
       "state": "F14",
       "direction": {
         "lyric": "",
@@ -149,7 +149,7 @@
       }
     },
     {
-      "time": 254,
+      "time": 260,
       "state": "F15",
       "direction": {
         "lyric": "",
@@ -158,7 +158,7 @@
       }
     },
     {
-      "time": 258,
+      "time": 264,
       "state": "F16",
       "direction": {
         "lyric": "",
@@ -167,7 +167,7 @@
       }
     },
     {
-      "time": 283,
+      "time": 289,
       "state": "F17",
       "direction": {
         "lyric": "",
@@ -176,7 +176,7 @@
       }
     },
     {
-      "time": 287,
+      "time": 293,
       "state": "F18",
       "direction": {
         "lyric": "",
@@ -185,7 +185,7 @@
       }
     },
     {
-      "time": 317,
+      "time": 323,
       "state": "F19",
       "direction": {
         "lyric": "",
@@ -194,7 +194,7 @@
       }
     },
     {
-      "time": 329,
+      "time": 335,
       "state": "F20",
       "direction": {
         "lyric": "",
@@ -203,7 +203,7 @@
       }
     },
     {
-      "time": 336,
+      "time": 342,
       "state": "F21",
       "direction": {
         "lyric": "",
@@ -212,7 +212,7 @@
       }
     },
     {
-      "time": 340,
+      "time": 346,
       "state": "F22",
       "direction": {
         "lyric": "",
@@ -221,7 +221,7 @@
       }
     },
     {
-      "time": 360,
+      "time": 366,
       "state": "F23",
       "direction": {
         "lyric": "",
@@ -230,7 +230,7 @@
       }
     },
     {
-      "time": 368,
+      "time": 374,
       "state": "F24",
       "direction": {
         "lyric": "",
@@ -239,7 +239,7 @@
       }
     },
     {
-      "time": 379,
+      "time": 385,
       "state": "F25",
       "direction": {
         "lyric": "",
@@ -248,7 +248,7 @@
       }
     },
     {
-      "time": 390,
+      "time": 396,
       "state": "F26",
       "direction": {
         "lyric": "",
@@ -257,7 +257,7 @@
       }
     },
     {
-      "time": 402,
+      "time": 408,
       "state": "F27",
       "direction": {
         "lyric": "",
@@ -266,7 +266,7 @@
       }
     },
     {
-      "time": 414,
+      "time": 420,
       "state": "F28",
       "direction": {
         "lyric": "",
@@ -275,7 +275,7 @@
       }
     },
     {
-      "time": 425,
+      "time": 431,
       "state": "F29",
       "direction": {
         "lyric": "",
@@ -284,7 +284,7 @@
       }
     },
     {
-      "time": 436,
+      "time": 442,
       "state": "F30",
       "direction": {
         "lyric": "",
@@ -293,7 +293,7 @@
       }
     },
     {
-      "time": 442,
+      "time": 448,
       "state": "F31",
       "direction": {
         "lyric": "",
@@ -302,7 +302,7 @@
       }
     },
     {
-      "time": 453,
+      "time": 459,
       "state": "F01",
       "direction": {
         "lyric": "",
@@ -311,7 +311,7 @@
       }
     },
     {
-      "time": 465,
+      "time": 471,
       "state": "F31",
       "direction": {
         "lyric": "",
