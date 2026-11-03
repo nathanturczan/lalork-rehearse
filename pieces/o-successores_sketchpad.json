@@ -224,17 +224,6 @@
       "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
     },
     {
-      "id": "H21",
-      "label": "Bb13/D",
-      "scale": "ds_diatonic",
-      "chord": "as_13-79",
-      "position": {
-        "x": 400,
-        "y": 350
-      },
-      "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
-    },
-    {
       "id": "H22",
       "label": "C13♭5/D",
       "scale": "c_acoustic",
@@ -266,6 +255,17 @@
         "y": 350
       },
       "comment": "Nathan, 2026-11-02: the ending needs a resolution. The chant's final D (2:00.3-2:05.2) resolves the whole-tone E9#5b5 to D minor 9 (D aeolian, matching the chant's Bb). Added by hand after the clustering pass."
+    },
+    {
+      "id": "H25",
+      "label": "Ab13♭5(♭9)",
+      "scale": "octatonic_3",
+      "chord": "gs_13♭5(♭9)-66",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "comment": "Nathan, 2026-11-02: 1:45 Bb13 needed a tense, dramatic dominant. Ab13b5(b9), octatonic; holds the chant C-D and the D drone."
     }
   ]
 }
