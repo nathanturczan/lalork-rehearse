@@ -1,0 +1,808 @@
+{
+  "name": "Farben",
+  "version": 1,
+  "comment": "Schoenberg, Five Orchestral Pieces Op. 16, III. Farben. Derived 2026-11-02 (status: derived, not yet auditioned) from ~/Music/midi/classical_midi/farben.mid (piano reduction), DTW-aligned to the Sydney Symphony Orchestra video (youtube AwL8UF696WY). Scale per window = Viterbi over the 57 scales (cost = sounding weight outside the scale, switch penalty 2.5, adjacent scales cheaper); chord = in-scale pitch classes holding >=40% of the window weight. Chords with an exact Boyd match use the registry id; the rest are custom. See ../README.md.",
+  "nodes": [
+    {
+      "id": "F01",
+      "label": "C-E-A-B",
+      "scale": "a_harmonic_minor",
+      "chord": "c_M7(add6)-1",
+      "comment": "Boyd: c_M7(add6)-1 (exact pitch-class match)",
+      "position": {
+        "x": 100,
+        "y": 50
+      }
+    },
+    {
+      "id": "F02",
+      "label": "C-E-G#-A-B",
+      "scale": "a_harmonic_minor",
+      "chord": "a_m(add9)(Maj7)-12",
+      "comment": "Boyd: a_m(add9)(Maj7)-12 (exact pitch-class match)",
+      "position": {
+        "x": 250,
+        "y": 50
+      }
+    },
+    {
+      "id": "F03",
+      "label": "C-E-F-G#-A-B",
+      "scale": "a_harmonic_minor",
+      "chord": "customchord_farben_03",
+      "custom": {
+        "chord": {
+          "name": "C-E-F-G#-A-B",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            4,
+            5,
+            8,
+            9,
+            11
+          ],
+          "voicing": [
+            48,
+            56,
+            59,
+            64,
+            65,
+            69
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 400,
+        "y": 50
+      }
+    },
+    {
+      "id": "F04",
+      "label": "C-Eb-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_04",
+      "custom": {
+        "chord": {
+          "name": "C-Eb-G#-Bb",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            3,
+            8,
+            10
+          ],
+          "voicing": [
+            48,
+            56,
+            63,
+            70
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 550,
+        "y": 50
+      }
+    },
+    {
+      "id": "F05",
+      "label": "C-Eb-E-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "c_7#5(#9)-111",
+      "comment": "Boyd: c_7#5(#9)-111 (exact pitch-class match)",
+      "position": {
+        "x": 700,
+        "y": 50
+      }
+    },
+    {
+      "id": "F06",
+      "label": "C-Eb-E-G-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_06",
+      "custom": {
+        "chord": {
+          "name": "C-Eb-E-G-G#-Bb",
+          "root": 4,
+          "pitchClasses": [
+            0,
+            3,
+            4,
+            7,
+            8,
+            10
+          ],
+          "voicing": [
+            40,
+            48,
+            55,
+            60,
+            63,
+            68,
+            70
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 850,
+        "y": 50
+      }
+    },
+    {
+      "id": "F07",
+      "label": "C#-Eb-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "as_m11-16",
+      "comment": "Boyd: as_m11-16 (exact pitch-class match)",
+      "position": {
+        "x": 100,
+        "y": 150
+      }
+    },
+    {
+      "id": "F08",
+      "label": "D-Eb-G-G#-Bb-B",
+      "scale": "ds_harmonic_major",
+      "chord": "customchord_farben_08",
+      "custom": {
+        "chord": {
+          "name": "D-Eb-G-G#-Bb-B",
+          "root": 2,
+          "pitchClasses": [
+            2,
+            3,
+            7,
+            8,
+            10,
+            11
+          ],
+          "voicing": [
+            38,
+            47,
+            55,
+            58,
+            63,
+            68
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 250,
+        "y": 150
+      }
+    },
+    {
+      "id": "F09",
+      "label": "D-G-B",
+      "scale": "ds_harmonic_major",
+      "chord": "customchord_farben_09",
+      "custom": {
+        "chord": {
+          "name": "D-G-B",
+          "root": 2,
+          "pitchClasses": [
+            2,
+            7,
+            11
+          ],
+          "voicing": [
+            38,
+            43,
+            47,
+            50,
+            55,
+            58,
+            63,
+            68,
+            71,
+            83
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 400,
+        "y": 150
+      }
+    },
+    {
+      "id": "F10",
+      "label": "C-D-Eb-F#-G-B",
+      "scale": "g_harmonic_major",
+      "chord": "customchord_farben_10",
+      "custom": {
+        "chord": {
+          "name": "C-D-Eb-F#-G-B",
+          "root": 2,
+          "pitchClasses": [
+            0,
+            2,
+            3,
+            6,
+            7,
+            11
+          ],
+          "voicing": [
+            38,
+            50,
+            60,
+            63,
+            66,
+            67,
+            71,
+            72,
+            83
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 550,
+        "y": 150
+      }
+    },
+    {
+      "id": "F11",
+      "label": "C-G-B",
+      "scale": "g_harmonic_major",
+      "chord": "customchord_farben_11",
+      "custom": {
+        "chord": {
+          "name": "C-G-B",
+          "root": 2,
+          "pitchClasses": [
+            0,
+            7,
+            11
+          ],
+          "voicing": [
+            50,
+            59,
+            60,
+            63,
+            66,
+            67,
+            71,
+            72,
+            79,
+            83,
+            91,
+            96
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 700,
+        "y": 150
+      }
+    },
+    {
+      "id": "F12",
+      "label": "C#-D-F-F#-Bb",
+      "scale": "fs_harmonic_major",
+      "chord": "customchord_farben_12",
+      "custom": {
+        "chord": {
+          "name": "C#-D-F-F#-Bb",
+          "root": 2,
+          "pitchClasses": [
+            1,
+            2,
+            5,
+            6,
+            10
+          ],
+          "voicing": [
+            50,
+            58,
+            61,
+            65,
+            66,
+            70
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 850,
+        "y": 150
+      }
+    },
+    {
+      "id": "F13",
+      "label": "C#-D-F-F#-G#-Bb",
+      "scale": "fs_harmonic_major",
+      "chord": "customchord_farben_13",
+      "custom": {
+        "chord": {
+          "name": "C#-D-F-F#-G#-Bb",
+          "root": 2,
+          "pitchClasses": [
+            1,
+            2,
+            5,
+            6,
+            8,
+            10
+          ],
+          "voicing": [
+            50,
+            58,
+            61,
+            65,
+            66,
+            68,
+            70
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 100,
+        "y": 250
+      }
+    },
+    {
+      "id": "F14",
+      "label": "C#-Eb-E-G-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_14",
+      "custom": {
+        "chord": {
+          "name": "C#-Eb-E-G-G#-Bb",
+          "root": 4,
+          "pitchClasses": [
+            1,
+            3,
+            4,
+            7,
+            8,
+            10
+          ],
+          "voicing": [
+            52,
+            55,
+            58,
+            63,
+            68,
+            73
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 250,
+        "y": 250
+      }
+    },
+    {
+      "id": "F15",
+      "label": "C-C#-Eb-E-G-G#-Bb",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_15",
+      "custom": {
+        "chord": {
+          "name": "C-C#-Eb-E-G-G#-Bb",
+          "root": 4,
+          "pitchClasses": [
+            0,
+            1,
+            3,
+            4,
+            7,
+            8,
+            10
+          ],
+          "voicing": [
+            52,
+            55,
+            58,
+            60,
+            63,
+            68,
+            73,
+            76,
+            79
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 400,
+        "y": 250
+      }
+    },
+    {
+      "id": "F16",
+      "label": "C-C#-Eb-G-G#",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_16",
+      "custom": {
+        "chord": {
+          "name": "C-C#-Eb-G-G#",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            1,
+            3,
+            7,
+            8
+          ],
+          "voicing": [
+            60,
+            63,
+            68,
+            73,
+            79
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    },
+    {
+      "id": "F17",
+      "label": "C-C#-Eb-E-G-G#",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_17",
+      "custom": {
+        "chord": {
+          "name": "C-C#-Eb-E-G-G#",
+          "root": 4,
+          "pitchClasses": [
+            0,
+            1,
+            3,
+            4,
+            7,
+            8
+          ],
+          "voicing": [
+            52,
+            60,
+            63,
+            68,
+            73,
+            79
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 700,
+        "y": 250
+      }
+    },
+    {
+      "id": "F18",
+      "label": "C-Eb-E-G-G#",
+      "scale": "gs_harmonic_major",
+      "chord": "customchord_farben_18",
+      "custom": {
+        "chord": {
+          "name": "C-Eb-E-G-G#",
+          "root": 4,
+          "pitchClasses": [
+            0,
+            3,
+            4,
+            7,
+            8
+          ],
+          "voicing": [
+            52,
+            60,
+            63,
+            67,
+            68,
+            72,
+            79
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 850,
+        "y": 250
+      }
+    },
+    {
+      "id": "F19",
+      "label": "C-D-E-G#-A-B",
+      "scale": "d_acoustic",
+      "chord": "customchord_farben_19",
+      "custom": {
+        "chord": {
+          "name": "C-D-E-G#-A-B",
+          "root": 9,
+          "pitchClasses": [
+            0,
+            2,
+            4,
+            8,
+            9,
+            11
+          ],
+          "voicing": [
+            57,
+            60,
+            62,
+            66,
+            68,
+            71,
+            72
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 100,
+        "y": 350
+      }
+    },
+    {
+      "id": "F20",
+      "label": "C-E-G#-A-B",
+      "scale": "d_acoustic",
+      "chord": "a_m(add9)(Maj7)-12",
+      "comment": "Boyd: a_m(add9)(Maj7)-12 (exact pitch-class match)",
+      "position": {
+        "x": 250,
+        "y": 350
+      }
+    },
+    {
+      "id": "F21",
+      "label": "C-Eb-G#-A-B",
+      "scale": "octatonic_3",
+      "chord": "b_13♭5-33",
+      "comment": "Boyd: b_13♭5-33 (exact pitch-class match)",
+      "position": {
+        "x": 400,
+        "y": 350
+      }
+    },
+    {
+      "id": "F22",
+      "label": "C-Eb-F-G#-A-B",
+      "scale": "octatonic_3",
+      "chord": "b_13♭5(♭9)-66",
+      "comment": "Boyd: b_13♭5(♭9)-66 (exact pitch-class match)",
+      "position": {
+        "x": 550,
+        "y": 350
+      }
+    },
+    {
+      "id": "F23",
+      "label": "C-F-G#-A-B",
+      "scale": "octatonic_3",
+      "chord": "customchord_farben_23",
+      "custom": {
+        "chord": {
+          "name": "C-F-G#-A-B",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            5,
+            8,
+            9,
+            11
+          ],
+          "voicing": [
+            48,
+            56,
+            59,
+            65,
+            69
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 700,
+        "y": 350
+      }
+    },
+    {
+      "id": "F24",
+      "label": "C-F-G#-A",
+      "scale": "octatonic_3",
+      "chord": "customchord_farben_24",
+      "custom": {
+        "chord": {
+          "name": "C-F-G#-A",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            5,
+            8,
+            9
+          ],
+          "voicing": [
+            48,
+            57,
+            65,
+            68
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 850,
+        "y": 350
+      }
+    },
+    {
+      "id": "F25",
+      "label": "C-F-A-B",
+      "scale": "octatonic_3",
+      "chord": "customchord_farben_25",
+      "custom": {
+        "chord": {
+          "name": "C-F-A-B",
+          "root": 11,
+          "pitchClasses": [
+            0,
+            5,
+            9,
+            11
+          ],
+          "voicing": [
+            47,
+            57,
+            60,
+            65
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 100,
+        "y": 450
+      }
+    },
+    {
+      "id": "F26",
+      "label": "C-F-A",
+      "scale": "octatonic_3",
+      "chord": "customchord_farben_26",
+      "custom": {
+        "chord": {
+          "name": "C-F-A",
+          "root": 9,
+          "pitchClasses": [
+            0,
+            5,
+            9
+          ],
+          "voicing": [
+            57,
+            60,
+            65
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 250,
+        "y": 450
+      }
+    },
+    {
+      "id": "F27",
+      "label": "C-E-G#-A-B",
+      "scale": "e_harmonic_major",
+      "chord": "a_m(add9)(Maj7)-12",
+      "comment": "Boyd: a_m(add9)(Maj7)-12 (exact pitch-class match)",
+      "position": {
+        "x": 400,
+        "y": 450
+      }
+    },
+    {
+      "id": "F28",
+      "label": "Eb-E-F#-G#-B",
+      "scale": "e_harmonic_major",
+      "chord": "e_M9-2",
+      "comment": "Boyd: e_M9-2 (exact pitch-class match)",
+      "position": {
+        "x": 550,
+        "y": 450
+      }
+    },
+    {
+      "id": "F29",
+      "label": "C-C#-F-A-Bb",
+      "scale": "f_harmonic_major",
+      "chord": "as_m(add9)(Maj7)-12",
+      "comment": "Boyd: as_m(add9)(Maj7)-12 (exact pitch-class match)",
+      "position": {
+        "x": 700,
+        "y": 450
+      }
+    },
+    {
+      "id": "F30",
+      "label": "C-C#-E-F-G-A-Bb",
+      "scale": "f_harmonic_major",
+      "chord": "customchord_farben_30",
+      "custom": {
+        "chord": {
+          "name": "C-C#-E-F-G-A-Bb",
+          "root": 1,
+          "pitchClasses": [
+            0,
+            1,
+            4,
+            5,
+            7,
+            9,
+            10
+          ],
+          "voicing": [
+            37,
+            57,
+            60,
+            64,
+            65,
+            67,
+            70
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 850,
+        "y": 450
+      }
+    },
+    {
+      "id": "F31",
+      "label": "C-E-A",
+      "scale": "a_harmonic_minor",
+      "chord": "customchord_farben_31",
+      "custom": {
+        "chord": {
+          "name": "C-E-A",
+          "root": 0,
+          "pitchClasses": [
+            0,
+            4,
+            9
+          ],
+          "voicing": [
+            48,
+            64,
+            69
+          ]
+        }
+      },
+      "comment": "Not in Boyd: custom chord (sounding pitch classes inside the scale)",
+      "position": {
+        "x": 100,
+        "y": 550
+      }
+    },
+    {
+      "id": "F32",
+      "label": "C-E-G#-A",
+      "scale": "a_harmonic_minor",
+      "chord": "a_m(Maj7)-10",
+      "comment": "Boyd: a_m(Maj7)-10 (exact pitch-class match)",
+      "position": {
+        "x": 250,
+        "y": 550
+      }
+    }
+  ]
+}
