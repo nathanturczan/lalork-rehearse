@@ -134,6 +134,17 @@
         "y": 150
       },
       "comment": "Boyd chord holding the chant cluster + drone; no added note a half step from a sung note or the drone"
+    },
+    {
+      "id": "H13",
+      "label": "FM9(add6)",
+      "scale": "c_diatonic",
+      "chord": "f_M9(add6)-41",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "comment": "Nathan, 2026-11-02: the 0:14 Fm6/9(maj7) swapped for a major chord; Fmaj9(add6) = the same chord with G# -> A. Holds the chant D-E-F and the D drone."
     }
   ]
 }
