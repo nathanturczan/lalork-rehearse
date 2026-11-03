@@ -2,20 +2,11 @@
   "title": "Farben",
   "tempo": 120,
   "youtube_id": "AwL8UF696WY",
-  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 36 harmonic states on the video clock (event time = seconds x 2 at 120 BPM). Music starts ~4.5 s into the video.",
+  "comment": "Schoenberg Farben, Sydney Symphony Orchestra video (243 s). 35 harmonic states on the video clock (event time = seconds x 2 at 120 BPM). Music starts ~4.5 s into the video.",
   "events": [
     {
-      "time": 9,
+      "time": 0,
       "state": "F01",
-      "direction": {
-        "lyric": "",
-        "marking": "",
-        "note": "C-E-A-B / a_harmonic_minor"
-      }
-    },
-    {
-      "time": 14,
-      "state": "F02",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -24,7 +15,7 @@
     },
     {
       "time": 38,
-      "state": "F03",
+      "state": "F02",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -33,7 +24,7 @@
     },
     {
       "time": 48,
-      "state": "F04",
+      "state": "F03",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -42,7 +33,7 @@
     },
     {
       "time": 61,
-      "state": "F05",
+      "state": "F04",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -51,7 +42,7 @@
     },
     {
       "time": 69,
-      "state": "F06",
+      "state": "F05",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -60,7 +51,7 @@
     },
     {
       "time": 81,
-      "state": "F07",
+      "state": "F06",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -69,7 +60,7 @@
     },
     {
       "time": 90,
-      "state": "F08",
+      "state": "F07",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -78,7 +69,7 @@
     },
     {
       "time": 164,
-      "state": "F09",
+      "state": "F08",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -87,7 +78,7 @@
     },
     {
       "time": 170,
-      "state": "F08",
+      "state": "F07",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -96,7 +87,7 @@
     },
     {
       "time": 177,
-      "state": "F09",
+      "state": "F08",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -105,7 +96,7 @@
     },
     {
       "time": 186,
-      "state": "F10",
+      "state": "F09",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -114,7 +105,7 @@
     },
     {
       "time": 215,
-      "state": "F11",
+      "state": "F10",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -123,7 +114,7 @@
     },
     {
       "time": 221,
-      "state": "F12",
+      "state": "F11",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -132,7 +123,7 @@
     },
     {
       "time": 234,
-      "state": "F13",
+      "state": "F12",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -141,7 +132,7 @@
     },
     {
       "time": 240,
-      "state": "F14",
+      "state": "F13",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -150,7 +141,7 @@
     },
     {
       "time": 246,
-      "state": "F15",
+      "state": "F14",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -159,7 +150,7 @@
     },
     {
       "time": 254,
-      "state": "F16",
+      "state": "F15",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -168,7 +159,7 @@
     },
     {
       "time": 258,
-      "state": "F17",
+      "state": "F16",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -177,7 +168,7 @@
     },
     {
       "time": 283,
-      "state": "F18",
+      "state": "F17",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -186,7 +177,7 @@
     },
     {
       "time": 287,
-      "state": "F19",
+      "state": "F18",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -195,7 +186,7 @@
     },
     {
       "time": 317,
-      "state": "F20",
+      "state": "F19",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -204,7 +195,7 @@
     },
     {
       "time": 329,
-      "state": "F21",
+      "state": "F20",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -213,7 +204,7 @@
     },
     {
       "time": 336,
-      "state": "F22",
+      "state": "F21",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -222,7 +213,7 @@
     },
     {
       "time": 340,
-      "state": "F23",
+      "state": "F22",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -231,7 +222,7 @@
     },
     {
       "time": 360,
-      "state": "F24",
+      "state": "F23",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -240,7 +231,7 @@
     },
     {
       "time": 368,
-      "state": "F25",
+      "state": "F24",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -249,7 +240,7 @@
     },
     {
       "time": 379,
-      "state": "F26",
+      "state": "F25",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -258,7 +249,7 @@
     },
     {
       "time": 390,
-      "state": "F27",
+      "state": "F26",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -267,7 +258,7 @@
     },
     {
       "time": 402,
-      "state": "F28",
+      "state": "F27",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -276,7 +267,7 @@
     },
     {
       "time": 414,
-      "state": "F29",
+      "state": "F28",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -285,7 +276,7 @@
     },
     {
       "time": 425,
-      "state": "F30",
+      "state": "F29",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -294,7 +285,7 @@
     },
     {
       "time": 436,
-      "state": "F31",
+      "state": "F30",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -303,7 +294,7 @@
     },
     {
       "time": 442,
-      "state": "F32",
+      "state": "F31",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -312,7 +303,7 @@
     },
     {
       "time": 453,
-      "state": "F02",
+      "state": "F01",
       "direction": {
         "lyric": "",
         "marking": "",
@@ -321,7 +312,7 @@
     },
     {
       "time": 465,
-      "state": "F32",
+      "state": "F31",
       "direction": {
         "lyric": "",
         "marking": "",
