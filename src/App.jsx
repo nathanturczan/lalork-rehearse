@@ -28,6 +28,7 @@ const PIECES = [
   { id: 'again', label: 'Again' },
   { id: 'farben', label: 'Schoenberg: Farben' },
   { id: 'o-successores', label: 'Hildegard: O successores (jazz reharm)' },
+  { id: 'how-does-it-feel', label: "D'Angelo: Untitled (How Does It Feel)" },
 ]
 
 // YouTube iframe API loader

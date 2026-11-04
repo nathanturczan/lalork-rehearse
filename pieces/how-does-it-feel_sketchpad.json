@@ -1,0 +1,135 @@
+{
+  "name": "D'Angelo: Untitled (How Does It Feel)",
+  "version": 1,
+  "comment": "Harmony of D'Angelo's Untitled (How Does It Feel), timed to the official video (youtube SxVNOnPyvIU). Built 2026-11-03 (status: derived, not auditioned). Loop Dadd9 - Am9 - Gmaj9 - C7(13), one chord per 6-beat bar (~3.2 s); chorus 3 runs it backwards. Chords from the audio (tuning-corrected chroma, recording is ~40 cents flat) checked against the UG chart and r/musictheory; verse turnaround and bridge read by hand from half-bar scores. Scales: D mixolydian collection (G diatonic) for the loop, F diatonic under C7(13).",
+  "nodes": [
+    {
+      "id": "D",
+      "label": "Dadd9",
+      "scale": "g_diatonic",
+      "position": {
+        "x": 100,
+        "y": 50
+      },
+      "chord": "customchord_hdif_D",
+      "custom": {
+        "chord": {
+          "name": "Dadd9",
+          "root": 2,
+          "pitchClasses": [
+            2,
+            4,
+            6,
+            9
+          ],
+          "voicing": [
+            50,
+            57,
+            62,
+            64,
+            66
+          ]
+        }
+      },
+      "comment": "custom chord: Boyd catalog has no plain triad / add9"
+    },
+    {
+      "id": "Am9",
+      "label": "Am9",
+      "scale": "g_diatonic",
+      "position": {
+        "x": 250,
+        "y": 50
+      },
+      "chord": "a_m9-15"
+    },
+    {
+      "id": "Gma9",
+      "label": "Gmaj9",
+      "scale": "g_diatonic",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "chord": "g_M9-40"
+    },
+    {
+      "id": "C13",
+      "label": "C7(13)",
+      "scale": "f_diatonic",
+      "position": {
+        "x": 550,
+        "y": 50
+      },
+      "chord": "c_13-20"
+    },
+    {
+      "id": "F#7",
+      "label": "F#7",
+      "scale": "b_harmonic_minor",
+      "position": {
+        "x": 700,
+        "y": 50
+      },
+      "chord": "fs_7-17"
+    },
+    {
+      "id": "B7",
+      "label": "B7",
+      "scale": "e_harmonic_minor",
+      "position": {
+        "x": 100,
+        "y": 170
+      },
+      "chord": "b_7-17"
+    },
+    {
+      "id": "E7",
+      "label": "E7",
+      "scale": "d_acoustic",
+      "position": {
+        "x": 250,
+        "y": 170
+      },
+      "chord": "e_7-17"
+    },
+    {
+      "id": "A",
+      "label": "A",
+      "scale": "d_diatonic",
+      "position": {
+        "x": 400,
+        "y": 170
+      },
+      "chord": "customchord_hdif_A",
+      "custom": {
+        "chord": {
+          "name": "A",
+          "root": 9,
+          "pitchClasses": [
+            9,
+            1,
+            4
+          ],
+          "voicing": [
+            45,
+            57,
+            61,
+            64
+          ]
+        }
+      },
+      "comment": "custom chord: Boyd catalog has no plain triad / add9"
+    },
+    {
+      "id": "Bm7",
+      "label": "Bm7",
+      "scale": "d_diatonic",
+      "position": {
+        "x": 550,
+        "y": 170
+      },
+      "chord": "b_m7-14"
+    }
+  ]
+}

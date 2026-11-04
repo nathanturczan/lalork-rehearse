@@ -1,0 +1,719 @@
+{
+  "title": "D'Angelo: Untitled (How Does It Feel)",
+  "tempo": 120,
+  "youtube_id": "SxVNOnPyvIU",
+  "comment": "D'Angelo, Untitled (How Does It Feel), official video. 79 states on the video clock (time = seconds x 2 at 120 BPM). First state from 0.",
+  "events": [
+    {
+      "time": 0,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 9.1,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 15.51,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 21.92,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 28.33,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 34.69,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 41.1,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 47.46,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 53.87,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 60.28,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 66.64,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 73.05,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 79.46,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 85.82,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 92.23,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 98.64,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 105,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 111.41,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 117.82,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 124.23,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 130.64,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 137,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 143.41,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 149.8,
+      "state": "F#7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "F#7"
+      }
+    },
+    {
+      "time": 153,
+      "state": "B7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "B7"
+      }
+    },
+    {
+      "time": 156.2,
+      "state": "E7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "E7"
+      }
+    },
+    {
+      "time": 162.6,
+      "state": "A",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "A"
+      }
+    },
+    {
+      "time": 168.95,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 175.36,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 181.77,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 188.17,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 194.54,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 200.95,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 207.35,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 213.72,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 220.2,
+      "state": "Bm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Bm7"
+      }
+    },
+    {
+      "time": 226.6,
+      "state": "E7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "E7"
+      }
+    },
+    {
+      "time": 232.6,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 235.8,
+      "state": "Bm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Bm7"
+      }
+    },
+    {
+      "time": 239.4,
+      "state": "E7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "E7"
+      }
+    },
+    {
+      "time": 252.2,
+      "state": "A",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "A"
+      }
+    },
+    {
+      "time": 258.4,
+      "state": "F#7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "F#7"
+      }
+    },
+    {
+      "time": 264.8,
+      "state": "Bm7",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Bm7"
+      }
+    },
+    {
+      "time": 268.2,
+      "state": "A",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "A"
+      }
+    },
+    {
+      "time": 271.4,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 277.66,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 284.03,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 290.44,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 296.84,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 303.25,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 309.66,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 316.02,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 322.43,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 328.79,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 335.2,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 341.61,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 347.97,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 354.38,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 360.79,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 367.2,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 373.56,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 380.06,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 386.33,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 392.74,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 399.15,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 405.56,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 411.92,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 418.38,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 424.74,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 431.1,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 437.51,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 443.92,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 450.28,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 456.69,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 463.05,
+      "state": "C13",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "C7(13)"
+      }
+    },
+    {
+      "time": 469.46,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    },
+    {
+      "time": 475.87,
+      "state": "D",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Dadd9"
+      }
+    },
+    {
+      "time": 482.28,
+      "state": "Am9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Am9"
+      }
+    },
+    {
+      "time": 488.64,
+      "state": "Gma9",
+      "direction": {
+        "lyric": "",
+        "marking": "",
+        "note": "Gmaj9"
+      }
+    }
+  ]
+}
