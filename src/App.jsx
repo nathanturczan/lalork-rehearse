@@ -514,6 +514,7 @@ export default function App() {
     !skeleton?.youtube_id || videoPlaying ? currentDirection : null
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
+  const harmonyBroadcastRef = useRef(false)
   useEffect(() => {
     if (!ensembleRoomId) return
 
@@ -526,7 +527,12 @@ export default function App() {
       scaleKey: scaleToSend,
       nextChordKey: nextChordToSend,
       nextScaleKey: nextScaleToSend,
-    } = harmonyBroadcast({ node: currentNode, nextNode })
+    } = harmonyBroadcast({
+      hasEvent: Boolean(currentEvent),
+      hasBroadcast: harmonyBroadcastRef.current,
+      node: currentNode,
+      nextNode,
+    })
     // Self-describing scaleInfo accompanies every scale broadcast (registry
     // and custom alike); null only when the key is unknown.
     const scaleInfoToSend = scaleInfoForKey(scaleToSend)
@@ -534,6 +540,7 @@ export default function App() {
     const directionToSend = activeScoreDirection || null
 
     broadcastTimeoutRef.current = setTimeout(() => {
+      if (chordToSend !== undefined) harmonyBroadcastRef.current = true
       console.log('[ensemble broadcast] sending:', {
         roomId: ensembleRoomId,
         chordKey: chordToSend,
@@ -569,7 +576,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, currentNode, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
+  }, [ensembleRoomId, ensembleBpm, currentEvent, currentNode, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
 
   // Local form-strip playhead (#116): the video clock sampled at 4 Hz so the
   // conductor's playhead glides instead of jumping event-to-event. Falls back

@@ -15,10 +15,17 @@ export function directionText(event) {
   return null
 }
 
-// Harmony keys for the room. A node without a chord (e.g. a tacet node), an
-// event whose node is missing, and no event at all broadcast null: the
-// portal shows a dash in each of those cases, and the room follows it.
-export function harmonyBroadcast({ node, nextNode }) {
+// Harmony keys for the room. A node without a chord (e.g. a tacet node) and
+// an event whose node is missing broadcast null: the portal shows a dash in
+// those cases, and the room follows it.
+//
+// Before any event has been selected the harmony fields are left out
+// (undefined, which updateEnsembleState skips), so opening the app does not
+// blank a room that already shows harmony (#23). Once this session has
+// broadcast harmony, "no event" (a piece was just changed) is sent as null so
+// the previous piece's harmony does not stay in the room.
+export function harmonyBroadcast({ hasEvent, hasBroadcast, node, nextNode }) {
+  if (!hasEvent && !hasBroadcast) return {}
   return {
     chordKey: node?.chord || null,
     scaleKey: node?.scale || null,
