@@ -1,91 +1,116 @@
 # LALORK Rehearse
 
-Video-synced practice tool for LA Laptop Orchestra. Built on NotesChordScales.
+Video-synced rehearsal tool for the LA Laptop Orchestra. A piece plays as a YouTube video, the app follows the video clock, and at each event of the piece it broadcasts the current scale and chord to a room that players' instruments follow.
 
-**URL**: `rehearse.laptoporchestra.com` (planned)
+**URL**: https://rehearse.lalaptoporchestra.com
 
-## Concept
+## What it does
 
-1. YouTube video plays (pre-rendered with notation/tablature)
-2. App monitors video `currentTime`
-3. At each skeleton event, triggers:
-   - Scale/chord state update
-   - Direction text display (lyrics, markings, notes)
-   - MIDI output (Web MIDI API)
-   - Broadcast to Ensemble Jammer / Strudel (event mode)
+1. A piece is a YouTube video plus two JSON files: a skeleton (when things change) and a sketchpad (what the harmony is at each change).
+2. The app polls the video's current time, playing or paused, and finds the current event. Scrubbing the video or clicking a timeline row moves to that event.
+3. On each event change it writes the chord, the scale, the next chord and scale, the tempo, and the score direction to a room document in Firestore. Enter, the Strudel bridge, the Ableton bridge, and Ensemble Jammer read the same room.
+4. The portal at the top of the page shows what the room receives: scale and chord now and next, tempo, directions, and the form strip with its playhead.
 
-## For Home Practice
-- Load a piece (skeleton + YouTube video)
-- Press play
-- Follow along with directions
-- MIDI output to your DAW
+Pieces without a video are advanced by hand from the timeline.
 
-## For Event Day (August 15, 2026)
-- Same app, "Broadcast Mode" enabled
-- Nathan presses play once
-- All clients receive state changes
-- Video is master clock - idiot-proof
+## Two modes
 
-## Architecture
+- **Private rehearsal (default).** The browser gets an anonymous identity and its own room (`rehearse-xxxxxx`), remembered in local storage. The page shows the room code, a link that opens Strudel with a snippet joined to that room, and the Ableton template and Max for Live bridge downloads.
+- **Conductor (`?room=<roomId>`).** The app broadcasts to an existing room. It asks for a Google sign-in and only works for the account that hosts the room. This mode adds a panel for typing live directions.
 
-```
-┌─────────────────────────────────────────────┐
-│  [YouTube Video Embed]                       │
-│   ▶ Wagner's Oneiric Warning (13:00)        │
-├─────────────────────────────────────────────┤
-│  Slot 14 | G#m_1 | b_diatonic               │
-│                                             │
-│  Lyric: "Schlä- -fern"                      │
-│  Marking: Viol.II, Br. u. Vcll. Solo        │
-│  Note: Schläfern = sleepers (E natural)    │
-├─────────────────────────────────────────────┤
-│  [MIDI: ON]  [Broadcast: OFF]               │
-└─────────────────────────────────────────────┘
-```
+URL parameters:
 
-## Skeleton Schema
+| Parameter | Meaning |
+|---|---|
+| `?piece=<id>` | Select a piece by id (the list is `PIECES` in `src/App.jsx`) |
+| `?room=<roomId>` | Conductor mode for that room |
+
+Under "Advanced settings", **Broadcast lead** fires changes a number of milliseconds before the video reaches them, to absorb network latency. It is stored per browser.
+
+## Piece files
+
+Each piece is `pieces/<id>.json` (skeleton) and `pieces/<id>_sketchpad.json`. The `pieces/` folder is served as the site root.
+
+Skeleton:
 
 ```json
 {
-  "tempo": 120.0,
-  "youtube_id": "xxxxx",
+  "title": "CFGC Ostinato",
+  "tempo": 120,
+  "youtube_id": "xxxxxxxxxxx",
   "events": [
     {
       "time": 0,
-      "state": "Db7",
-      "direction": {
-        "lyric": "Ein-",
-        "marking": "p, Str.",
-        "note": "Opening, strings enter"
-      }
-    }
-  ]
+      "state": "Bbmaj7",
+      "direction": { "marking": "", "lyric": "", "note": "Cycle 1. The riff plain." }
+    },
+    { "time": 32, "state": "X1" }
+  ],
+  "formContour": [[0.0, 0.03], [0.5, 0.9], [1.0, 0.1]],
+  "formSections": [168, 224],
+  "formGlyphs": [{ "type": "patch", "startBeat": 0, "endBeat": 112 }]
 }
 ```
 
-## Tech Stack
+- `tempo` is in beats per minute, and `time` is in **beats at that tempo** from the start of the video. Events are in ascending order.
+- `state` is the `id` of a sketchpad node.
+- `direction` is optional: an object with `marking`, `lyric`, and `note`, or a plain string.
+- `youtube_id` is optional. Without it the piece is advanced from the timeline.
+- `formContour` (points from 0 to 1), `formSections` (beats), and `formGlyphs` (beat ranges) are optional and drive the form strip.
 
-- React (or vanilla JS)
-- YouTube iframe API
-- Web MIDI API
-- WebSocket (for broadcast mode)
+Sketchpad:
 
-## Pieces
+```json
+{
+  "name": "CFGC Ostinato",
+  "nodes": [
+    { "id": "Bbmaj7", "scale": "f_diatonic", "chord": "as_M7-0" },
+    {
+      "id": "X1",
+      "scale": "df_para_lydian",
+      "chord": "customchord_x_1",
+      "custom": { "chord": { "name": "C-E-F", "root": 0, "pitchClasses": [0, 4, 5], "voicing": [48, 64, 65] } }
+    }
+  ],
+  "scales": {
+    "df_para_lydian": { "name": "Db Para-Lydian", "root": 1, "pitchClasses": [0, 1, 3, 5, 6.5, 8, 10] }
+  }
+}
+```
 
-1. **Wagner - Oneiric Warning** (Brangäne's Watch from Tristan) - 13 min, 29 slots
-2. **Górecki - Symphony No. 3, Mvt 1** - ~25 min (planned)
-3. TBD
+- `scale` is a key of the built-in registry (`src/scaleRegistry.js`, sharp tokens only: `as_diatonic`, `octatonic_1`) or a key of the sketchpad's own `scales` block.
+- `chord` is a chord key that receivers know, a `customchord_…` id with its notes in `custom.chord`, or `null`.
+
+`src/validatePiece.js` checks a skeleton and sketchpad pair. The app runs it when a piece loads and shows an error if it fails.
+
+## Adding a piece
+
+```bash
+node scripts/import-piece.mjs <songDir> <pieceId>
+```
+
+This reads `<songDir>/skeleton_<pieceId>.json` and `<songDir>/sketchpad_<pieceId>.json`, converts scale names to keys, validates the result, and writes the two files into `pieces/`. Then add `{ id, label }` to `PIECES` in `src/App.jsx`.
 
 ## Development
 
 ```bash
 npm install
-npm run dev
+npm run dev      # local dev server
+npm test         # node --test src/
+npm run build    # production build into dist/
 ```
+
+The dev server talks to the same Firebase project as the deployed app.
+
+## Tech stack
+
+- React 18 and Vite
+- YouTube IFrame Player API
+- Firebase (Auth and Firestore) for the room
 
 ## Deployment
 
-Deploy to `rehearse.laptoporchestra.com` via Vercel/Netlify.
+Hosted on Vercel and deployed manually. Pushing to `master` does not deploy.
 
 ## Related
 

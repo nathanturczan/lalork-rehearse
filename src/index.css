@@ -71,6 +71,20 @@ h1 {
   flex-shrink: 0;
 }
 
+/* A failed piece or video load: message + Retry button (#24) */
+.load-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.load-error .ensemble-error {
+  margin-top: 0;
+  font-size: 13px;
+}
+
 /* Video is the most important thing on the page: takes all remaining height,
    but can never be squeezed away by the cards below */
 .video-container {

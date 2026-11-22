@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { memo, useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import {
   ensureGuestAuth,
   ensureRehearsalRoom,
@@ -16,6 +16,8 @@ import { customChordsOf, buildChordInfo } from './chordInfo.js'
 import EnterPortal from './portal/EnterPortal'
 import DirectionPanel from './DirectionPanel'
 import { buildScaleInfo, prettyScaleLabelFromKey } from './scaleInfo'
+import { directionText, harmonyBroadcast } from './broadcastState.js'
+import { loadPiece } from './pieceLoader.js'
 
 const BROADCAST_DEBOUNCE_MS = 100
 
@@ -36,18 +38,48 @@ const PIECES = [
   { id: 'airboat', label: 'Airboat: both series in the chord, Boyd picks the root (+ quality vote)' },
 ]
 
-// YouTube iframe API loader
+// YouTube iframe API loader. The API script defines window.YT before
+// YT.Player exists, so every caller waits on the same promise, which resolves
+// only once the player class is there. A script that fails to load (or never
+// becomes ready) rejects, and the next call tries again.
+const YOUTUBE_API_SRC = 'https://www.youtube.com/iframe_api'
+const YOUTUBE_API_TIMEOUT_MS = 20000
+let youTubeAPIPromise = null
 function loadYouTubeAPI() {
-  return new Promise((resolve) => {
-    if (window.YT) {
-      resolve(window.YT)
-      return
-    }
-    const tag = document.createElement('script')
-    tag.src = 'https://www.youtube.com/iframe_api'
-    document.body.appendChild(tag)
-    window.onYouTubeIframeAPIReady = () => resolve(window.YT)
-  })
+  if (window.YT?.Player) return Promise.resolve(window.YT)
+  if (!youTubeAPIPromise) {
+    youTubeAPIPromise = new Promise((resolve, reject) => {
+      const tag = document.createElement('script')
+      tag.src = YOUTUBE_API_SRC
+      const fail = (message) => {
+        tag.remove()
+        youTubeAPIPromise = null
+        reject(new Error(message))
+      }
+      const timeout = setTimeout(
+        () => fail('The YouTube player did not load in time.'),
+        YOUTUBE_API_TIMEOUT_MS
+      )
+      tag.onerror = () => {
+        clearTimeout(timeout)
+        fail('The YouTube player could not be loaded.')
+      }
+      window.onYouTubeIframeAPIReady = () => {
+        clearTimeout(timeout)
+        resolve(window.YT)
+      }
+      document.body.appendChild(tag)
+    })
+  }
+  return youTubeAPIPromise
+}
+
+// YouTube IFrame API onError codes
+const youTubeErrorText = (code) => {
+  if (code === 2) return 'the video id is not valid'
+  if (code === 100) return 'the video was removed or is private'
+  if (code === 101 || code === 150) return 'the video does not allow embedding'
+  return `player error ${code}`
 }
 
 // Copied from noteschordsscales SkeletonPlayer.jsx
@@ -90,6 +122,87 @@ function useIsNarrow() {
   return narrow
 }
 
+// The portal with its form-strip playhead (#116). The video clock is sampled
+// at 4 Hz so the playhead glides instead of jumping event-to-event; that state
+// lives here so each sample re-renders the portal only, not the whole app
+// (#27). Falls back to event resolution (fallbackPosition) when there's no
+// video clock.
+function PlayheadPortal({ playerRef, skeleton, fallbackPosition, onVideoDuration, ...portalProps }) {
+  const [videoFormPosition, setVideoFormPosition] = useState(null)
+  useEffect(() => {
+    setVideoFormPosition(null)
+    if (!skeleton) return
+    const id = setInterval(() => {
+      const duration = playerRef.current?.getDuration?.() || 0
+      if (!(duration > 0)) return
+      onVideoDuration(duration) // feeds the formSections axis in App
+      const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
+      if (!Number.isFinite(pos)) return
+      setVideoFormPosition(Math.min(1, Math.max(0, pos)))
+    }, 250)
+    return () => clearInterval(id)
+  }, [skeleton, playerRef, onVideoDuration])
+  return (
+    <EnterPortal
+      {...portalProps}
+      formPosition={videoFormPosition != null ? videoFormPosition : fallbackPosition}
+    />
+  )
+}
+
+// Timeline: all events, scrollable, auto-follows the current one. Memoized so
+// it is rebuilt only when the piece or the current event changes (#27).
+const Timeline = memo(function Timeline({ events, currentIndex, tempo, customChords, onJump }) {
+  // Keep the NOW row vertically centered in the timeline scroll area
+  const timelineRef = useRef(null)
+  const currentRowRef = useRef(null)
+  useEffect(() => {
+    const container = timelineRef.current
+    const row = currentRowRef.current
+    if (!container || !row) return
+    const containerRect = container.getBoundingClientRect()
+    const rowRect = row.getBoundingClientRect()
+    const target = container.scrollTop
+      + (rowRect.top - containerRect.top)
+      - (containerRect.height / 2 - rowRect.height / 2)
+    container.scrollTo({ top: target, behavior: 'smooth' })
+  }, [currentIndex])
+
+  return (
+    <div className="timeline" ref={timelineRef}>
+      {events.map((event) => {
+        const isCurrent = event.index === currentIndex
+        // A custom chord's key is an id, not a name: use the name it
+        // carries in the sketchpad (#25)
+        const chordLabel = event.node?.chord
+          ? customChords[event.node.chord]?.name ||
+            prettyChordLabelFromKey(event.node.chord)
+          : event.state
+        const scaleLabel = event.node?.scale
+          ? prettyScaleLabelFromKey(event.node.scale).replace('harmonic', 'harm')
+          : ''
+
+        return (
+          <div
+            key={event.index}
+            ref={isCurrent ? currentRowRef : null}
+            onClick={() => onJump(event.index)}
+            className={`timeline-row${isCurrent ? ' current' : ''}`}
+          >
+            <span className="timeline-num">{event.index + 1}.</span>
+            <span className="timeline-beat">{beatsToTime(event.time, tempo)}</span>
+            <span className="timeline-chord" style={{ fontWeight: isCurrent ? 600 : 400 }}>
+              {chordLabel}
+            </span>
+            <span className="timeline-scale">{scaleLabel}</span>
+            {isCurrent && <span className="timeline-now">NOW</span>}
+          </div>
+        )
+      })}
+    </div>
+  )
+})
+
 export default function App() {
   const isNarrow = useIsNarrow()
   const [pieceId, setPieceId] = useState(() => {
@@ -100,6 +213,12 @@ export default function App() {
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(-1)
+  // Load failures are shown with a Retry button instead of leaving the page
+  // stuck (#24). Bumping an attempt counter re-runs the matching effect.
+  const [loadError, setLoadError] = useState('')
+  const [loadAttempt, setLoadAttempt] = useState(0)
+  const [videoError, setVideoError] = useState('')
+  const [videoAttempt, setVideoAttempt] = useState(0)
 
   // Live conductor mode: ?room=<roomId> targets that room directly (Google
   // sign-in required; Firestore rules only let the room's host broadcast).
@@ -112,9 +231,6 @@ export default function App() {
   // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
   const [ensembleBpm, setEnsembleBpm] = useState(60)
-  const [selectedChordKey, setSelectedChordKey] = useState(null)
-  const [selectedScaleKey, setSelectedScaleKey] = useState(null)
-  const [currentDirection, setCurrentDirection] = useState(null)
   const [ensembleError, setEnsembleError] = useState('')
   // Live conductor direction (lalork-website#114, rehearse#11): typed cues on
   // their own channel. Set replaces the whole live set; Clear empties it.
@@ -150,27 +266,30 @@ export default function App() {
     }
   }
 
-  // Load skeleton + sketchpad for the selected piece
+  // Load skeleton + sketchpad for the selected piece. Both are set together:
+  // the first event fires as soon as the skeleton is set, and its harmony
+  // comes from the sketchpad (#22).
   useEffect(() => {
     let cancelled = false
     setSkeleton(null)
     setSketchpad(null)
     setCurrentEvent(null)
     setCurrentIndex(-1)
-    fetch(`/${pieceId}.json`)
-      .then(res => res.json())
-      .then(data => {
+    setVideoDuration(0)
+    setLoadError('')
+    loadPiece(pieceId)
+      .then(({ skeleton: skeletonData, sketchpad: sketchpadData }) => {
         if (cancelled) return
-        setSkeleton(data)
-        if (typeof data.tempo === 'number') setEnsembleBpm(data.tempo)
+        setSketchpad(sketchpadData)
+        setSkeleton(skeletonData)
+        if (typeof skeletonData.tempo === 'number') setEnsembleBpm(skeletonData.tempo)
       })
-    fetch(`/${pieceId}_sketchpad.json`)
-      .then(res => res.json())
-      .then(data => {
-        if (!cancelled) setSketchpad(data)
+      .catch((err) => {
+        console.error('[rehearse] piece load failed', err)
+        if (!cancelled) setLoadError(err.message || 'Could not load the piece.')
       })
     return () => { cancelled = true }
-  }, [pieceId])
+  }, [pieceId, loadAttempt])
 
   const handlePieceChange = (id) => {
     setPieceId(id)
@@ -206,11 +325,16 @@ export default function App() {
     if (!skeleton?.youtube_id) return
 
     let cancelled = false
+    setVideoError('')
     loadYouTubeAPI().then((YT) => {
       if (cancelled) return
       playerRef.current = new YT.Player('youtube-player', {
         videoId: skeleton.youtube_id,
         events: {
+          onError: (e) => {
+            console.error('[rehearse] YouTube player error', e.data)
+            setVideoError(`The video could not be played (${youTubeErrorText(e.data)}).`)
+          },
           // Track whether the piece is actually sounding, so score
           // directions can clear when playback stops (see
           // activeScoreDirection below). BUFFERING counts as playing:
@@ -220,9 +344,13 @@ export default function App() {
               e.data === YT.PlayerState.PLAYING ||
                 e.data === YT.PlayerState.BUFFERING
             )
+            if (e.data === YT.PlayerState.PLAYING) setVideoError('')
           }
         }
       })
+    }).catch((err) => {
+      console.error('[rehearse] YouTube player setup failed', err)
+      if (!cancelled) setVideoError(err.message || 'The YouTube player could not be loaded.')
     })
     return () => {
       cancelled = true
@@ -234,7 +362,7 @@ export default function App() {
       }
       playerRef.current = null
     }
-  }, [skeleton?.youtube_id])
+  }, [skeleton?.youtube_id, videoAttempt])
 
   // Re-derive the current event from the video clock (idempotent)
   const syncToVideo = useCallback(() => {
@@ -256,9 +384,8 @@ export default function App() {
     if (eventIndex !== currentIndex && eventIndex >= 0) {
       setCurrentIndex(eventIndex)
       setCurrentEvent(skeleton.events[eventIndex])
-      onEventChange(skeleton.events[eventIndex])
     }
-  }, [skeleton, currentIndex, nodeMap, leadMs])
+  }, [skeleton, currentIndex, leadMs])
 
   // Poll the video clock constantly — playing OR paused — so scrubbing the
   // YouTube bar always re-derives and rebroadcasts the harmonic state.
@@ -269,31 +396,18 @@ export default function App() {
     return () => clearInterval(intervalRef.current)
   }, [skeleton, syncToVideo])
 
-  // Handle event change: derive chord/scale/direction for broadcast
-  function onEventChange(event) {
-    const node = nodeMap[event.state]
-
-    if (node) {
-      if (node.chord) setSelectedChordKey(node.chord)
-      if (node.scale) setSelectedScaleKey(node.scale)
-    } else {
-      console.warn(`[rehearse] No sketchpad node for state: ${event.state}`)
+  // The displayed event is the single source for the portal AND the
+  // broadcast (#22): chord/scale/direction are derived from it on every
+  // render, never stored separately.
+  const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
+  const currentDirection = useMemo(() => directionText(currentEvent), [currentEvent])
+  useEffect(() => {
+    if (!currentEvent || !sketchpad) return
+    if (!currentNode) {
+      console.warn(`[rehearse] No sketchpad node for state: ${currentEvent.state}`)
     }
-
-    // Direction format: comma-separated string of non-empty fields
-    // (same as noteschordsscales SkeletonPlayer)
-    const dir = event?.direction
-    if (dir && typeof dir === 'object') {
-      const parts = [dir.marking, dir.lyric, dir.note].filter(Boolean)
-      setCurrentDirection(parts.length > 0 ? parts.join(', ') : null)
-    } else if (typeof dir === 'string') {
-      setCurrentDirection(dir || null)
-    } else {
-      setCurrentDirection(null)
-    }
-
-    console.log('Event:', event.state, node?.chord, node?.scale, event.direction)
-  }
+    console.log('Event:', currentEvent.state, currentNode?.chord, currentNode?.scale, currentEvent.direction)
+  }, [currentEvent, currentNode, sketchpad])
 
   // Verify hostship, then start broadcasting to the live room
   const connectLiveRoom = useCallback(async (user) => {
@@ -438,7 +552,9 @@ export default function App() {
   const lastFormPositionRef = useRef(-1)
   useEffect(() => {
     if (!ensembleRoomId || !skeleton) return
-    lastFormPositionRef.current = -1
+    // setFormContour resets formPosition to 0, so a playhead still at 0 does
+    // not need a write of its own
+    lastFormPositionRef.current = 0
     setFormContour(
       ensembleRoomId,
       skeleton.formContour || null,
@@ -531,6 +647,8 @@ export default function App() {
     !skeleton?.youtube_id || videoPlaying ? currentDirection : null
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
+  const harmonyBroadcastRef = useRef(false)
+  const lastBroadcastRef = useRef(null)
   useEffect(() => {
     if (!ensembleRoomId) return
 
@@ -538,29 +656,25 @@ export default function App() {
       clearTimeout(broadcastTimeoutRef.current)
     }
 
-    const chordToSend = selectedChordKey || null
-    const scaleToSend = selectedScaleKey || null
+    const {
+      chordKey: chordToSend,
+      scaleKey: scaleToSend,
+      nextChordKey: nextChordToSend,
+      nextScaleKey: nextScaleToSend,
+    } = harmonyBroadcast({
+      hasEvent: Boolean(currentEvent),
+      hasBroadcast: harmonyBroadcastRef.current,
+      node: currentNode,
+      nextNode,
+    })
     // Self-describing scaleInfo accompanies every scale broadcast (registry
     // and custom alike); null only when the key is unknown.
     const scaleInfoToSend = scaleInfoForKey(scaleToSend)
     const chordInfoToSend = buildChordInfo(chordToSend, customChords)
     const directionToSend = activeScoreDirection || null
-    const nextChordToSend = nextNode?.chord || null
-    const nextScaleToSend = nextNode?.scale || null
 
     broadcastTimeoutRef.current = setTimeout(() => {
-      console.log('[ensemble broadcast] sending:', {
-        roomId: ensembleRoomId,
-        chordKey: chordToSend,
-        scaleKey: scaleToSend,
-        scaleInfo: scaleInfoToSend,
-        nextChordKey: nextChordToSend,
-        nextScaleKey: nextScaleToSend,
-        bpm: ensembleBpm,
-        scoreDirection: directionToSend,
-      })
-
-      updateEnsembleState({
+      const payload = {
         roomId: ensembleRoomId,
         bpm: ensembleBpm,
         chordKey: chordToSend,
@@ -574,8 +688,29 @@ export default function App() {
         scoreDirection: directionToSend,
         // Live rooms must never get rehearsal TTL fields (auto-deletion)
         live: Boolean(liveRoomId),
-      }).catch((err) => {
+      }
+      // Skip the write when nothing in it differs from the last one sent
+      // (the effect also re-runs when only object identities change).
+      const signature = JSON.stringify(payload)
+      if (signature === lastBroadcastRef.current) return
+      lastBroadcastRef.current = signature
+      if (chordToSend !== undefined) harmonyBroadcastRef.current = true
+
+      console.log('[ensemble broadcast] sending:', {
+        roomId: ensembleRoomId,
+        chordKey: chordToSend,
+        scaleKey: scaleToSend,
+        scaleInfo: scaleInfoToSend,
+        nextChordKey: nextChordToSend,
+        nextScaleKey: nextScaleToSend,
+        bpm: ensembleBpm,
+        scoreDirection: directionToSend,
+      })
+
+      updateEnsembleState(payload).catch((err) => {
         console.error('[ensemble] failed to update state', err)
+        // Not delivered: let the same state be sent again
+        if (lastBroadcastRef.current === signature) lastBroadcastRef.current = null
       })
     }, BROADCAST_DEBOUNCE_MS)
 
@@ -584,40 +719,20 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
+  }, [ensembleRoomId, ensembleBpm, currentEvent, currentNode, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
 
-  const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
-
-  // Local form-strip playhead (#116): the video clock sampled at 4 Hz so the
-  // conductor's playhead glides instead of jumping event-to-event. Falls back
-  // to event resolution (current event's beat over total beats — the same
-  // fallback the 2s broadcast uses) when there's no video clock.
-  const [videoFormPosition, setVideoFormPosition] = useState(null)
-  useEffect(() => {
-    setVideoFormPosition(null)
-    setVideoDuration(0)
-    if (!skeleton) return
-    const id = setInterval(() => {
-      const duration = playerRef.current?.getDuration?.() || 0
-      if (!(duration > 0)) return
-      setVideoDuration(duration) // feeds the formSections axis above
-      const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
-      if (!Number.isFinite(pos)) return
-      setVideoFormPosition(Math.min(1, Math.max(0, pos)))
-    }, 250)
-    return () => clearInterval(id)
-  }, [skeleton])
+  // Form-strip playhead fallback when there's no video clock: event
+  // resolution (current event's beat over total beats — the same fallback the
+  // 2s broadcast uses). The video-clock playhead lives in PlayheadPortal.
   const formTotalBeats = skeleton?.events?.length
     ? skeleton.events[skeleton.events.length - 1].time
     : 0
-  const formStripPosition =
-    videoFormPosition != null
-      ? videoFormPosition
-      : formTotalBeats > 0 && currentEvent
-        ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
-        : null
+  const fallbackFormPosition =
+    formTotalBeats > 0 && currentEvent
+      ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
+      : null
 
-  // Timeline: all events, scrollable, auto-follows the current one
+  // Timeline rows: every event with its sketchpad node
   const visibleEvents = useMemo(() => {
     const events = skeleton?.events || []
     return events.map((event, i) => ({
@@ -626,21 +741,6 @@ export default function App() {
       node: nodeMap[event.state] || null,
     }))
   }, [skeleton, nodeMap])
-
-  // Keep the NOW row vertically centered in the timeline scroll area
-  const timelineRef = useRef(null)
-  const currentRowRef = useRef(null)
-  useEffect(() => {
-    const container = timelineRef.current
-    const row = currentRowRef.current
-    if (!container || !row) return
-    const containerRect = container.getBoundingClientRect()
-    const rowRect = row.getBoundingClientRect()
-    const target = container.scrollTop
-      + (rowRect.top - containerRect.top)
-      - (containerRect.height / 2 - rowRect.height / 2)
-    container.scrollTo({ top: target, behavior: 'smooth' })
-  }, [currentIndex])
 
   // Click a timeline row: seek the video there (video stays the master clock)
   const jumpToEvent = useCallback((index) => {
@@ -654,10 +754,10 @@ export default function App() {
     // Apply immediately so it works while paused too
     setCurrentIndex(index)
     setCurrentEvent(event)
-    onEventChange(event)
-  }, [skeleton, nodeMap])
+  }, [skeleton])
 
-  const strudelSnippet = ensembleRoomId
+  // Built once per room, not on every render (#27)
+  const strudelSnippet = useMemo(() => ensembleRoomId
     ? `${liveRoomId
         ? `// LIVE ROOM (${liveRoomId}) — this follows the conductor's broadcast`
         : '// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com'}
@@ -753,31 +853,49 @@ stack(
     .gain(0.34)
 )
 .cpm(ens.bpm.div(4)) // 16th notes at the room's tempo`
-    : '// Setting up your private rehearsal room…'
+    : '// Setting up your private rehearsal room…', [ensembleRoomId, liveRoomId])
 
   // Strudel encodes the editor contents in the URL hash, so this link opens
   // strudel.cc with the whole jam already loaded — no pasting needed.
-  const strudelUrl = ensembleRoomId
+  const strudelUrl = useMemo(() => ensembleRoomId
     ? 'https://strudel.cc/#' + encodeURIComponent(btoa(unescape(encodeURIComponent(strudelSnippet))))
-    : 'https://strudel.cc'
+    : 'https://strudel.cc', [ensembleRoomId, strudelSnippet])
+
+  const header = (
+    <div className="app-header">
+      <h1>Rehearse LA Laptop Orchestra</h1>
+      <select
+        className="piece-select"
+        value={pieceId}
+        onChange={(e) => handlePieceChange(e.target.value)}
+        aria-label="Select piece"
+      >
+        {PIECES.map((p) => (
+          <option key={p.id} value={p.id}>{p.label}</option>
+        ))}
+      </select>
+    </div>
+  )
+
+  if (loadError) {
+    return (
+      <div className="app">
+        {header}
+        <div className="load-error" role="alert">
+          <span className="ensemble-error">{loadError}</span>
+          <button className="ensemble-button" onClick={() => setLoadAttempt((n) => n + 1)}>
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   if (!skeleton) return <div>Loading...</div>
 
   return (
     <div className="app">
-      <div className="app-header">
-        <h1>Rehearse LA Laptop Orchestra</h1>
-        <select
-          className="piece-select"
-          value={pieceId}
-          onChange={(e) => handlePieceChange(e.target.value)}
-          aria-label="Select piece"
-        >
-          {PIECES.map((p) => (
-            <option key={p.id} value={p.id}>{p.label}</option>
-          ))}
-        </select>
-      </div>
+      {header}
 
       {skeleton.youtube_id ? (
         <div className="video-container">
@@ -786,6 +904,15 @@ stack(
       ) : (
         <div className="no-video-note">
           No video for this piece yet — click timeline events to advance the harmony by hand.
+        </div>
+      )}
+
+      {skeleton.youtube_id && videoError && (
+        <div className="load-error" role="alert">
+          <span className="ensemble-error">{videoError}</span>
+          <button className="ensemble-button" onClick={() => setVideoAttempt((n) => n + 1)}>
+            Retry
+          </button>
         </div>
       )}
 
@@ -808,16 +935,23 @@ stack(
         </div>
       </div>
 
-      <EnterPortal
+      <PlayheadPortal
+        playerRef={playerRef}
+        skeleton={skeleton}
+        fallbackPosition={fallbackFormPosition}
+        onVideoDuration={setVideoDuration}
         scaleKey={currentNode?.scale || null}
         chordKey={currentNode?.chord || null}
         nextScaleKey={nextNode?.scale || null}
         nextChordKey={nextNode?.chord || null}
+        scaleInfo={scaleInfoForKey(currentNode?.scale || null)}
+        chordInfo={buildChordInfo(currentNode?.chord || null, customChords)}
+        nextScaleInfo={scaleInfoForKey(nextNode?.scale || null)}
+        nextChordInfo={buildChordInfo(nextNode?.chord || null, customChords)}
         bpm={skeleton.tempo}
         direction={liveDirectionSent}
         scoreDirection={activeScoreDirection}
         formContour={skeleton.formContour || null}
-        formPosition={formStripPosition}
         formSections={formSections}
         formGlyphs={formGlyphs}
       />
@@ -975,34 +1109,13 @@ stack(
 
       <div className="card">
         <div className="card-title">Timeline:</div>
-        <div className="timeline" ref={timelineRef}>
-          {visibleEvents.map((event) => {
-            const isCurrent = event.index === currentIndex
-            const chordLabel = event.node?.chord
-              ? prettyChordLabelFromKey(event.node.chord)
-              : event.state
-            const scaleLabel = event.node?.scale
-              ? prettyScaleLabelFromKey(event.node.scale).replace('harmonic', 'harm')
-              : ''
-
-            return (
-              <div
-                key={event.index}
-                ref={isCurrent ? currentRowRef : null}
-                onClick={() => jumpToEvent(event.index)}
-                className={`timeline-row${isCurrent ? ' current' : ''}`}
-              >
-                <span className="timeline-num">{event.index + 1}.</span>
-                <span className="timeline-beat">{beatsToTime(event.time, skeleton?.tempo)}</span>
-                <span className="timeline-chord" style={{ fontWeight: isCurrent ? 600 : 400 }}>
-                  {chordLabel}
-                </span>
-                <span className="timeline-scale">{scaleLabel}</span>
-                {isCurrent && <span className="timeline-now">NOW</span>}
-              </div>
-            )
-          })}
-        </div>
+        <Timeline
+          events={visibleEvents}
+          currentIndex={currentIndex}
+          tempo={skeleton.tempo}
+          customChords={customChords}
+          onJump={jumpToEvent}
+        />
         <div className="timeline-hint">
           Click any event to jump to it.
         </div>
