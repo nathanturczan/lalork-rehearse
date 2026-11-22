@@ -17,6 +17,7 @@ import EnterPortal from './portal/EnterPortal'
 import DirectionPanel from './DirectionPanel'
 import { buildScaleInfo, prettyScaleLabelFromKey } from './scaleInfo'
 import { directionText, harmonyBroadcast } from './broadcastState.js'
+import { loadPiece } from './pieceLoader.js'
 
 const BROADCAST_DEBOUNCE_MS = 100
 
@@ -37,18 +38,48 @@ const PIECES = [
   { id: 'airboat', label: 'Airboat: both series in the chord, Boyd picks the root (+ quality vote)' },
 ]
 
-// YouTube iframe API loader
+// YouTube iframe API loader. The API script defines window.YT before
+// YT.Player exists, so every caller waits on the same promise, which resolves
+// only once the player class is there. A script that fails to load (or never
+// becomes ready) rejects, and the next call tries again.
+const YOUTUBE_API_SRC = 'https://www.youtube.com/iframe_api'
+const YOUTUBE_API_TIMEOUT_MS = 20000
+let youTubeAPIPromise = null
 function loadYouTubeAPI() {
-  return new Promise((resolve) => {
-    if (window.YT) {
-      resolve(window.YT)
-      return
-    }
-    const tag = document.createElement('script')
-    tag.src = 'https://www.youtube.com/iframe_api'
-    document.body.appendChild(tag)
-    window.onYouTubeIframeAPIReady = () => resolve(window.YT)
-  })
+  if (window.YT?.Player) return Promise.resolve(window.YT)
+  if (!youTubeAPIPromise) {
+    youTubeAPIPromise = new Promise((resolve, reject) => {
+      const tag = document.createElement('script')
+      tag.src = YOUTUBE_API_SRC
+      const fail = (message) => {
+        tag.remove()
+        youTubeAPIPromise = null
+        reject(new Error(message))
+      }
+      const timeout = setTimeout(
+        () => fail('The YouTube player did not load in time.'),
+        YOUTUBE_API_TIMEOUT_MS
+      )
+      tag.onerror = () => {
+        clearTimeout(timeout)
+        fail('The YouTube player could not be loaded.')
+      }
+      window.onYouTubeIframeAPIReady = () => {
+        clearTimeout(timeout)
+        resolve(window.YT)
+      }
+      document.body.appendChild(tag)
+    })
+  }
+  return youTubeAPIPromise
+}
+
+// YouTube IFrame API onError codes
+const youTubeErrorText = (code) => {
+  if (code === 2) return 'the video id is not valid'
+  if (code === 100) return 'the video was removed or is private'
+  if (code === 101 || code === 150) return 'the video does not allow embedding'
+  return `player error ${code}`
 }
 
 // Copied from noteschordsscales SkeletonPlayer.jsx
@@ -101,6 +132,12 @@ export default function App() {
   const [sketchpad, setSketchpad] = useState(null)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(-1)
+  // Load failures are shown with a Retry button instead of leaving the page
+  // stuck (#24). Bumping an attempt counter re-runs the matching effect.
+  const [loadError, setLoadError] = useState('')
+  const [loadAttempt, setLoadAttempt] = useState(0)
+  const [videoError, setVideoError] = useState('')
+  const [videoAttempt, setVideoAttempt] = useState(0)
 
   // Live conductor mode: ?room=<roomId> targets that room directly (Google
   // sign-in required; Firestore rules only let the room's host broadcast).
@@ -157,17 +194,20 @@ export default function App() {
     setSketchpad(null)
     setCurrentEvent(null)
     setCurrentIndex(-1)
-    Promise.all([
-      fetch(`/${pieceId}.json`).then(res => res.json()),
-      fetch(`/${pieceId}_sketchpad.json`).then(res => res.json()),
-    ]).then(([skeletonData, sketchpadData]) => {
-      if (cancelled) return
-      setSketchpad(sketchpadData)
-      setSkeleton(skeletonData)
-      if (typeof skeletonData.tempo === 'number') setEnsembleBpm(skeletonData.tempo)
-    })
+    setLoadError('')
+    loadPiece(pieceId)
+      .then(({ skeleton: skeletonData, sketchpad: sketchpadData }) => {
+        if (cancelled) return
+        setSketchpad(sketchpadData)
+        setSkeleton(skeletonData)
+        if (typeof skeletonData.tempo === 'number') setEnsembleBpm(skeletonData.tempo)
+      })
+      .catch((err) => {
+        console.error('[rehearse] piece load failed', err)
+        if (!cancelled) setLoadError(err.message || 'Could not load the piece.')
+      })
     return () => { cancelled = true }
-  }, [pieceId])
+  }, [pieceId, loadAttempt])
 
   const handlePieceChange = (id) => {
     setPieceId(id)
@@ -203,11 +243,16 @@ export default function App() {
     if (!skeleton?.youtube_id) return
 
     let cancelled = false
+    setVideoError('')
     loadYouTubeAPI().then((YT) => {
       if (cancelled) return
       playerRef.current = new YT.Player('youtube-player', {
         videoId: skeleton.youtube_id,
         events: {
+          onError: (e) => {
+            console.error('[rehearse] YouTube player error', e.data)
+            setVideoError(`The video could not be played (${youTubeErrorText(e.data)}).`)
+          },
           // Track whether the piece is actually sounding, so score
           // directions can clear when playback stops (see
           // activeScoreDirection below). BUFFERING counts as playing:
@@ -217,9 +262,13 @@ export default function App() {
               e.data === YT.PlayerState.PLAYING ||
                 e.data === YT.PlayerState.BUFFERING
             )
+            if (e.data === YT.PlayerState.PLAYING) setVideoError('')
           }
         }
       })
+    }).catch((err) => {
+      console.error('[rehearse] YouTube player setup failed', err)
+      if (!cancelled) setVideoError(err.message || 'The YouTube player could not be loaded.')
     })
     return () => {
       cancelled = true
@@ -231,7 +280,7 @@ export default function App() {
       }
       playerRef.current = null
     }
-  }, [skeleton?.youtube_id])
+  }, [skeleton?.youtube_id, videoAttempt])
 
   // Re-derive the current event from the video clock (idempotent)
   const syncToVideo = useCallback(() => {
@@ -762,23 +811,41 @@ stack(
     ? 'https://strudel.cc/#' + encodeURIComponent(btoa(unescape(encodeURIComponent(strudelSnippet))))
     : 'https://strudel.cc'
 
+  const header = (
+    <div className="app-header">
+      <h1>Rehearse LA Laptop Orchestra</h1>
+      <select
+        className="piece-select"
+        value={pieceId}
+        onChange={(e) => handlePieceChange(e.target.value)}
+        aria-label="Select piece"
+      >
+        {PIECES.map((p) => (
+          <option key={p.id} value={p.id}>{p.label}</option>
+        ))}
+      </select>
+    </div>
+  )
+
+  if (loadError) {
+    return (
+      <div className="app">
+        {header}
+        <div className="load-error" role="alert">
+          <span className="ensemble-error">{loadError}</span>
+          <button className="ensemble-button" onClick={() => setLoadAttempt((n) => n + 1)}>
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   if (!skeleton) return <div>Loading...</div>
 
   return (
     <div className="app">
-      <div className="app-header">
-        <h1>Rehearse LA Laptop Orchestra</h1>
-        <select
-          className="piece-select"
-          value={pieceId}
-          onChange={(e) => handlePieceChange(e.target.value)}
-          aria-label="Select piece"
-        >
-          {PIECES.map((p) => (
-            <option key={p.id} value={p.id}>{p.label}</option>
-          ))}
-        </select>
-      </div>
+      {header}
 
       {skeleton.youtube_id ? (
         <div className="video-container">
@@ -787,6 +854,15 @@ stack(
       ) : (
         <div className="no-video-note">
           No video for this piece yet — click timeline events to advance the harmony by hand.
+        </div>
+      )}
+
+      {skeleton.youtube_id && videoError && (
+        <div className="load-error" role="alert">
+          <span className="ensemble-error">{videoError}</span>
+          <button className="ensemble-button" onClick={() => setVideoAttempt((n) => n + 1)}>
+            Retry
+          </button>
         </div>
       )}
 
