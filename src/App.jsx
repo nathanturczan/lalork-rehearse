@@ -16,6 +16,7 @@ import { customChordsOf, buildChordInfo } from './chordInfo.js'
 import EnterPortal from './portal/EnterPortal'
 import DirectionPanel from './DirectionPanel'
 import { buildScaleInfo, prettyScaleLabelFromKey } from './scaleInfo'
+import { directionText, harmonyBroadcast } from './broadcastState.js'
 
 const BROADCAST_DEBOUNCE_MS = 100
 
@@ -112,9 +113,6 @@ export default function App() {
   // Ensemble state: invisible guest identity + auto-created private room
   const [ensembleRoomId, setEnsembleRoomId] = useState(null)
   const [ensembleBpm, setEnsembleBpm] = useState(60)
-  const [selectedChordKey, setSelectedChordKey] = useState(null)
-  const [selectedScaleKey, setSelectedScaleKey] = useState(null)
-  const [currentDirection, setCurrentDirection] = useState(null)
   const [ensembleError, setEnsembleError] = useState('')
   // Live conductor direction (lalork-website#114, rehearse#11): typed cues on
   // their own channel. Set replaces the whole live set; Clear empties it.
@@ -150,25 +148,24 @@ export default function App() {
     }
   }
 
-  // Load skeleton + sketchpad for the selected piece
+  // Load skeleton + sketchpad for the selected piece. Both are set together:
+  // the first event fires as soon as the skeleton is set, and its harmony
+  // comes from the sketchpad (#22).
   useEffect(() => {
     let cancelled = false
     setSkeleton(null)
     setSketchpad(null)
     setCurrentEvent(null)
     setCurrentIndex(-1)
-    fetch(`/${pieceId}.json`)
-      .then(res => res.json())
-      .then(data => {
-        if (cancelled) return
-        setSkeleton(data)
-        if (typeof data.tempo === 'number') setEnsembleBpm(data.tempo)
-      })
-    fetch(`/${pieceId}_sketchpad.json`)
-      .then(res => res.json())
-      .then(data => {
-        if (!cancelled) setSketchpad(data)
-      })
+    Promise.all([
+      fetch(`/${pieceId}.json`).then(res => res.json()),
+      fetch(`/${pieceId}_sketchpad.json`).then(res => res.json()),
+    ]).then(([skeletonData, sketchpadData]) => {
+      if (cancelled) return
+      setSketchpad(sketchpadData)
+      setSkeleton(skeletonData)
+      if (typeof skeletonData.tempo === 'number') setEnsembleBpm(skeletonData.tempo)
+    })
     return () => { cancelled = true }
   }, [pieceId])
 
@@ -256,9 +253,8 @@ export default function App() {
     if (eventIndex !== currentIndex && eventIndex >= 0) {
       setCurrentIndex(eventIndex)
       setCurrentEvent(skeleton.events[eventIndex])
-      onEventChange(skeleton.events[eventIndex])
     }
-  }, [skeleton, currentIndex, nodeMap, leadMs])
+  }, [skeleton, currentIndex, leadMs])
 
   // Poll the video clock constantly — playing OR paused — so scrubbing the
   // YouTube bar always re-derives and rebroadcasts the harmonic state.
@@ -269,31 +265,18 @@ export default function App() {
     return () => clearInterval(intervalRef.current)
   }, [skeleton, syncToVideo])
 
-  // Handle event change: derive chord/scale/direction for broadcast
-  function onEventChange(event) {
-    const node = nodeMap[event.state]
-
-    if (node) {
-      if (node.chord) setSelectedChordKey(node.chord)
-      if (node.scale) setSelectedScaleKey(node.scale)
-    } else {
-      console.warn(`[rehearse] No sketchpad node for state: ${event.state}`)
+  // The displayed event is the single source for the portal AND the
+  // broadcast (#22): chord/scale/direction are derived from it on every
+  // render, never stored separately.
+  const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
+  const currentDirection = useMemo(() => directionText(currentEvent), [currentEvent])
+  useEffect(() => {
+    if (!currentEvent || !sketchpad) return
+    if (!currentNode) {
+      console.warn(`[rehearse] No sketchpad node for state: ${currentEvent.state}`)
     }
-
-    // Direction format: comma-separated string of non-empty fields
-    // (same as noteschordsscales SkeletonPlayer)
-    const dir = event?.direction
-    if (dir && typeof dir === 'object') {
-      const parts = [dir.marking, dir.lyric, dir.note].filter(Boolean)
-      setCurrentDirection(parts.length > 0 ? parts.join(', ') : null)
-    } else if (typeof dir === 'string') {
-      setCurrentDirection(dir || null)
-    } else {
-      setCurrentDirection(null)
-    }
-
-    console.log('Event:', event.state, node?.chord, node?.scale, event.direction)
-  }
+    console.log('Event:', currentEvent.state, currentNode?.chord, currentNode?.scale, currentEvent.direction)
+  }, [currentEvent, currentNode, sketchpad])
 
   // Verify hostship, then start broadcasting to the live room
   const connectLiveRoom = useCallback(async (user) => {
@@ -538,15 +521,17 @@ export default function App() {
       clearTimeout(broadcastTimeoutRef.current)
     }
 
-    const chordToSend = selectedChordKey || null
-    const scaleToSend = selectedScaleKey || null
+    const {
+      chordKey: chordToSend,
+      scaleKey: scaleToSend,
+      nextChordKey: nextChordToSend,
+      nextScaleKey: nextScaleToSend,
+    } = harmonyBroadcast({ node: currentNode, nextNode })
     // Self-describing scaleInfo accompanies every scale broadcast (registry
     // and custom alike); null only when the key is unknown.
     const scaleInfoToSend = scaleInfoForKey(scaleToSend)
     const chordInfoToSend = buildChordInfo(chordToSend, customChords)
     const directionToSend = activeScoreDirection || null
-    const nextChordToSend = nextNode?.chord || null
-    const nextScaleToSend = nextNode?.scale || null
 
     broadcastTimeoutRef.current = setTimeout(() => {
       console.log('[ensemble broadcast] sending:', {
@@ -584,9 +569,7 @@ export default function App() {
         clearTimeout(broadcastTimeoutRef.current)
       }
     }
-  }, [ensembleRoomId, ensembleBpm, selectedChordKey, selectedScaleKey, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
-
-  const currentNode = currentEvent ? nodeMap[currentEvent.state] : null
+  }, [ensembleRoomId, ensembleBpm, currentNode, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
 
   // Local form-strip playhead (#116): the video clock sampled at 4 Hz so the
   // conductor's playhead glides instead of jumping event-to-event. Falls back
@@ -654,8 +637,7 @@ export default function App() {
     // Apply immediately so it works while paused too
     setCurrentIndex(index)
     setCurrentEvent(event)
-    onEventChange(event)
-  }, [skeleton, nodeMap])
+  }, [skeleton])
 
   const strudelSnippet = ensembleRoomId
     ? `${liveRoomId
