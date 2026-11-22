@@ -1,0 +1,963 @@
+{
+  "name": "Airboat (hold0s_root_upper)",
+  "version": 1,
+  "comment": "Generated hold0s_root_upper by songs/airboat/cartridge/02_cartridge.py from the Auto-Tuned engine line of airboat-sunrise.mp4 (https://www.youtube.com/watch?v=tV2lo7iK3kk). Every chord contains the engine note and its fifth; the path is the most Boyd-attested sequence (Infinite Boyd, type level, heard >= 2; position rule where unattested). Scales: a parent of the chord among the 57, staying put or moving to an adjacent scale when possible. Status: derived.",
+  "nodes": [
+    {
+      "id": "n0",
+      "label": "C9/11 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "c_9/11-99",
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "n1",
+      "label": "C#9/11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "cs_9/11-99",
+      "position": {
+        "x": 250,
+        "y": 100
+      }
+    },
+    {
+      "id": "n2",
+      "label": "Am11 (C diatonic)",
+      "scale": "c_diatonic",
+      "chord": "a_m11-50",
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "n3",
+      "label": "Gm11 (F diatonic)",
+      "scale": "f_diatonic",
+      "chord": "g_m11-50",
+      "position": {
+        "x": 550,
+        "y": 100
+      }
+    },
+    {
+      "id": "n4",
+      "label": "Am11 (F diatonic)",
+      "scale": "f_diatonic",
+      "chord": "a_m11-50",
+      "position": {
+        "x": 700,
+        "y": 100
+      }
+    },
+    {
+      "id": "n5",
+      "label": "Em11 (D diatonic)",
+      "scale": "d_diatonic",
+      "chord": "e_m11-77",
+      "position": {
+        "x": 850,
+        "y": 100
+      }
+    },
+    {
+      "id": "n6",
+      "label": "Bbm11 (C# diatonic)",
+      "scale": "cs_diatonic",
+      "chord": "as_m11-77",
+      "position": {
+        "x": 1000,
+        "y": 100
+      }
+    },
+    {
+      "id": "n7",
+      "label": "F9/11 (Ab diatonic)",
+      "scale": "gs_diatonic",
+      "chord": "f_9/11-99",
+      "position": {
+        "x": 1150,
+        "y": 100
+      }
+    },
+    {
+      "id": "n8",
+      "label": "F#m11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "fs_m11-50",
+      "position": {
+        "x": 100,
+        "y": 220
+      }
+    },
+    {
+      "id": "n9",
+      "label": "Am11 (C diatonic)",
+      "scale": "c_diatonic",
+      "chord": "a_m11-77",
+      "position": {
+        "x": 250,
+        "y": 220
+      }
+    },
+    {
+      "id": "n10",
+      "label": "Abm11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "gs_m11-77",
+      "position": {
+        "x": 400,
+        "y": 220
+      }
+    },
+    {
+      "id": "n11",
+      "label": "Gm11 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "g_m11-77",
+      "position": {
+        "x": 550,
+        "y": 220
+      }
+    },
+    {
+      "id": "n12",
+      "label": "Bm♭5 (C diatonic)",
+      "scale": "c_diatonic",
+      "chord": "b_m♭5-82",
+      "position": {
+        "x": 700,
+        "y": 220
+      }
+    },
+    {
+      "id": "n13",
+      "label": "F9/11 (Eb diatonic)",
+      "scale": "ds_diatonic",
+      "chord": "f_9/11-99",
+      "position": {
+        "x": 850,
+        "y": 220
+      }
+    },
+    {
+      "id": "n14",
+      "label": "Bm11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "b_m11-77",
+      "position": {
+        "x": 1000,
+        "y": 220
+      }
+    },
+    {
+      "id": "n15",
+      "label": "Gm11 (F diatonic)",
+      "scale": "f_diatonic",
+      "chord": "g_m11-77",
+      "position": {
+        "x": 1150,
+        "y": 220
+      }
+    },
+    {
+      "id": "n16",
+      "label": "B9/11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "b_9/11-99",
+      "position": {
+        "x": 100,
+        "y": 340
+      }
+    },
+    {
+      "id": "n17",
+      "label": "G9/11 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "g_9/11-99",
+      "position": {
+        "x": 250,
+        "y": 340
+      }
+    },
+    {
+      "id": "n18",
+      "label": "Ab9/11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "gs_9/11-99",
+      "position": {
+        "x": 400,
+        "y": 340
+      }
+    },
+    {
+      "id": "n19",
+      "label": "A9/11 (C diatonic)",
+      "scale": "c_diatonic",
+      "chord": "a_9/11-99",
+      "position": {
+        "x": 550,
+        "y": 340
+      }
+    },
+    {
+      "id": "n20",
+      "label": "Bbm11 (C# diatonic)",
+      "scale": "cs_diatonic",
+      "chord": "as_m11-50",
+      "position": {
+        "x": 700,
+        "y": 340
+      }
+    },
+    {
+      "id": "n21",
+      "label": "Abm11 (F# diatonic)",
+      "scale": "fs_diatonic",
+      "chord": "gs_m11-50",
+      "position": {
+        "x": 850,
+        "y": 340
+      }
+    },
+    {
+      "id": "n22",
+      "label": "Gm11 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "g_m11-50",
+      "position": {
+        "x": 1000,
+        "y": 340
+      }
+    },
+    {
+      "id": "n23",
+      "label": "Cm11 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "c_m11-77",
+      "position": {
+        "x": 1150,
+        "y": 340
+      }
+    },
+    {
+      "id": "n24",
+      "label": "Abm11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "gs_m11-50",
+      "position": {
+        "x": 100,
+        "y": 460
+      }
+    },
+    {
+      "id": "n25",
+      "label": "Gm♭5 (Ab diatonic)",
+      "scale": "gs_diatonic",
+      "chord": "g_m♭5-82",
+      "position": {
+        "x": 250,
+        "y": 460
+      }
+    },
+    {
+      "id": "n26",
+      "label": "Bbm♭5 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "as_m♭5-82",
+      "position": {
+        "x": 400,
+        "y": 460
+      }
+    },
+    {
+      "id": "n27",
+      "label": "Fm11 (Eb diatonic)",
+      "scale": "ds_diatonic",
+      "chord": "f_m11-77",
+      "position": {
+        "x": 550,
+        "y": 460
+      }
+    },
+    {
+      "id": "n28",
+      "label": "B7#5(#9) (F acoustic)",
+      "scale": "f_acoustic",
+      "chord": "b_7#5(#9)-90",
+      "position": {
+        "x": 700,
+        "y": 460
+      }
+    },
+    {
+      "id": "n29",
+      "label": "Am♭5 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "a_m♭5-82",
+      "position": {
+        "x": 850,
+        "y": 460
+      }
+    },
+    {
+      "id": "n30",
+      "label": "Abm♭5 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "gs_m♭5-82",
+      "position": {
+        "x": 1000,
+        "y": 460
+      }
+    },
+    {
+      "id": "n31",
+      "label": "Abm11 (F# diatonic)",
+      "scale": "fs_diatonic",
+      "chord": "gs_m11-77",
+      "position": {
+        "x": 1150,
+        "y": 460
+      }
+    },
+    {
+      "id": "n32",
+      "label": "D9/11 (C diatonic)",
+      "scale": "c_diatonic",
+      "chord": "d_9/11-99",
+      "position": {
+        "x": 100,
+        "y": 580
+      }
+    },
+    {
+      "id": "n33",
+      "label": "Bm11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "b_m11-50",
+      "position": {
+        "x": 250,
+        "y": 580
+      }
+    },
+    {
+      "id": "n34",
+      "label": "Gm11♭5 (Ab diatonic)",
+      "scale": "gs_diatonic",
+      "chord": "g_m11♭5-104",
+      "position": {
+        "x": 400,
+        "y": 580
+      }
+    },
+    {
+      "id": "n35",
+      "label": "BM7(add6/9) (C# acoustic)",
+      "scale": "cs_acoustic",
+      "chord": "b_M7(add6/9)-3",
+      "position": {
+        "x": 550,
+        "y": 580
+      }
+    },
+    {
+      "id": "n36",
+      "label": "D13 (G diatonic)",
+      "scale": "g_diatonic",
+      "chord": "d_13-20",
+      "position": {
+        "x": 700,
+        "y": 580
+      }
+    },
+    {
+      "id": "n37",
+      "label": "F#9/11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "fs_9/11-99",
+      "position": {
+        "x": 850,
+        "y": 580
+      }
+    },
+    {
+      "id": "n38",
+      "label": "Am11♭5 (Bb diatonic)",
+      "scale": "as_diatonic",
+      "chord": "a_m11♭5-104",
+      "position": {
+        "x": 1000,
+        "y": 580
+      }
+    },
+    {
+      "id": "n39",
+      "label": "Abm11 (E diatonic)",
+      "scale": "e_diatonic",
+      "chord": "gs_m11-50",
+      "position": {
+        "x": 1150,
+        "y": 580
+      }
+    },
+    {
+      "id": "n40",
+      "label": "Abm11♭5 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "gs_m11♭5-104",
+      "position": {
+        "x": 100,
+        "y": 700
+      }
+    },
+    {
+      "id": "n41",
+      "label": "C#m11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "cs_m11-77",
+      "position": {
+        "x": 250,
+        "y": 700
+      }
+    },
+    {
+      "id": "n42",
+      "label": "Ebm11 (B diatonic)",
+      "scale": "b_diatonic",
+      "chord": "ds_m11-50",
+      "position": {
+        "x": 400,
+        "y": 700
+      }
+    },
+    {
+      "id": "n43",
+      "label": "Eb9/11 (C# diatonic)",
+      "scale": "cs_diatonic",
+      "chord": "ds_9/11-99",
+      "position": {
+        "x": 550,
+        "y": 700
+      }
+    },
+    {
+      "id": "n44",
+      "label": "E9/11 (D diatonic)",
+      "scale": "d_diatonic",
+      "chord": "e_9/11-99",
+      "position": {
+        "x": 700,
+        "y": 700
+      }
+    },
+    {
+      "id": "n45",
+      "label": "F#m11 (A diatonic)",
+      "scale": "a_diatonic",
+      "chord": "fs_m11-77",
+      "position": {
+        "x": 850,
+        "y": 700
+      }
+    },
+    {
+      "id": "n46",
+      "label": "Ebm11♭5 (E diatonic)",
+      "scale": "e_diatonic",
+      "chord": "ds_m11♭5-104",
+      "position": {
+        "x": 1000,
+        "y": 700
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "n0",
+      "target": "n1"
+    },
+    {
+      "source": "n0",
+      "target": "n18"
+    },
+    {
+      "source": "n1",
+      "target": "n2"
+    },
+    {
+      "source": "n1",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "target": "n11"
+    },
+    {
+      "source": "n10",
+      "target": "n13"
+    },
+    {
+      "source": "n10",
+      "target": "n14"
+    },
+    {
+      "source": "n10",
+      "target": "n22"
+    },
+    {
+      "source": "n10",
+      "target": "n27"
+    },
+    {
+      "source": "n10",
+      "target": "n29"
+    },
+    {
+      "source": "n10",
+      "target": "n46"
+    },
+    {
+      "source": "n10",
+      "target": "n6"
+    },
+    {
+      "source": "n10",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "target": "n12"
+    },
+    {
+      "source": "n11",
+      "target": "n16"
+    },
+    {
+      "source": "n11",
+      "target": "n18"
+    },
+    {
+      "source": "n11",
+      "target": "n26"
+    },
+    {
+      "source": "n11",
+      "target": "n30"
+    },
+    {
+      "source": "n11",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "target": "n15"
+    },
+    {
+      "source": "n12",
+      "target": "n25"
+    },
+    {
+      "source": "n13",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "target": "n16"
+    },
+    {
+      "source": "n13",
+      "target": "n37"
+    },
+    {
+      "source": "n14",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "target": "n18"
+    },
+    {
+      "source": "n14",
+      "target": "n29"
+    },
+    {
+      "source": "n14",
+      "target": "n39"
+    },
+    {
+      "source": "n14",
+      "target": "n6"
+    },
+    {
+      "source": "n14",
+      "target": "n9"
+    },
+    {
+      "source": "n15",
+      "target": "n1"
+    },
+    {
+      "source": "n15",
+      "target": "n10"
+    },
+    {
+      "source": "n15",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "target": "n27"
+    },
+    {
+      "source": "n15",
+      "target": "n30"
+    },
+    {
+      "source": "n15",
+      "target": "n9"
+    },
+    {
+      "source": "n16",
+      "target": "n0"
+    },
+    {
+      "source": "n16",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "target": "n25"
+    },
+    {
+      "source": "n17",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "target": "n24"
+    },
+    {
+      "source": "n18",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "target": "n2"
+    },
+    {
+      "source": "n18",
+      "target": "n22"
+    },
+    {
+      "source": "n18",
+      "target": "n28"
+    },
+    {
+      "source": "n18",
+      "target": "n32"
+    },
+    {
+      "source": "n18",
+      "target": "n34"
+    },
+    {
+      "source": "n18",
+      "target": "n38"
+    },
+    {
+      "source": "n19",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "target": "n42"
+    },
+    {
+      "source": "n2",
+      "target": "n3"
+    },
+    {
+      "source": "n20",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "target": "n4"
+    },
+    {
+      "source": "n22",
+      "target": "n6"
+    },
+    {
+      "source": "n23",
+      "target": "n14"
+    },
+    {
+      "source": "n23",
+      "target": "n17"
+    },
+    {
+      "source": "n23",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "target": "n14"
+    },
+    {
+      "source": "n25",
+      "target": "n10"
+    },
+    {
+      "source": "n25",
+      "target": "n30"
+    },
+    {
+      "source": "n26",
+      "target": "n12"
+    },
+    {
+      "source": "n27",
+      "target": "n11"
+    },
+    {
+      "source": "n27",
+      "target": "n45"
+    },
+    {
+      "source": "n28",
+      "target": "n17"
+    },
+    {
+      "source": "n28",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "target": "n11"
+    },
+    {
+      "source": "n29",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "target": "n6"
+    },
+    {
+      "source": "n3",
+      "target": "n18"
+    },
+    {
+      "source": "n3",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "target": "n40"
+    },
+    {
+      "source": "n3",
+      "target": "n41"
+    },
+    {
+      "source": "n3",
+      "target": "n6"
+    },
+    {
+      "source": "n30",
+      "target": "n25"
+    },
+    {
+      "source": "n30",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "target": "n9"
+    },
+    {
+      "source": "n31",
+      "target": "n11"
+    },
+    {
+      "source": "n32",
+      "target": "n43"
+    },
+    {
+      "source": "n32",
+      "target": "n9"
+    },
+    {
+      "source": "n33",
+      "target": "n25"
+    },
+    {
+      "source": "n34",
+      "target": "n18"
+    },
+    {
+      "source": "n34",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "target": "n10"
+    },
+    {
+      "source": "n37",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "target": "n24"
+    },
+    {
+      "source": "n39",
+      "target": "n14"
+    },
+    {
+      "source": "n4",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "target": "n33"
+    },
+    {
+      "source": "n4",
+      "target": "n5"
+    },
+    {
+      "source": "n40",
+      "target": "n22"
+    },
+    {
+      "source": "n41",
+      "target": "n23"
+    },
+    {
+      "source": "n42",
+      "target": "n10"
+    },
+    {
+      "source": "n43",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "target": "n24"
+    },
+    {
+      "source": "n45",
+      "target": "n10"
+    },
+    {
+      "source": "n46",
+      "target": "n30"
+    },
+    {
+      "source": "n5",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "target": "n14"
+    },
+    {
+      "source": "n6",
+      "target": "n17"
+    },
+    {
+      "source": "n6",
+      "target": "n22"
+    },
+    {
+      "source": "n6",
+      "target": "n28"
+    },
+    {
+      "source": "n6",
+      "target": "n31"
+    },
+    {
+      "source": "n6",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "target": "n9"
+    },
+    {
+      "source": "n7",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "target": "n15"
+    },
+    {
+      "source": "n9",
+      "target": "n25"
+    },
+    {
+      "source": "n9",
+      "target": "n26"
+    },
+    {
+      "source": "n9",
+      "target": "n32"
+    },
+    {
+      "source": "n9",
+      "target": "n6"
+    }
+  ]
+}

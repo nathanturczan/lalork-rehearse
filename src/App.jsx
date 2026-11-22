@@ -29,6 +29,11 @@ const PIECES = [
   { id: 'farben', label: 'Schoenberg: Farben' },
   { id: 'o-successores', label: 'Hildegard: O successores (jazz reharm)' },
   { id: 'how-does-it-feel', label: "D'Angelo: Untitled (How Does It Feel)" },
+  { id: 'airboat_three', label: 'Airboat: loudest three in every chord, Boyd attested + position rule' },
+  { id: 'airboat_lower', label: 'Airboat: lower series is the root (+ quality vote)' },
+  { id: 'airboat_upper', label: 'Airboat: upper series is the root (+ quality vote)' },
+  { id: 'airboat_louder', label: 'Airboat: louder series is the root, per note (+ quality vote)' },
+  { id: 'airboat', label: 'Airboat: both series in the chord, Boyd picks the root (+ quality vote)' },
 ]
 
 // YouTube iframe API loader
