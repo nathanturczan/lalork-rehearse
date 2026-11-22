@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { memo, useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import {
   ensureGuestAuth,
   ensureRehearsalRoom,
@@ -122,6 +122,87 @@ function useIsNarrow() {
   return narrow
 }
 
+// The portal with its form-strip playhead (#116). The video clock is sampled
+// at 4 Hz so the playhead glides instead of jumping event-to-event; that state
+// lives here so each sample re-renders the portal only, not the whole app
+// (#27). Falls back to event resolution (fallbackPosition) when there's no
+// video clock.
+function PlayheadPortal({ playerRef, skeleton, fallbackPosition, onVideoDuration, ...portalProps }) {
+  const [videoFormPosition, setVideoFormPosition] = useState(null)
+  useEffect(() => {
+    setVideoFormPosition(null)
+    if (!skeleton) return
+    const id = setInterval(() => {
+      const duration = playerRef.current?.getDuration?.() || 0
+      if (!(duration > 0)) return
+      onVideoDuration(duration) // feeds the formSections axis in App
+      const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
+      if (!Number.isFinite(pos)) return
+      setVideoFormPosition(Math.min(1, Math.max(0, pos)))
+    }, 250)
+    return () => clearInterval(id)
+  }, [skeleton, playerRef, onVideoDuration])
+  return (
+    <EnterPortal
+      {...portalProps}
+      formPosition={videoFormPosition != null ? videoFormPosition : fallbackPosition}
+    />
+  )
+}
+
+// Timeline: all events, scrollable, auto-follows the current one. Memoized so
+// it is rebuilt only when the piece or the current event changes (#27).
+const Timeline = memo(function Timeline({ events, currentIndex, tempo, customChords, onJump }) {
+  // Keep the NOW row vertically centered in the timeline scroll area
+  const timelineRef = useRef(null)
+  const currentRowRef = useRef(null)
+  useEffect(() => {
+    const container = timelineRef.current
+    const row = currentRowRef.current
+    if (!container || !row) return
+    const containerRect = container.getBoundingClientRect()
+    const rowRect = row.getBoundingClientRect()
+    const target = container.scrollTop
+      + (rowRect.top - containerRect.top)
+      - (containerRect.height / 2 - rowRect.height / 2)
+    container.scrollTo({ top: target, behavior: 'smooth' })
+  }, [currentIndex])
+
+  return (
+    <div className="timeline" ref={timelineRef}>
+      {events.map((event) => {
+        const isCurrent = event.index === currentIndex
+        // A custom chord's key is an id, not a name: use the name it
+        // carries in the sketchpad (#25)
+        const chordLabel = event.node?.chord
+          ? customChords[event.node.chord]?.name ||
+            prettyChordLabelFromKey(event.node.chord)
+          : event.state
+        const scaleLabel = event.node?.scale
+          ? prettyScaleLabelFromKey(event.node.scale).replace('harmonic', 'harm')
+          : ''
+
+        return (
+          <div
+            key={event.index}
+            ref={isCurrent ? currentRowRef : null}
+            onClick={() => onJump(event.index)}
+            className={`timeline-row${isCurrent ? ' current' : ''}`}
+          >
+            <span className="timeline-num">{event.index + 1}.</span>
+            <span className="timeline-beat">{beatsToTime(event.time, tempo)}</span>
+            <span className="timeline-chord" style={{ fontWeight: isCurrent ? 600 : 400 }}>
+              {chordLabel}
+            </span>
+            <span className="timeline-scale">{scaleLabel}</span>
+            {isCurrent && <span className="timeline-now">NOW</span>}
+          </div>
+        )
+      })}
+    </div>
+  )
+})
+
 export default function App() {
   const isNarrow = useIsNarrow()
   const [pieceId, setPieceId] = useState(() => {
@@ -194,6 +275,7 @@ export default function App() {
     setSketchpad(null)
     setCurrentEvent(null)
     setCurrentIndex(-1)
+    setVideoDuration(0)
     setLoadError('')
     loadPiece(pieceId)
       .then(({ skeleton: skeletonData, sketchpad: sketchpadData }) => {
@@ -639,36 +721,18 @@ export default function App() {
     }
   }, [ensembleRoomId, ensembleBpm, currentEvent, currentNode, scaleInfoForKey, customChords, activeScoreDirection, liveRoomId, nextNode])
 
-  // Local form-strip playhead (#116): the video clock sampled at 4 Hz so the
-  // conductor's playhead glides instead of jumping event-to-event. Falls back
-  // to event resolution (current event's beat over total beats — the same
-  // fallback the 2s broadcast uses) when there's no video clock.
-  const [videoFormPosition, setVideoFormPosition] = useState(null)
-  useEffect(() => {
-    setVideoFormPosition(null)
-    setVideoDuration(0)
-    if (!skeleton) return
-    const id = setInterval(() => {
-      const duration = playerRef.current?.getDuration?.() || 0
-      if (!(duration > 0)) return
-      setVideoDuration(duration) // feeds the formSections axis above
-      const pos = (playerRef.current?.getCurrentTime?.() || 0) / duration
-      if (!Number.isFinite(pos)) return
-      setVideoFormPosition(Math.min(1, Math.max(0, pos)))
-    }, 250)
-    return () => clearInterval(id)
-  }, [skeleton])
+  // Form-strip playhead fallback when there's no video clock: event
+  // resolution (current event's beat over total beats — the same fallback the
+  // 2s broadcast uses). The video-clock playhead lives in PlayheadPortal.
   const formTotalBeats = skeleton?.events?.length
     ? skeleton.events[skeleton.events.length - 1].time
     : 0
-  const formStripPosition =
-    videoFormPosition != null
-      ? videoFormPosition
-      : formTotalBeats > 0 && currentEvent
-        ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
-        : null
+  const fallbackFormPosition =
+    formTotalBeats > 0 && currentEvent
+      ? Math.min(1, Math.max(0, currentEvent.time / formTotalBeats))
+      : null
 
-  // Timeline: all events, scrollable, auto-follows the current one
+  // Timeline rows: every event with its sketchpad node
   const visibleEvents = useMemo(() => {
     const events = skeleton?.events || []
     return events.map((event, i) => ({
@@ -677,21 +741,6 @@ export default function App() {
       node: nodeMap[event.state] || null,
     }))
   }, [skeleton, nodeMap])
-
-  // Keep the NOW row vertically centered in the timeline scroll area
-  const timelineRef = useRef(null)
-  const currentRowRef = useRef(null)
-  useEffect(() => {
-    const container = timelineRef.current
-    const row = currentRowRef.current
-    if (!container || !row) return
-    const containerRect = container.getBoundingClientRect()
-    const rowRect = row.getBoundingClientRect()
-    const target = container.scrollTop
-      + (rowRect.top - containerRect.top)
-      - (containerRect.height / 2 - rowRect.height / 2)
-    container.scrollTo({ top: target, behavior: 'smooth' })
-  }, [currentIndex])
 
   // Click a timeline row: seek the video there (video stays the master clock)
   const jumpToEvent = useCallback((index) => {
@@ -707,7 +756,8 @@ export default function App() {
     setCurrentEvent(event)
   }, [skeleton])
 
-  const strudelSnippet = ensembleRoomId
+  // Built once per room, not on every render (#27)
+  const strudelSnippet = useMemo(() => ensembleRoomId
     ? `${liveRoomId
         ? `// LIVE ROOM (${liveRoomId}) — this follows the conductor's broadcast`
         : '// PRIVATE REHEARSAL ROOM — on show day, get your snippet from enter.lalaptoporchestra.com'}
@@ -803,13 +853,13 @@ stack(
     .gain(0.34)
 )
 .cpm(ens.bpm.div(4)) // 16th notes at the room's tempo`
-    : '// Setting up your private rehearsal room…'
+    : '// Setting up your private rehearsal room…', [ensembleRoomId, liveRoomId])
 
   // Strudel encodes the editor contents in the URL hash, so this link opens
   // strudel.cc with the whole jam already loaded — no pasting needed.
-  const strudelUrl = ensembleRoomId
+  const strudelUrl = useMemo(() => ensembleRoomId
     ? 'https://strudel.cc/#' + encodeURIComponent(btoa(unescape(encodeURIComponent(strudelSnippet))))
-    : 'https://strudel.cc'
+    : 'https://strudel.cc', [ensembleRoomId, strudelSnippet])
 
   const header = (
     <div className="app-header">
@@ -885,7 +935,11 @@ stack(
         </div>
       </div>
 
-      <EnterPortal
+      <PlayheadPortal
+        playerRef={playerRef}
+        skeleton={skeleton}
+        fallbackPosition={fallbackFormPosition}
+        onVideoDuration={setVideoDuration}
         scaleKey={currentNode?.scale || null}
         chordKey={currentNode?.chord || null}
         nextScaleKey={nextNode?.scale || null}
@@ -898,7 +952,6 @@ stack(
         direction={liveDirectionSent}
         scoreDirection={activeScoreDirection}
         formContour={skeleton.formContour || null}
-        formPosition={formStripPosition}
         formSections={formSections}
         formGlyphs={formGlyphs}
       />
@@ -1056,37 +1109,13 @@ stack(
 
       <div className="card">
         <div className="card-title">Timeline:</div>
-        <div className="timeline" ref={timelineRef}>
-          {visibleEvents.map((event) => {
-            const isCurrent = event.index === currentIndex
-            // A custom chord's key is an id, not a name: use the name it
-            // carries in the sketchpad (#25)
-            const chordLabel = event.node?.chord
-              ? customChords[event.node.chord]?.name ||
-                prettyChordLabelFromKey(event.node.chord)
-              : event.state
-            const scaleLabel = event.node?.scale
-              ? prettyScaleLabelFromKey(event.node.scale).replace('harmonic', 'harm')
-              : ''
-
-            return (
-              <div
-                key={event.index}
-                ref={isCurrent ? currentRowRef : null}
-                onClick={() => jumpToEvent(event.index)}
-                className={`timeline-row${isCurrent ? ' current' : ''}`}
-              >
-                <span className="timeline-num">{event.index + 1}.</span>
-                <span className="timeline-beat">{beatsToTime(event.time, skeleton?.tempo)}</span>
-                <span className="timeline-chord" style={{ fontWeight: isCurrent ? 600 : 400 }}>
-                  {chordLabel}
-                </span>
-                <span className="timeline-scale">{scaleLabel}</span>
-                {isCurrent && <span className="timeline-now">NOW</span>}
-              </div>
-            )
-          })}
-        </div>
+        <Timeline
+          events={visibleEvents}
+          currentIndex={currentIndex}
+          tempo={skeleton.tempo}
+          customChords={customChords}
+          onJump={jumpToEvent}
+        />
         <div className="timeline-hint">
           Click any event to jump to it.
         </div>
