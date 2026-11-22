@@ -22,6 +22,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react'
 import { getNodeColor } from './colors'
 import DirectionField from './DirectionField'
 import FormStrip from './FormStrip'
+import { customLabel } from './customLabel.js'
 
 import diatonicSvg from './shapes/diatonic.svg'
 import harmonicMajorSvg from './shapes/harmonic_major.svg'
@@ -83,6 +84,7 @@ const PC_NAMES = [
 const PITCH_TOKENS = new Set([
   'a', 'b', 'c', 'd', 'e', 'f', 'g',
   'as', 'bs', 'cs', 'ds', 'es', 'fs', 'gs',
+  'af', 'bf', 'df', 'ef', 'gf',
 ])
 
 function mapSharp(r) {
@@ -94,6 +96,11 @@ function mapSharp(r) {
     case 'es': return 'E\u266F'
     case 'fs': return 'F\u266F'
     case 'gs': return 'A\u266D'
+    case 'af': return 'A\u266D'
+    case 'bf': return 'B\u266D'
+    case 'df': return 'D\u266D'
+    case 'ef': return 'E\u266D'
+    case 'gf': return 'G\u266D'
     default:
       return r ? r.charAt(0).toUpperCase() + r.slice(1) : ''
   }
@@ -107,9 +114,11 @@ function titleCaseWords(s) {
     .join(' ')
 }
 
-function formatScaleName(scaleKey, entry) {
+function formatScaleName(scaleKey, entry, info) {
   const parts = (scaleKey || '').split('_')
   const hasRootToken = PITCH_TOKENS.has(parts[0])
+  const custom = customLabel(info, hasRootToken ? mapSharp(parts[0]) : null)
+  if (custom) return custom
   const classTokens = hasRootToken ? parts.slice(1) : parts
   const classLabel = titleCaseWords(entry?.scale_class || classTokens.join('_'))
   if (hasRootToken) {
@@ -129,8 +138,8 @@ const SCALE_CLASS_SHORT = [
   ['Hexatonic', 'Hex'],
 ]
 
-function formatScaleNameShort(scaleKey, entry) {
-  const full = formatScaleName(scaleKey, entry)
+function formatScaleNameShort(scaleKey, entry, info) {
+  const full = formatScaleName(scaleKey, entry, info)
   for (const [long, short] of SCALE_CLASS_SHORT) {
     if (full.endsWith(long)) {
       return full.slice(0, full.length - long.length) + short
@@ -265,6 +274,12 @@ export default function EnterPortal({
   chordKey,
   nextScaleKey,
   nextChordKey,
+  // The scaleInfo/chordInfo payloads broadcast with those keys (null for
+  // none): custom harmony is named from them, as on Enter (#25).
+  scaleInfo = null,
+  chordInfo = null,
+  nextScaleInfo = null,
+  nextChordInfo = null,
   bpm,
   direction = null,
   scoreDirection = null,
@@ -277,6 +292,9 @@ export default function EnterPortal({
   const chord = chordFromKey(chordKey)
   const nextEntry = scaleEntryFromKey(nextScaleKey)
   const nextChord = chordFromKey(nextChordKey)
+  const chordLabel = customLabel(chordInfo) || formatChordName(chord)
+  const nextChordLabel =
+    customLabel(nextChordInfo) || (nextChord ? formatChordName(nextChord) : '')
 
   const scaleRef = useRef(null)
   const scaleNextRef = useRef(null)
@@ -351,8 +369,8 @@ export default function EnterPortal({
                   <span className="portal__scale-name">
                     {keyData
                       ? abbrevLevel >= 2
-                        ? formatScaleNameShort(scaleKey, keyData)
-                        : formatScaleName(scaleKey, keyData)
+                        ? formatScaleNameShort(scaleKey, keyData, scaleInfo)
+                        : formatScaleName(scaleKey, keyData, scaleInfo)
                       : '\u2014'}
                   </span>
                 </div>
@@ -365,8 +383,8 @@ export default function EnterPortal({
                       <ScaleSymbol entry={nextEntry} size={28} />
                       <span className="portal__scale-next-name" ref={nextNameRef}>
                         {abbrevLevel >= 1
-                          ? formatScaleNameShort(nextScaleKey, nextEntry)
-                          : formatScaleName(nextScaleKey, nextEntry)}
+                          ? formatScaleNameShort(nextScaleKey, nextEntry, nextScaleInfo)
+                          : formatScaleName(nextScaleKey, nextEntry, nextScaleInfo)}
                       </span>
                     </>
                   )}
@@ -384,13 +402,13 @@ export default function EnterPortal({
                     <span className="portal__group-label">Chord</span> Now
                   </span>
                   <span className="portal__chord-current" ref={chordRef}>
-                    {formatChordName(chord)}
+                    {chordLabel}
                   </span>
                 </div>
                 <div className="portal__bay">
                   <span className="portal__bay-label">Next</span>
                   <span className="portal__chord-next" ref={chordNextRef}>
-                    {nextChord ? formatChordName(nextChord) : ''}
+                    {nextChordLabel}
                   </span>
                 </div>
               </div>

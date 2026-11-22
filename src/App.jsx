@@ -890,6 +890,10 @@ stack(
         chordKey={currentNode?.chord || null}
         nextScaleKey={nextNode?.scale || null}
         nextChordKey={nextNode?.chord || null}
+        scaleInfo={scaleInfoForKey(currentNode?.scale || null)}
+        chordInfo={buildChordInfo(currentNode?.chord || null, customChords)}
+        nextScaleInfo={scaleInfoForKey(nextNode?.scale || null)}
+        nextChordInfo={buildChordInfo(nextNode?.chord || null, customChords)}
         bpm={skeleton.tempo}
         direction={liveDirectionSent}
         scoreDirection={activeScoreDirection}
@@ -1055,8 +1059,11 @@ stack(
         <div className="timeline" ref={timelineRef}>
           {visibleEvents.map((event) => {
             const isCurrent = event.index === currentIndex
+            // A custom chord's key is an id, not a name: use the name it
+            // carries in the sketchpad (#25)
             const chordLabel = event.node?.chord
-              ? prettyChordLabelFromKey(event.node.chord)
+              ? customChords[event.node.chord]?.name ||
+                prettyChordLabelFromKey(event.node.chord)
               : event.state
             const scaleLabel = event.node?.scale
               ? prettyScaleLabelFromKey(event.node.scale).replace('harmonic', 'harm')
