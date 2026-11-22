@@ -421,7 +421,9 @@ export default function App() {
   const lastFormPositionRef = useRef(-1)
   useEffect(() => {
     if (!ensembleRoomId || !skeleton) return
-    lastFormPositionRef.current = -1
+    // setFormContour resets formPosition to 0, so a playhead still at 0 does
+    // not need a write of its own
+    lastFormPositionRef.current = 0
     setFormContour(
       ensembleRoomId,
       skeleton.formContour || null,
@@ -515,6 +517,7 @@ export default function App() {
 
   // Debounced broadcast on state change (copied from MidiChordScalePage)
   const harmonyBroadcastRef = useRef(false)
+  const lastBroadcastRef = useRef(null)
   useEffect(() => {
     if (!ensembleRoomId) return
 
@@ -540,19 +543,7 @@ export default function App() {
     const directionToSend = activeScoreDirection || null
 
     broadcastTimeoutRef.current = setTimeout(() => {
-      if (chordToSend !== undefined) harmonyBroadcastRef.current = true
-      console.log('[ensemble broadcast] sending:', {
-        roomId: ensembleRoomId,
-        chordKey: chordToSend,
-        scaleKey: scaleToSend,
-        scaleInfo: scaleInfoToSend,
-        nextChordKey: nextChordToSend,
-        nextScaleKey: nextScaleToSend,
-        bpm: ensembleBpm,
-        scoreDirection: directionToSend,
-      })
-
-      updateEnsembleState({
+      const payload = {
         roomId: ensembleRoomId,
         bpm: ensembleBpm,
         chordKey: chordToSend,
@@ -566,8 +557,29 @@ export default function App() {
         scoreDirection: directionToSend,
         // Live rooms must never get rehearsal TTL fields (auto-deletion)
         live: Boolean(liveRoomId),
-      }).catch((err) => {
+      }
+      // Skip the write when nothing in it differs from the last one sent
+      // (the effect also re-runs when only object identities change).
+      const signature = JSON.stringify(payload)
+      if (signature === lastBroadcastRef.current) return
+      lastBroadcastRef.current = signature
+      if (chordToSend !== undefined) harmonyBroadcastRef.current = true
+
+      console.log('[ensemble broadcast] sending:', {
+        roomId: ensembleRoomId,
+        chordKey: chordToSend,
+        scaleKey: scaleToSend,
+        scaleInfo: scaleInfoToSend,
+        nextChordKey: nextChordToSend,
+        nextScaleKey: nextScaleToSend,
+        bpm: ensembleBpm,
+        scoreDirection: directionToSend,
+      })
+
+      updateEnsembleState(payload).catch((err) => {
         console.error('[ensemble] failed to update state', err)
+        // Not delivered: let the same state be sent again
+        if (lastBroadcastRef.current === signature) lastBroadcastRef.current = null
       })
     }, BROADCAST_DEBOUNCE_MS)
 
