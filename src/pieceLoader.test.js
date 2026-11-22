@@ -18,6 +18,14 @@ test('loads the skeleton and the sketchpad together', async () => {
   assert.deepEqual(piece, { skeleton: { tempo: 120, events: [] }, sketchpad: { nodes: [] } })
 })
 
+test('a pair that fails validation rejects with the first problem', async () => {
+  const noTempo = ok({ events: [] })
+  await assert.rejects(
+    loadPiece('p', fetchFrom({ ...files, '/p.json': noTempo })),
+    /files have a problem: "tempo" must be a positive number/
+  )
+})
+
 test('a 404 for either file rejects with a message naming the file', async () => {
   const notFound = { ok: false, status: 404, json: async () => { throw new SyntaxError('Unexpected token') } }
   await assert.rejects(

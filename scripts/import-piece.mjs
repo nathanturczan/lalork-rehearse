@@ -9,14 +9,20 @@
 //
 // Transforms:
 // - Node scale display strings -> machine keys ("F diatonic" -> "f_diatonic",
-//   "Db para_lydian" -> "df_para_lydian")
+//   "Db para_lydian" -> "df_para_lydian"). A flat-named root of a registry
+//   scale becomes the registry's sharp token ("Bb diatonic" -> "as_diatonic")
 // - Custom `scales` block keys -> the same machine keys, so nodes resolve
 // - Skeleton gains `title` from the sketchpad `name`
 // Chord codes are already machine codes and pass through untouched.
+//
+// The result must pass validatePiece (src/validatePiece.js, the same check the
+// app runs when it loads a piece); otherwise nothing is written.
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ScaleRegistry from '../src/scaleRegistry.js';
+import { validatePiece } from '../src/validatePiece.js';
 
 const ROOT_TOKENS = {
   'c': 'c', 'c#': 'cs', 'db': 'df', 'd': 'd', 'd#': 'ds', 'eb': 'ef',
@@ -24,14 +30,29 @@ const ROOT_TOKENS = {
   'ab': 'af', 'a': 'a', 'a#': 'as', 'bb': 'bf', 'b': 'b'
 };
 
-function normalizeScaleKey(display) {
+// The registry's keys use sharp tokens only (as_diatonic, never bf_diatonic).
+const SHARP_TOKEN_OF_FLAT = { df: 'cs', ef: 'ds', gf: 'fs', af: 'gs', bf: 'as' };
+
+// A flat-token key that names a registry scale under its sharp token is
+// rewritten to that registry key; anything else (custom scales such as
+// df_para_lydian) is returned unchanged.
+function registryKey(key) {
+  if (key in ScaleRegistry) return key;
+  const [token, ...rest] = key.split('_');
+  const sharp = SHARP_TOKEN_OF_FLAT[token];
+  if (!sharp) return key;
+  const sharpKey = [sharp, ...rest].join('_');
+  return sharpKey in ScaleRegistry ? sharpKey : key;
+}
+
+export function normalizeScaleKey(display) {
   if (typeof display !== 'string' || !display.trim()) {
     throw new Error(`Bad scale reference: ${JSON.stringify(display)}`);
   }
   const trimmed = display.trim();
   // Already a machine key? (starts with a valid root token + underscore)
   const machineMatch = trimmed.match(/^(c|cs|df|d|ds|ef|e|f|fs|gf|g|gs|af|a|as|bf|b)_[a-z0-9_]+$/);
-  if (machineMatch) return trimmed;
+  if (machineMatch) return registryKey(trimmed);
   // The symmetric scales' registry ids carry no root token (octatonic_3, hexatonic_2, whole_tone_1)
   if (/^(octatonic|hexatonic|whole_tone)_\d+$/.test(trimmed)) return trimmed;
 
@@ -41,7 +62,7 @@ function normalizeScaleKey(display) {
   const token = ROOT_TOKENS[rootName];
   if (!token) throw new Error(`Unknown root "${trimmed.slice(0, spaceIdx)}" in scale "${display}"`);
   const scaleClass = trimmed.slice(spaceIdx + 1).trim().toLowerCase().replace(/[\s-]+/g, '_');
-  return `${token}_${scaleClass}`;
+  return registryKey(`${token}_${scaleClass}`);
 }
 
 function main() {
@@ -90,13 +111,12 @@ function main() {
     ...skeleton
   };
 
-  // Validate: every skeleton event state must resolve to a node.
-  const nodeIds = new Set(nodesOut.map((n) => n.id));
-  for (const ev of skeletonOut.events || []) {
-    if (!nodeIds.has(ev.state)) {
-      console.error(`Skeleton event at time ${ev.time} references unknown node "${ev.state}"`);
-      process.exit(1);
-    }
+  // Validate with the check the app runs at load; write nothing on failure.
+  const problems = validatePiece(skeletonOut, sketchpadOut);
+  if (problems.length) {
+    console.error(`Not imported: ${problems.length} problem(s) in "${pieceId}":`);
+    for (const problem of problems) console.error(`  - ${problem}`);
+    process.exit(1);
   }
 
   const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -112,4 +132,6 @@ function main() {
   if (scalesOut) console.log(`Custom scales: ${Object.keys(scalesOut).join(', ')}`);
 }
 
-main();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}
